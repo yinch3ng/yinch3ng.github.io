@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sphinx &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Sphinx</h1>
+  <time datetime=2019-12-01T20:13:54&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <h2 id="install-sphinx">Install Sphinx</h2>
+<p>First you need to install <a href="https://www.python.org/downloads/">Python</a> on
+your windows.</p>
+<p>When you finished that,you can install sphinx use this command: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pip install sphinx
+</code></pre></div><p>Untill it is done.Then you can exec <code>sphinx-quickstart</code> to build the
+sphinx template for quick starting.</p>
+<p>Modify <code>index.rst</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">.</span><span style="color:#f92672">.</span> toctree::
+  :maxdepth: <span style="color:#ae81ff">1</span>
+  :caption: Contents:
+    
+  chapter1
+  chapter2
+  <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</code></pre></div><p>Then you can exec command as below to verify it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sphinx<span style="color:#f92672">-</span>build <span style="color:#f92672">-</span>b html sourcedir builddir [make html] 
+</code></pre></div><ul>
+<li><a href="http://www.sphinx-doc.org/en/stable/tutorial.html">http://www.sphinx-doc.org/en/stable/tutorial.html</a></li>
+</ul>
+<h2 id="install-theme">Install Theme</h2>
+<p>Exec command as below:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pip install sphinx_rtd_theme
+</code></pre></div><p>Then modify <code>conf.py</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">html_theme = </span><span style="color:#e6db74">&#34;</span>sphinx_rtd_theme<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> </span>
+<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">html_theme_options</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</code></pre></div><p>and build again: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sphinx<span style="color:#f92672">-</span>build <span style="color:#f92672">-</span>b html source build<span style="color:#f92672">/</span>html [make html]
+</code></pre></div><ul>
+<li><a href="https://github.com/rtfd/sphinx_rtd_theme/">https://github.com/rtfd/sphinx_rtd_theme/</a></li>
+<li><a href="https://github.com/guzzle/guzzle_sphinx_theme">https://github.com/guzzle/guzzle_sphinx_theme</a></li>
+</ul>
+<p>To make the ReadTheDocs theme use the entire width of your screen you
+can modify the <code>theme.css</code> file, removing the <code>max-width: 800px;</code>
+property from the <code>wy-nav-content</code> class definition, like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">wy-nav-content</span> {
+  <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">1.618</span><span style="color:#66d9ef">em</span> <span style="color:#ae81ff">3.236</span><span style="color:#66d9ef">em</span>;
+  <span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">100</span><span style="color:#66d9ef">%</span>;
+  <span style="color:#75715e">/* max-width: 800px; */</span>
+  <span style="color:#66d9ef">margin</span>: <span style="color:#66d9ef">auto</span>;
+}
+</code></pre></div><p>Thanks to <a href="https://stackoverflow.com/users/836407/chown">chown</a> !</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs">https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs</a></li>
+</ul>
+<h2 id="install-rst2pdf">Install rst2pdf</h2>
+<p>Exec command as below: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pip install rst2pdf [easy_install rst2pdf]
+</code></pre></div><p>Then modify <code>conf.py</code>: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">extensions<span style="color:#f92672">=</span>[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">rst2pdf.pdfbuilder</span><span style="color:#e6db74">&#39;</span>]
+pdf_documents <span style="color:#f92672">=</span> [(<span style="color:#e6db74">u</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">index</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">u</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">pdf file name</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">u</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">pdf title</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">u</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">author name</span><span style="color:#e6db74">&#39;</span>),]
+<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+</code></pre></div><ul>
+<li><a href="http://rst2pdf.ralsina.me/handbook.html">http://rst2pdf.ralsina.me/handbook.html</a></li>
+</ul>
+<p>And Build again. :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sphinx<span style="color:#f92672">-</span>build <span style="color:#f92672">-</span>b pdf source build<span style="color:#f92672">/</span>pdf [make pdf]
+</code></pre></div><h2 id="appendix">Appendix</h2>
+<p>You can use tsinghua mirrors to speedup the pip if you are in China:) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pip install <span style="color:#f92672">-</span>i https:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>pypi<span style="color:#f92672">.</span>tuna<span style="color:#f92672">.</span>tsinghua<span style="color:#f92672">.</span>edu<span style="color:#f92672">.</span>cn<span style="color:#f92672">/</span>simple some<span style="color:#f92672">-</span>package
+</code></pre></div><ul>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/help/pypi/">https://mirrors.tuna.tsinghua.edu.cn/help/pypi/</a></li>
+</ul>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

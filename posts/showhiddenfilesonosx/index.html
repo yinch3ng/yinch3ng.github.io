@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Show hidden files and folders on Mac OS X (Mavericks, Yosemite and El Capitan) &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Show hidden files and folders on Mac OS X (Mavericks, Yosemite and El Capitan)</h1>
+  <time datetime=2019-12-01T15:01:56&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <p>Created on Dec 09, 2015 by <a href="https://commandroll.com/user/pabloked">pabloked</a></p>
+<ol>
+<li>copy<code>defaults write com.apple.finder AppleShowAllFiles YES</code></li>
+<li>copy<code>killall Finder</code></li>
+</ol>
+<h2 id="description">DESCRIPTION</h2>
+<p>By default, macOS hides critical system files and folders. These are hidden for good reason; if hidden files were visible all the time, the chances that a user might accidentally delete or change them and potentially create catastrophic system-wide problems (not to mention headaches) increases greatly.</p>
+<p>The command lines accomplish two goals:</p>
+<ol>
+<li>The first part changes the hidden file setting to show files (showing all is now <code>YES</code>).</li>
+<li>The second part restarts the Finder so the files will now show up.</li>
+</ol>
+<p>Most of the time, you want to keep these hidden files and folders out of view, but there are some circumstances in which you need to see hidden files or folders. For example, malware and viruses can cause problems by altering system files or renaming important folders, causing them to no longer work until you fix them by manually change them back.</p>
+<p>It's important to keep in mind that there are lots of hidden files and folders. If you show hidden files and browse through your files in a Finder window, the file list landscape will look a bit different with all of these &ldquo;new&rdquo; files now showing up there. </p>
+<p>Most of the revealed files are operating system and configuration files. These should not be deleted or modified unless you are absolutely certain of their roles.</p>
+<p>Source: <a href="https://www.lifewire.com/display-hidden-files-in-os-x-153332">Show Hidden Files and Folders on macOS</a></p>
+<h3 id="defaults">defaults</h3>
+<hr>
+<h4 id="name">NAME</h4>
+<p><strong>defaults</strong> &ndash; access the Mac OS X user defaults system</p>
+<h4 id="synopsis">SYNOPSIS</h4>
+<p><strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] read [domain [key]]
+<strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] read-type domain key
+<strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] write domain { &lsquo;plist&rsquo; | key &lsquo;value&rsquo; }
+<strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] rename domain old_key new_key
+<strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] delete [domain [key]]
+<strong>defaults</strong> [<strong>-currentHost</strong> | <strong>-host</strong> hostname] { domains | find word | help }</p>
+<h4 id="description1">DESCRIPTION</h4>
+<p><strong>Defaults</strong> allows users to read, write, and delete Mac OS X user defaults from a command-line shell. Mac OS X applications and other programs use the defaults system to record user preferences and other information that must be maintained when the applications aren't running (such as default font for new documents, or the position of an Info panel). Much of this information is accessible through an appli- cation's Preferences panel, but some of it isn't, such as the position of the Info panel. You can access this information with <strong>defaults</strong></p>
+<p><a href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/">powered by OS X manuals</a></p>
+<p><a href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/defaults.1.html" title="Read more about defaults">read more about **defaults **</a></p>
+<h3 id="killall">killall</h3>
+<hr>
+<h4 id="name1">NAME</h4>
+<p><strong>killall</strong> &ndash; kill processes by name</p>
+<h4 id="synopsis1">SYNOPSIS</h4>
+<p><strong>killall</strong> [<strong>-delmsvz</strong>] [<strong>-help</strong>] [<strong>-u</strong> user] [<strong>-t</strong> tty] [<strong>-c</strong> procname] [<strong>-SIGNAL</strong>] [procname &hellip;]</p>
+<h4 id="description2">DESCRIPTION</h4>
+<p>The <strong>killall</strong> utility kills processes selected by name, as opposed to the selection by pid as done by kill(1). By default, it will send a TERM signal to all processes with a real UID identical to the caller of <strong>killall</strong> that match the name procname. The super-user is allowed to kill any process.</p>
+<p><a href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/">powered by OS X manuals</a></p>
+<p><a href="https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/killall.1.html" title="Read more about killall">read more about **killall **</a></p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

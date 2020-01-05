@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rename account and profile folder on Windows 7/8 &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Rename account and profile folder on Windows 7/8</h1>
+  <time datetime=2019-12-01T14:43:58&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <ol>
+<li>Login with a different admin user account.</li>
+<li>Rename the profile folder that you want to keep, note the new path.</li>
+<li>Open regedit. Navigate to
+<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList</code></li>
+<li>Find your SID in the keys listed there. You can easily tell as one
+of the entries will have the old path of your user account.</li>
+<li>Change the <code>ProfileImagePath</code> entry to the new path from #2.</li>
+<li>Reboot.</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<blockquote>
+</blockquote>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

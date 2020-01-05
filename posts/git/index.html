@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Git &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Git</h1>
+  <time datetime=2019-12-01T15:29:20&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <h2 id="quick-command">Quick Command</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git init
+git add .
+git commit -m <span style="color:#e6db74">&#39;first commit&#39;</span>
+git remote add origin git@github.com:jack/jack.github.io.git
+git push <span style="color:#f92672">[</span>-f<span style="color:#f92672">]</span> origin master   
+</code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="remove-all-git-commits-and-records">Remove all git commits and records</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git checkout --orphan newBranch
+git add -A  <span style="color:#75715e"># Add all files and commit them</span>
+git commit
+git branch -D master  <span style="color:#75715e"># Deletes the master branch</span>
+git branch -m master  <span style="color:#75715e"># Rename the current branch to master</span>
+git push -f origin master  <span style="color:#75715e"># Force push master branch to github</span>
+git prune --progress   
+git gc --aggressive --prune<span style="color:#f92672">=</span>all  
+</code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="truncate-git-history">Truncate git history</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>git checkout --orphan temp $1
+git commit -m <span style="color:#e6db74">&#34;Truncated history&#34;</span>
+git rebase --onto temp $1 master
+git branch -D temp
+
+git prune --progress
+git gc --aggressive --prune<span style="color:#f92672">=</span>all
+git repack -a -f -F -d 
+</code></pre></div><p>Here <code>$1</code> is sha-1 of the commit you want to keep and the script will
+create new branch that contains all commits between <code>$1</code> and <code>master</code>
+and all the older history is dropped.Save this to 1.sh, use it like
+<code>./1.sh</code> + commit sha-1.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="ssh-key-authentication">SSH Key Authentication</h2>
+<p>In Git Bash's command window, enter this: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ssh-keygen -t rsa
+</code></pre></div><p>Copy all of the content in the file
+<code>C:\Users\{username}\.ssh\id_rsa.pub</code> to Server.</p>
+<p>Then type this into Git Bash: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ eval <span style="color:#e6db74">`</span>ssh-agent -s<span style="color:#e6db74">`</span>
+$ ssh-add ~/.ssh/id_rsa
+</code></pre></div><p>To test that everything works, enter this into Git Bash: :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ssh -T git@github.com
+</code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="git-server">Git Server</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">apt-get install git git-core
+useradd git
+cd /srv
+git init --bare mygitbase.git
+chown -R git:git mygitbase.git
+</code></pre></div><p>Modify <code>/etc/passwd</code> ==&gt; <code>git:/bin/bash</code> &ndash;&gt; <code>git:/usr/bin/git-shell</code>,</p>
+<p>Then import rsa.pub to <code>/home/git/.ssh/authorized_keys</code>,</p>
+<p>It is done!</p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

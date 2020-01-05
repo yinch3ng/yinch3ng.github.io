@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Smbpasswd &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Smbpasswd</h1>
+  <time datetime=2019-12-01T20:23:21&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <h2 id="samba-passwd-smbpasswd-and-tdbsam">Samba passwd smbpasswd and tdbsam</h2>
+<p>If you use “passdb backend = smbpasswd” in your smb.conf you must
+convert your system-user accounts to smbpasswd:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat /etc/passwd | mksmbpasswd &gt;/etc/samba/smbpasswd
+</code></pre></div><p>If you use “passdb backend = tdbsam” in your smb.conf you must convert
+your system-user accounts to passdb.tdb:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">pdbedit -i smbpasswd:/etc/samba/smbpasswd -e tdbsam:/etc/samba/passdb.tdb
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># ls -l /var/lib/samba/private/</span> 
+-rw------- <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">532480</span> 2000-01-01 01:01 passdb.tdb 
+-rw------- <span style="color:#ae81ff">1</span> root root  <span style="color:#ae81ff">45056</span> 2000-01-01 01:01 secrets.tdb
+</code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

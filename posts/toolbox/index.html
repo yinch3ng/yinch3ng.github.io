@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Toolbox &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Toolbox</h1>
+  <time datetime=2019-12-01T20:02:25&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <h2 id="awk">awk</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-awk" data-lang="awk"><span style="color:#a6e22e">grep</span> <span style="color:#a6e22e">xxxxxx</span> <span style="color:#a6e22e">access</span>.<span style="color:#66d9ef">log</span>.<span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">awk</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">F</span> <span style="color:#e6db74">&#39;[ ]&#39;</span> <span style="color:#e6db74">&#39;{print $4}&#39;</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">sort</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">u</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">wc</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">l</span>
+
+<span style="color:#a6e22e">awk</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">F</span> <span style="color:#e6db74">&#39;[ ]&#39;</span> <span style="color:#e6db74">&#39;{print $4}&#39;</span> <span style="color:#a6e22e">access</span>.<span style="color:#66d9ef">log</span>.<span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">sort</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">u</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">wc</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">l</span>
+
+<span style="color:#a6e22e">awk</span> <span style="color:#e6db74">&#39;{if(/^109.123./ &amp;&amp; /[0-9]$/){ print $0 }}&#39;</span> <span style="color:#a6e22e">access</span>.<span style="color:#66d9ef">log</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">sort</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">u</span> 
+
+<span style="color:#a6e22e">awk</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">F</span> <span style="color:#e6db74">&#39;[ |]|(-&gt;)&#39;</span> <span style="color:#e6db74">&#39;{if($3~/any_proxy.go:602:/||$3~/any_proxy.go:608:/||$3~/any_proxy.go:611:/||$3~/any_proxy.go:638:/||$3~/any_proxy.go:404:/) {$3=$4=$5=$6=&#34;&#34;;print}}&#39;</span> <span style="color:#ae81ff">1</span>.<span style="color:#66d9ef">log</span>
+</code></pre></div><h2 id="vi-cheatsheet">VI cheatsheet</h2>
+<ul>
+<li><a href="http://www.atmos.albany.edu/daes/atmclasses/atm350/vi_cheat_sheet.pdf">http://www.atmos.albany.edu/daes/atmclasses/atm350/vi_cheat_sheet.pdf</a></li>
+</ul>
+<h2 id="git-cheatsheet">Git cheatsheet</h2>
+<ul>
+<li><a href="https://www.git-tower.com/learn/">https://www.git-tower.com/learn/</a></li>
+<li><a href="https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf">https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf</a></li>
+</ul>
+<h2 id="unminify">Unminify</h2>
+<p>Free online tool to unminify (unpack, deobfuscate) JavaScript, CSS and
+HTML code, making it readable and pretty!</p>
+<ul>
+<li><a href="http://unminify.com/">http://unminify.com/</a></li>
+</ul>
+<h2 id="wc">wc</h2>
+<p>count files &amp; folders in linux</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># find / -type d -exec echo dirs \; -o -type l -exec echo symlinks \; -o -type f -links +1 -exec echo hardlinks \; -o -type f -exec echo files \; | sort | uniq -c</span>
+</code></pre></div><h2 id="sublime">Sublime</h2>
+<p>Sphinx build with sublime</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#e6db74">&#34;build_systems&#34;</span><span style="color:#960050;background-color:#1e0010">:</span>
+    {
+        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Sphinx make html&#34;</span>,
+        <span style="color:#f92672">&#34;selector&#34;</span>: <span style="color:#e6db74">&#34;text.restructuredtext&#34;</span>,
+        <span style="color:#f92672">&#34;working_dir&#34;</span>: <span style="color:#e6db74">&#34;$project_path/doc&#34;</span>,
+        <span style="color:#f92672">&#34;cmd&#34;</span>: <span style="color:#e6db74">&#34;make.bat&#34;</span>, <span style="color:#f92672">&#34;html&#34;</span><span style="color:#960050;background-color:#1e0010">]</span>,
+        <span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#f92672">&#34;cmd&#34;</span>: <span style="color:#e6db74">&#34;%SPHINXBUILD%&#34;</span>, <span style="color:#f92672">&#34;-b&#34;</span>, <span style="color:#f92672">&#34;html&#34;</span>, <span style="color:#f92672">&#34;-d&#34;</span>, <span style="color:#f92672">&#34;_build/doctrees&#34;</span>, <span style="color:#f92672">&#34;.&#34;</span>, <span style="color:#f92672">&#34;_build/html&#34;</span><span style="color:#960050;background-color:#1e0010">]</span>,
+        <span style="color:#f92672">&#34;shell&#34;</span>: <span style="color:#66d9ef">true</span>,
+        <span style="color:#f92672">&#34;env&#34;</span>: {
+            <span style="color:#960050;background-color:#1e0010">/</span><span style="color:#960050;background-color:#1e0010">/</span> <span style="color:#f92672">&#34;SPHINXBUILD&#34;</span>: <span style="color:#e6db74">&#34;\&#34;C:\\Program Files (x86)\\Anaconda\\Scripts\\sphinx-build.exe\&#34;&#34;</span>,
+        },
+        <span style="color:#f92672">&#34;file_regex&#34;</span>: <span style="color:#e6db74">&#34;^(.*):([0-9]+): &#34;</span>,
+    }<span style="color:#960050;background-color:#1e0010">,</span>
+<span style="color:#960050;background-color:#1e0010">]</span><span style="color:#960050;background-color:#1e0010">,</span>
+
+</code></pre></div><ul>
+<li><a href="https://forum.sublimetext.com/t/sphinx-and-sublime/15544/5">https://forum.sublimetext.com/t/sphinx-and-sublime/15544/5</a></li>
+</ul>
+<p>Thanks to <a href="https://forum.sublimetext.com/u/gwenzek">gwenzek</a> !</p>
+<h2 id="restructuredtext">reStructuredText</h2>
+<p>demo</p>
+<ul>
+<li><a href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">http://docutils.sourceforge.net/docs/user/rst/demo.txt</a></li>
+<li><a href="http://rest-sphinx-memo.readthedocs.io">http://rest-sphinx-memo.readthedocs.io</a></li>
+</ul>
+<p>cheatsheet</p>
+<ul>
+<li><a href="http://github.com/ralsina/rst-cheatsheet/raw/master/rst-cheatsheet.pdf">http://github.com/ralsina/rst-cheatsheet/raw/master/rst-cheatsheet.pdf</a></li>
+</ul>
+<h2 id="regular-expression">Regular Expression</h2>
+<p><a href="http://www.regexpal.com/">http://www.regexpal.com/</a></p>
+<h2 id="putty">PuTTY</h2>
+<p>Configure pwd for a stored session in PuTTY</p>
+<ol>
+<li>Create a shortcut on somewhere to putty.exe.</li>
+<li>Modify the target similar to: <code>&quot;C:\Program Files\PuTTY\putty.exe&quot; user@server.com -P 2345 -pw password</code>.</li>
+</ol>
+<h2 id="python">Python</h2>
+<p>install / uninstall python package</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python">pip install git<span style="color:#f92672">+</span>https:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span><span style="color:#ae81ff">123</span><span style="color:#f92672">/</span>abc<span style="color:#f92672">.</span>git
+
+git clone https:<span style="color:#f92672">/</span><span style="color:#f92672">/</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span><span style="color:#ae81ff">123</span><span style="color:#f92672">/</span>abc<span style="color:#f92672">.</span>git
+python speedtest<span style="color:#f92672">-</span>cli<span style="color:#f92672">-</span>datadog<span style="color:#f92672">/</span>setup<span style="color:#f92672">.</span>py install
+
+</code></pre></div><p>and</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python">python setup<span style="color:#f92672">.</span>py install <span style="color:#f92672">-</span><span style="color:#f92672">-</span>record files<span style="color:#f92672">.</span>txt 
+cat files<span style="color:#f92672">.</span>txt <span style="color:#f92672">|</span> xargs rm <span style="color:#f92672">-</span>rf
+</code></pre></div><h2 id="try-pandoc-">Try Pandoc !</h2>
+<ul>
+<li><a href="https://pandoc.org/try/">https://pandoc.org/try/</a></li>
+</ul>
+<h2 id="sysinternals-suite">Sysinternals Suite</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite">https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite</a></li>
+</ul>
+<h2 id="removeuninstall-gitlab-completely">Remove/Uninstall Gitlab completely</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gitlab-ctl stop
+gitlab-ctl uninstall
+<span style="color:#f92672">[</span> apt-get purge <span style="color:#f92672">]</span> | <span style="color:#f92672">[</span> yum remove <span style="color:#f92672">]</span> gitlab-ce
+rm -rf /opt/gitlab/
+rm -rf /var/opt/gitlab/
+rm -rf /var/log/gitlab
+rm -rf <span style="color:#f92672">[</span> /etc/gitlab/ <span style="color:#f92672">]</span> | <span style="color:#f92672">[</span> /org/gitlab <span style="color:#f92672">]</span>
+</code></pre></div><p>Remember to clean your apt respository sources then <code>reboot</code>.</p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

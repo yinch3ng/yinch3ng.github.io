@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dynamic port forwarding with SSH and SOCKS5 &middot; cafeTheatre</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://yinch3ng.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://yinch3ng.github.io/"><h1>cafeTheatre</h1></a>
+      <p class="lead">
+       yinch3ng 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://yinch3ng.github.io/">Home</a> </li>
+        <li><a href="/posts/"> Post </a></li><li><a href="/categories/"> Category </a></li><li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Dynamic port forwarding with SSH and SOCKS5</h1>
+  <time datetime=2019-12-01T15:16:48&#43;0800 class="post-date">Sun, Dec 1, 2019</time>
+  <p>In this article i collected all the necessary information and useful tips to create <strong>SSH tunnels</strong> between hosts in order to protect internet traffic with an encrypted layer.</p>
+<h4 id="contents">Contents:</h4>
+<ol>
+<li>
+<p>What is SSH</p>
+</li>
+<li>
+<p>Why you need to use a SSH tunnel</p>
+</li>
+<li>
+<p>Public and private key pair</p>
+</li>
+<li>
+<p>VPS setup and firewall</p>
+</li>
+<li>
+<p>Dynamic port forwarding in details</p>
+</li>
+<li>
+<p>Configure browser, email, instant messages</p>
+</li>
+<li>
+<p>Optional configurations</p>
+</li>
+<li>
+<p>Links</p>
+</li>
+</ol>
+<h4 id="what-is-ssh">What is SSH</h4>
+<p>SSH stands for Secure Shell and is described on Wikipedia as “a cryptographic (encrypted) network protocol for initiating text-based shell sessions on remote machines in a secure way”.</p>
+<p>SSH can do much more than remote shell. For example you can copy files from local to remote host (local forward) or mount a remote file system on your computer (remote forward) or tunnel to internet from a local <strong>SOCKS proxy</strong> (dynamic forward).</p>
+<p>In this article i will explain how to forward and encrypted network traffic between a local SOCKS5 proxy and a VPS (<em>virtual private server</em>).</p>
+<ul>
+<li>
+<p>SSH enables port forwarding with encrypted tunnel</p>
+</li>
+<li>
+<p>SOCKS5 (Socket Secure) provides a proxy server to route traffic between client and server using authentication</p>
+</li>
+<li>
+<p>VPS is our remote server that connect us to internet</p>
+</li>
+<li>
+<p>Applications needs to be configured to make use of the tunnel</p>
+</li>
+</ul>
+<h4 id="why-you-need-a-ssh-tunnel">Why you need a SSH tunnel</h4>
+<p>The answer is simple: SSH dynamic port forwarding is the fastest and cheapest way to protect your traffic from undesired eyes.</p>
+<ul>
+<li>
+<p>An additional layer to protect your identity</p>
+</li>
+<li>
+<p>An encrypted channel of internet traffic</p>
+</li>
+<li>
+<p>A less risky communication environment for your privacy</p>
+</li>
+</ul>
+<p>A few practical examples:</p>
+<ul>
+<li>
+<p>You can connect to open networks and no one can read in clear your network packets, assuming you carefully protect your private key</p>
+</li>
+<li>
+<p>You can reach content blocked because of your location</p>
+</li>
+<li>
+<p>You can circumvent firewalls</p>
+</li>
+</ul>
+<h4 id="private-and-public-key-pair">Private and public key pair</h4>
+<p>The very first thing you need to setup is a private and public key pair. With this keys you can authenticate the client (your machine) on a remote server.</p>
+<ul>
+<li>
+<p>Generate both keys, private and public, on your computer</p>
+</li>
+<li>
+<p>Protect private key with long, possibly complex pass phrase. You need to enter it every time you want to create a SSH connection</p>
+</li>
+<li>
+<p>Copy the public key on the server you want to log in</p>
+</li>
+<li>
+<p>SSH opens a connection only to clients matching the server public key with the right client private key</p>
+</li>
+</ul>
+<p>This process ensures a higher level of security compared to passwords protected accounts vulnerable to brute force attacks. You need to protect your private key, anyone owning it can authenticate himself as you on every server that can match relative public key. You can create a different keys pair for every remote host you intend to connect with SSH, this way if one private key gets compromised you have an isolated case.</p>
+<p>Let’s create SSH keys. On your computer terminal type:</p>
+<pre><code># ssh-keygen -t rsa
+</code></pre><p>Next step is to choose a name for the keys. If you would just press enter it would assign the default name id_rsa and id_rsa.pub and those would became your default keys. I prefer instead to define a custom name for a pair used only for SSH tunnel: id_rsa_tunnel as private key and id_rsa_tunnel.pub as public one.</p>
+<pre><code># Enter file in which to save the key (/home/user/.ssh/id_rsa): id_rsa_tunnel
+</code></pre><p>Enter two times the pass phrase you want to use for your private key and you are done. Your keys are located in your home directory, /.ssh/ folder: /home/user/.ssh/id_rsa_tunnel (private) and /home/user/.ssh/id_rsa_tunnel.pub (public) where /user/ is the user you are logged in.</p>
+<h4 id="vps-setup-and-firewall">VPS setup and firewall</h4>
+<p>Your remote host, a VPS in this case, is going to route your traffic to internet. Choose the right VPS provider according to your needs. Once you have the remote public IP it’s convenient to change your hosts file, assuming the public IP of your VPS is 34.86.122.31 (i invented it) you can add this line to file /etc/hosts naming it “tunnel”:</p>
+<pre><code># 34.86.122.31 tunnel
+</code></pre><p>Save (you need to be root) and quit. From now on your system will recognize your remote host with the word “tunnel”. Open a terminal and type:</p>
+<pre><code># ssh root@tunnel
+</code></pre><p>You should get a remote shell as root after you type in the password. Once logged in update server:</p>
+<pre><code># apt-get update
+# apt-get upgrade
+</code></pre><p>and install new packages if any. Install the tools needed:</p>
+<pre><code># apt-get install sudo ufw
+</code></pre><p><em>Sudo</em> grants administrative permissions to regular users and Ufw stands for Uncomplicated Firewall, an easy to use front end for iptables.</p>
+<p>It’s time to create a regular user account and say goodbye to root. Go for a generic name like “sshuser” and choose a password easy to remember and difficult to brute force, finally add user to sudo:</p>
+<pre><code># useradd -s /bin/bash -m -d /home/sshuser -c &quot;sshuser&quot; sshuser
+# passwd sshuser
+# usermod -aG sudo sshuser
+</code></pre><p>You can now log out from root session. It’s now time to SSH into the VPS using the user account you just created but first you have to associate your public key to the account. There is a tool called <strong>ssh-copy-id</strong> that will help with this. You just have to run:</p>
+<pre><code># ssh-copy-id sshuser@tunnel
+</code></pre><p>and your default public key will be automatically copied securely to remote host (use option -i to define a custom public key). If you created the key pair following the article you have to type:</p>
+<pre><code># ssh-copy-id -i ~/.ssh/id_rsa_tunnel.pub sshuser@tunnel
+</code></pre><p>Now you can log in into your VPS with:</p>
+<pre><code># ssh sshuser@tunnel
+</code></pre><p>Enter the pass phrase and you are in. It’s time to change the server SSH configuration in /etc/ssh/sshd_config. Open file with sudo and check the following lines, if not there add them:</p>
+<pre><code>Port 5432
+Protocol 2
+UsePrivilegeSeparation yes
+PermitRootLogin no
+StrictModes yes
+PubkeyAuthentication yes
+AuthorizedKeysFile      %h/.ssh/authorized_keys
+PasswordAuthentication no
+X11Forwarding no
+TCPKeepAlive yes
+AllowUsers sshuser
+AllowTcpForwarding yes
+</code></pre><p>SSH default port is 22 but you can obfuscate a little the traffic setting it to port 5432, usually adopted by PostgreSQL. With PermitRootLogin and PasswordAuthentication we block possible easy attacks and with AllowUsers you restrict access even more to only your user.</p>
+<p>Last step to strengthen your server is to configure the firewall. All you have to do is allowing connections only to the port you want to connect and limit possible brute force attacks.</p>
+<pre><code># sudo ufw allow 5432/tcp
+</code></pre><p>Opens the TCP port 5432 from outside connections.</p>
+<pre><code># sudo ufw limit 5432/tcp
+</code></pre><p>Limits password log in attempts. Consider the use of <a href="http://www.sshguard.net/">SSHguard</a> or <a href="http://www.fail2ban.org/wiki/index.php/Main_Page">fail2ban</a> for a definitive solution to brute force attacks.</p>
+<pre><code># sudo service ufw restart
+</code></pre><p>Restart firewall to enable changes. Your remote server is now ready.</p>
+<h4 id="dynamic-port-forwarding-in-details">Dynamic port forwarding in details</h4>
+<p>You have now everything ready to create a SSH tunnel. Open a terminal on your computer and type:</p>
+<pre><code># ssh -D 8080 -N -p 5432 sshuser@tunnel -vv
+</code></pre><p>If everything works as expected the tunnel is created after you type the pass phrase. That’s it.</p>
+<p>The command in details:</p>
+<ul>
+<li>
+<p>-D enables dynamic forwarding</p>
+</li>
+<li>
+<p>8080 is the port of localhost you are going to listen with proxy, can be any port open of your computer</p>
+</li>
+<li>
+<p>-N stops SSH from executing commands</p>
+</li>
+<li>
+<p>-p is the port of the remote host you connect to, you configured the firewall server to keep port 5432 open</p>
+</li>
+<li>
+<p>-vv is very verbose output on console (-v and -vvv are less and more verbose). I suggest to keep this option the very first times to have a better idea of what’s going on with the SSH connection and remove it later on.</p>
+</li>
+</ul>
+<p>You can fork the process in the background and keep SSH quiet with the options -f and -q.</p>
+<pre><code># ssh -D 8080 -fNq -p 5432 sshuser@tunnel
+</code></pre><p>Tunnel is now up. All traffic can now be routed trough your localhost (or 127.0.0.1) from port 8080 to your VPS and then to internet.</p>
+<p>Note this will work using your default private key. To specify the private key you created earlier use the option -i:</p>
+<pre><code># ssh -i ~/.ssh/id_rsa_tunnel -D 8080 -fNq -p 5432 sshuser@tunnel
+</code></pre><p>You SSH connection is now in the background. To close it you have to terminate the process; use htop to find and kill it.</p>
+<h4 id="configure-browser-email-instant-messages">Configure browser, email, instant messages</h4>
+<p>Every applications not listening on SOCKS proxy will leak packets out of the tunnel. It’s important you configure all applications you normally use for internet to make use of the proxy.</p>
+<h5 id="browser">Browser</h5>
+<p>Tunnel is created so let’s open a browser to access internet. You can open <em>Chromium</em> from terminal typing:</p>
+<pre><code># chromium --temp-profile --proxy-server=&quot;socks5://localhost:8080&quot;
+</code></pre><p>Note the flag — proxy-server that tells Chromium where is located the proxy. This is enough to browse using the SSH tunnel.</p>
+<p>You can add more flags to a Chromium session, there is plenty listed here. Why not running incognito mode and disable most functionalities you don’t use:</p>
+<pre><code># chromium --temp-profile --incognito --no-referrers --enable-strict-mixed-content-checking --disable-java --disable-plugins --no-experiments --no-pings --disable-preconnect --disable-translate --dns-prefetch-disable --disable-background-mode --proxy-server=&quot;socks5://localhost:8080&quot;
+</code></pre><p>Add or remove flags depending on your needs.</p>
+<p>To configure <em>Firefox</em> (known as <em>Iceweasel</em> on Linux) click on the menu icon and go to Preferences. Click on the tab Advanced and on the inner tab Network. Finally click on Settings button and click on “Manual proxy configuration” typing “localhost” in the field next to SOCKS Host, port 8080. Click on SOCKS v5 if not selected. Click on OK and your browsing should now be encrypted.</p>
+<p>Watch out for <strong>DNS leaks</strong> using Firefox (or Iceweasel). Open the config window typing about:config where you would type a URL and press enter. Search for network.proxy.socks_remote_dns and set it to true. Test results before and after the changes on <a href="https://dnsleaktest.com/">dnsleaktest.com</a>.</p>
+<h5 id="email">E-mail</h5>
+<p>The procedure to enable SOCKS proxy on <em>Thunderbird</em> (or <em>Icedove</em> on Linux) is similar as for Firefox described above. Menu, Preferences, Preferences, Advanced, Network and Disk Space, Settings and then configure proxy same way.</p>
+<h5 id="instant-messaging">Instant messaging</h5>
+<p><em>Pigdin</em> is a universal chat client that supports most common protocols and social network chats. In one application you can chat over many networks and in combination with <a href="https://otr.cypherpunks.ca/">OTR plugin</a> you can encrypt your messages over not secure networks. You can configure Pidgin to use the proxy as well, just open Preferences and under Network label you can set the Proxy Server as SOCKS5, host is “localhost” and port 8080.</p>
+<p>If you are more old school and chat over IRC with irssi client, type within the console:</p>
+<pre><code>/set proxy_address 127.0.0.1
+/set proxy_port 8080
+/set use_proxy ON
+</code></pre><p>Note that 127.0.0.1 is the address of localhost. I wrote an article about <a href="http://network23.org/inputisevil/2015/09/01/irc-ssl-otr-encryption/">IRC, SSL and OTR configurations</a> if you want to know more.</p>
+<h4 id="optional-configurations">Optional configurations</h4>
+<p>You can now create shortcuts for future SSH sessions. You can also run a script at boot time that opens a tunnel in background. You can find many examples on internet about it. I personally prefer to create and delete tunnels as i need it, without any automation.</p>
+<p>Remember the command to open a tunnel:</p>
+<pre><code># ssh -i ~/.ssh/id_rsa_tunnel -D 8080 -fNq -p 5432 sshuser@tunnel
+</code></pre><p>To create a shortcut to this command edit or create a config file on your computer at: <em>/home/user/.ssh/config</em> and add the lines:</p>
+<pre><code>Host tunnel
+HostName 34.86.122.31
+Port 5432
+User sshuser
+IdentityFile ~/.ssh/id_rsa_tunnel.pub
+</code></pre><p>Now to open a SSH tunnel you can type:</p>
+<pre><code># ssh -fNq tunnel
+</code></pre><p>An even better alternative are alias. Add the following line to .bashrc file in your home directory:</p>
+<pre><code># alias sshtunnel='ssh -i ~/.ssh/id_rsa_tunnel -D 8080 -fNq -p 5432 sshuser@tunnel'
+</code></pre><p>And now you can create a tunnel just typing:</p>
+<pre><code># sshtunnel
+</code></pre><p>There is one more shortcut available. You can avoid to type the same damn long pass phrase every time you want to log in your VPS: use <strong>ssh-add</strong>, an SSH agent that takes care of your private keys identities. Type:</p>
+<pre><code># ssh-add
+</code></pre><p>Press enter and type the pass phrase. If ssh agent is not started type:</p>
+<pre><code># eval $(ssh-agent)
+</code></pre><p>And repeat the ssh-add command. Log in your server with SSH now and if everything is correct you should automatically get the remote shell.</p>
+<p>Another important add on useful for tunnels is <a href="http://www.harding.motd.ca/autossh/">autossh</a>, a tool to automate SSH reconnections if the tunnel drops for network connectivity problems.</p>
+<h4 id="links">Links</h4>
+<p>OpenSSH, project homepage [<a href="http://www.openssh.com">http://www.openssh.com</a>]</p>
+<p>SOCKS, protocol standards [<a href="https://www.ietf.org/rfc/rfc1928.txt">https://www.ietf.org/rfc/rfc1928.txt</a>]</p>
+<p>Ufw, un-complicated firewall [<a href="https://wiki.ubuntu.com/UncomplicatedFirewall">https://wiki.ubuntu.com/UncomplicatedFirewall</a>]</p>
+<p>SSHguard, log monitor [<a href="http://www.sshguard.net">http://www.sshguard.net</a>]</p>
+<p>autossh, restarts SSH sessions and tunnels [<a href="http://www.harding.motd.ca/autossh">http://www.harding.motd.ca/autossh</a>]</p>
+<p>Ref:<a href="https://network23.org/inputisevil/2015/09/05/dynamic-port-forwarding-with-ssh-and-socks5/">Dynamic port forwarding with SSH and SOCKS5</a></p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

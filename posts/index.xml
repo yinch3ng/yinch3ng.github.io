@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on cafeTheatre</title>
+    <link>https://yinch3ng.github.io/posts/</link>
+    <description>Recent content in Posts on cafeTheatre</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Dec 2019 20:36:06 +0800</lastBuildDate>
+    
+	<atom:link href="https://yinch3ng.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Windows Security Summary</title>
+      <link>https://yinch3ng.github.io/posts/windowssecurity/</link>
+      <pubDate>Sun, 01 Dec 2019 20:36:06 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/windowssecurity/</guid>
+      <description>Patches for &amp;lsquo;WannaCrypt&amp;rsquo; attacks  https://technet.microsoft.com/en-us/library/security/ms17-010.aspx https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/?from=timeline&amp;amp;isappinstalled=0 http://www.catalog.update.microsoft.com/Search.aspx?q=KB4012598  Microsoft security advisory 4025685: Guidance for older platforms: June 13, 2017  https://support.</description>
+    </item>
+    
+    <item>
+      <title>Meansure pps or bandwidth on the network interface</title>
+      <link>https://yinch3ng.github.io/posts/networkbandwith/</link>
+      <pubDate>Sun, 01 Dec 2019 20:31:01 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/networkbandwith/</guid>
+      <description>Measure Packets per Second on an Interface #!/bin/bash  if [ -z &amp;#34;$1&amp;#34; ]; then echo echo usage: $0 network-interface echo echo e.</description>
+    </item>
+    
+    <item>
+      <title>Smbpasswd</title>
+      <link>https://yinch3ng.github.io/posts/smbpasswd/</link>
+      <pubDate>Sun, 01 Dec 2019 20:23:21 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/smbpasswd/</guid>
+      <description>Samba passwd smbpasswd and tdbsam If you use “passdb backend = smbpasswd” in your smb.conf you must convert your system-user accounts to smbpasswd:</description>
+    </item>
+    
+    <item>
+      <title>Sphinx</title>
+      <link>https://yinch3ng.github.io/posts/sphinx/</link>
+      <pubDate>Sun, 01 Dec 2019 20:13:54 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/sphinx/</guid>
+      <description>Install Sphinx First you need to install Python on your windows.
+When you finished that,you can install sphinx use this command: :</description>
+    </item>
+    
+    <item>
+      <title>Toolbox</title>
+      <link>https://yinch3ng.github.io/posts/toolbox/</link>
+      <pubDate>Sun, 01 Dec 2019 20:02:25 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/toolbox/</guid>
+      <description>awk grep xxxxxx access.log.2 | awk -F &amp;#39;[ ]&amp;#39; &amp;#39;{print $4}&amp;#39; | sort -u | wc -l awk -F &amp;#39;[ ]&amp;#39; &amp;#39;{print $4}&amp;#39; access.</description>
+    </item>
+    
+    <item>
+      <title>Set up a local ubuntu mirror</title>
+      <link>https://yinch3ng.github.io/posts/localubuntumirror/</link>
+      <pubDate>Sun, 01 Dec 2019 19:57:59 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/localubuntumirror/</guid>
+      <description>Configuring apt-mirror First of all, you need to execute apt-get install apt-mirror command to install apt-mirror. The default config is just fit your server OS version, but still you can modify it to deb-amd64 | deb [arch=amd64] or deb-i386 | deb [arch=i386] in /etc/apt/mirror.</description>
+    </item>
+    
+    <item>
+      <title>Windows AIK</title>
+      <link>https://yinch3ng.github.io/posts/windowsaik/</link>
+      <pubDate>Sun, 01 Dec 2019 19:54:30 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/windowsaik/</guid>
+      <description>IE11.exe /x:.
+dism /mount-wim /wimfile:&amp;#34;d:\win7\sources\install.wim&amp;#34; /index:1 /mountdir:&amp;#34;d:\test1dir&amp;#34; dism /image:&amp;#34;d:\test1dir&amp;#34; /add-package /packagepath:&amp;#34;d:\update\windows6.1-kb2222.cab.msu&amp;#34; dism /unmount-wim /mountdir:&amp;#34;d:\test1dir&amp;#34; /commit oscdimg -b&amp;#34;d:\win7\boot\etfsboot.com&amp;#34; -n -m -h -k -lWindowswithUPdatetestlabel &amp;#34;d:\win7setup&amp;#34; d:\win7test.</description>
+    </item>
+    
+    <item>
+      <title>CSS</title>
+      <link>https://yinch3ng.github.io/posts/css/</link>
+      <pubDate>Sun, 01 Dec 2019 15:35:33 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/css/</guid>
+      <description>CSS Property    property value descrition     white-space normal Sequences of whitespace are collapsed. Newline characters in the source are handled the same as other whitespace.</description>
+    </item>
+    
+    <item>
+      <title>Git</title>
+      <link>https://yinch3ng.github.io/posts/git/</link>
+      <pubDate>Sun, 01 Dec 2019 15:29:20 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/git/</guid>
+      <description>Quick Command git init git add . git commit -m &amp;#39;first commit&amp;#39; git remote add origin git@github.com:jack/jack.github.io.git git push [-f] origin master Remove all git commits and records git checkout --orphan newBranch git add -A # Add all files and commit them git commit git branch -D master # Deletes the master branch git branch -m master # Rename the current branch to master git push -f origin master # Force push master branch to github git prune --progress git gc --aggressive --prune=all Truncate git history #!</description>
+    </item>
+    
+    <item>
+      <title>Dynamic port forwarding with SSH and SOCKS5</title>
+      <link>https://yinch3ng.github.io/posts/sshforward/</link>
+      <pubDate>Sun, 01 Dec 2019 15:16:48 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/sshforward/</guid>
+      <description>In this article i collected all the necessary information and useful tips to create SSH tunnels between hosts in order to protect internet traffic with an encrypted layer.</description>
+    </item>
+    
+    <item>
+      <title>Markdown syntax guide and writing on MWeb</title>
+      <link>https://yinch3ng.github.io/posts/mwebmdguide/</link>
+      <pubDate>Sun, 01 Dec 2019 15:09:51 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/mwebmdguide/</guid>
+      <description>Philosophy  Markdown is intended to be as easy-to-read and easy-to-write as is feasible. Readability, however, is emphasized above all else.</description>
+    </item>
+    
+    <item>
+      <title>Show hidden files and folders on Mac OS X (Mavericks, Yosemite and El Capitan)</title>
+      <link>https://yinch3ng.github.io/posts/showhiddenfilesonosx/</link>
+      <pubDate>Sun, 01 Dec 2019 15:01:56 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/showhiddenfilesonosx/</guid>
+      <description>Created on Dec 09, 2015 by pabloked
+ copydefaults write com.apple.finder AppleShowAllFiles YES copykillall Finder  DESCRIPTION By default, macOS hides critical system files and folders.</description>
+    </item>
+    
+    <item>
+      <title>Rename account and profile folder on Windows 7/8</title>
+      <link>https://yinch3ng.github.io/posts/renamewinaccount/</link>
+      <pubDate>Sun, 01 Dec 2019 14:43:58 +0800</pubDate>
+      
+      <guid>https://yinch3ng.github.io/posts/renamewinaccount/</guid>
+      <description>Login with a different admin user account. Rename the profile folder that you want to keep, note the new path.</description>
+    </item>
+    
+  </channel>
+</rss>
