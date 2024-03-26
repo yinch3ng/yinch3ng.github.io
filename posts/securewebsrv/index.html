@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/securewebsrv/">
+<link rel="alternate" type="application/rss+xml" href="" title="ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">Tags</a>
+    
+      <a href="/about/">About</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>How to Secure A Web Server</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <p><a href="https://christitus.com/secure-web-server/">https://christitus.com/secure-web-server/</a></p>
+<p>In this article, I show you all the steps needed to  secure a web server and improve your security. I recommend doing all of  these things on every installation. Also, just because you secure your  server doesn’t mean you can neglect it. I highly recommend monitoring it and adjusting security as needed. Monitoring is required for proper  security in my opinion.</p>
+<h2 id="secure-a-web-server-steps">Secure A Web Server Steps</h2>
+<p><strong>Install UFW</strong></p>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">sudo apt-get update  
+sudo apt-get install ufw  
+sudo ufw limit 22/tcp  
+sudo ufw allow 80/tcp  
+sudo ufw allow 443/tcp  
+sudo ufw enable
+</code></pre><p><strong>Verify</strong>
+<code>sudo ufw status</code></p>
+<p><strong>Do Global blocks</strong></p>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">sudo ufw default deny incoming  
+sudo ufw default allow outgoing
+</code></pre><h2 id="change-ssh-to-key">Change SSH to Key</h2>
+<p><strong>Remote Machine</strong>: <code>ssh-keygen -t rsa</code></p>
+<h3 id="transfer-to-server">Transfer to Server</h3>
+<h4 id="method-1">Method 1:</h4>
+<p><strong>Transfer pub ssh key to server</strong></p>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">scp ~/.ssh/id_rsa.pub user@server.com:~
+cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre><h4 id="method-2">Method 2:</h4>
+<p>Copy key and place in authorized_key file in one command
+<code>ssh-copy-id -i ~/.ssh/id_rsa.pub user@server.com</code></p>
+<h3 id="secure-a-web-server-disabling-password-auth-through-ssh">Secure a Web Server Disabling Password Auth through SSH</h3>
+<p><strong>Change the following lines in /etc/sshd_config</strong></p>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">ChallengeResponseAuthentication no
+PasswordAuthentication no
+UsePAM no
+PermitRootLogin no
+</code></pre><h2 id="edit-etcsysctlconf">Edit /etc/sysctl.conf</h2>
+<p>Enable security features</p>
+<p><img src="settings.png" alt="settings"></p>
+<h2 id="prevent-ip-spoof-etchostconf">Prevent IP Spoof /etc/host.conf</h2>
+<p>Change File to mirror below:</p>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">order bind,hosts
+multi on
+nospoof on
+</code></pre><h2 id="install-fail2ban">Install Fail2Ban</h2>
+<pre tabindex="0"><code class="language-fallback" data-lang="fallback">sudo apt install fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+</code></pre><h2 id="check-listening-ports">Check Listening Ports</h2>
+<pre tabindex="0"><code>netstat -tunlp
+</code></pre><p>You will now have completed the basics of a secure web server!</p>
+
+</article>
+
+
+
+</html>

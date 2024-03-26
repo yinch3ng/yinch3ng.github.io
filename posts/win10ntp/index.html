@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/win10ntp/">
+<link rel="alternate" type="application/rss+xml" href="" title="ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">Tags</a>
+    
+      <a href="/about/">About</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>NTP on Windows 10</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <p><a href="https://www.top-password.com/blog/enable-or-disable-set-time-zone-automatically-in-windows-10/">https://www.top-password.com/blog/enable-or-disable-set-time-zone-automatically-in-windows-10/</a></p>
+<p>Windows 10 doesn’t update date and time automatically? Windows 10 set time zone automatically not working? By default, Windows 10 determines your location based on your IP address, and this location will be used to set your time zone. But, if Windows has problem detecting your IP address accurately, it may set a wrong time zone and you have to turn off the “Set Time Zone Automatically” feature. In this tutorial we’ll show you 2 simple ways to enable or disable “Set Time (Zone) Automatically” in Windows 10.</p>
+<p><strong>Method 1: Enable or Disable “Set Time (Zone) Automatically” in Windows 10 Using Settings</strong></p>
+<ol>
+<li>
+<p>Right-click on the time display on bottom-right of the taskbar and then choose <strong>Adjust date/time</strong></p>
+<p><img src="adjust-date-time.png" alt="adjust-date-time"></p>
+</li>
+<li>
+<p>This will open the Date &amp; time page in the Settings window. In the right pane you can see these two settings: <strong>Set time automatically</strong> and <strong>Set time zone automatically</strong>.</p>
+<p><img src="windows-10-set-time-automatically.png" alt="windows-10-set-time-automatically"></p>
+</li>
+<li>
+<p>Just toggle slider button to the <strong>On</strong> or <strong>Off</strong> position.</p>
+</li>
+</ol>
+<p><strong>Method 2: Enable or Disable “Set Time (Zone) Automatically” in Windows 10 Using Registry Editor</strong></p>
+<ol>
+<li>
+<p>Press the Windows logo key + R to open the Run box. Type <strong>regedit</strong> and hit Enter.</p>
+<p><img src="regedit.png" alt="regedit"></p>
+</li>
+<li>
+<p>When the Registry Editor opens, navigate to the following key:
+<code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters</code></p>
+</li>
+<li>
+<p>In the right pane you can see a string value named <strong>Type</strong>. If you want Windows 10 to set time automatically, set its value data to <strong>NTP</strong>. To disable automatic time synchronization, change its value to <strong>NoSync</strong>.</p>
+<p><img src="set-time-automatically.png" alt="set-time-automatically"></p>
+</li>
+<li>
+<p>In order to enable or disable “Set Time Zone Automatically” in Windows 10, navigate to the following key:
+<code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\tzautoupdate</code></p>
+</li>
+<li>
+<p>Double-click the 32-bit DWORD <strong>Start</strong> in the right pane. Set its value data to 3 if you want to make Windows 10 set time zone automatically. If you want to disable “Set Time Zone Automatically” in Windows 10, just set the value to 4.</p>
+<p><img src="set-time-zone-automatically.png" alt="set-time-zone-automatically"></p>
+</li>
+<li>
+<p>Reboot your computer for the registry changes to take effect.</p>
+</li>
+</ol>
+
+</article>
+
+
+
+</html>
