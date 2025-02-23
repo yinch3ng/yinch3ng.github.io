@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/pcdiy/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>PC DIY</h1>
+    <time datetime="2025-02-23">2025-02-23</time>
+  </header>
+  <p><a href="https://massgrave.dev/windows_ltsc_links.html">https://massgrave.dev/windows_ltsc_links.html</a></p>
+<p><a href="https://schneegans.de/windows/unattend-generator/?LanguageMode=Interactive&amp;ProcessorArchitecture=amd64&amp;BypassRequirementsCheck=true&amp;BypassNetworkCheck=true&amp;ComputerNameMode=Random&amp;CompactOsMode=Default&amp;TimeZoneMode=Explicit&amp;TimeZone=China+Standard+Time&amp;PartitionMode=Interactive&amp;WindowsEditionMode=Interactive&amp;UserAccountMode=Unattended&amp;AccountName0=&amp;AccountName1=&amp;AccountName2=&amp;AccountName3=&amp;AccountName4=&amp;AutoLogonMode=Builtin&amp;BuiltinAdministratorPassword=&amp;PasswordExpirationMode=Unlimited&amp;LockoutMode=Default&amp;HideFiles=HiddenSystem&amp;ShowFileExtensions=true&amp;ClassicContextMenu=true&amp;LaunchToThisPC=true&amp;TaskbarSearch=Hide&amp;TaskbarIconsMode=Empty&amp;DisableWidgets=true&amp;LeftTaskbar=true&amp;HideTaskViewButton=true&amp;ShowAllTrayIcons=true&amp;DisableBingResults=true&amp;StartTilesMode=Default&amp;StartPinsMode=Empty&amp;DisableUac=true&amp;DisableFastStartup=true&amp;DisableSystemRestore=true&amp;EnableLongPaths=true&amp;AllowPowerShellScripts=true&amp;DisableAppSuggestions=true&amp;PreventDeviceEncryption=true&amp;HideEdgeFre=true&amp;MakeEdgeUninstallable=true&amp;DisablePointerPrecision=true&amp;DeleteWindowsOld=true&amp;EffectsMode=Default&amp;DesktopIconsMode=Custom&amp;IconControlPanel=true&amp;IconRecycleBin=true&amp;IconThisPC=true&amp;WifiMode=Skip&amp;ExpressSettings=DisableAll&amp;KeysMode=Skip&amp;ColorMode=Default&amp;WallpaperMode=Default&amp;Remove3DViewer=true&amp;RemoveBingSearch=true&amp;RemoveClipchamp=true&amp;RemoveCortana=true&amp;RemoveDevHome=true&amp;RemoveFamily=true&amp;RemoveFeedbackHub=true&amp;RemoveGetHelp=true&amp;RemoveMailCalendar=true&amp;RemoveMaps=true&amp;RemoveMixedReality=true&amp;RemoveZuneVideo=true&amp;RemoveNews=true&amp;RemoveOffice365=true&amp;RemoveOneDrive=true&amp;RemoveOneNote=true&amp;RemoveOneSync=true&amp;RemoveOutlook=true&amp;RemovePeople=true&amp;RemovePowerAutomate=true&amp;RemoveQuickAssist=true&amp;RemoveRecall=true&amp;RemoveSkype=true&amp;RemoveSpeech=true&amp;RemoveStepsRecorder=true&amp;RemoveTeams=true&amp;RemoveGetStarted=true&amp;RemoveToDo=true&amp;RemoveWallet=true&amp;RemoveWeather=true&amp;RemoveWordPad=true&amp;RemoveYourPhone=true&amp;WdacMode=Skip">https://schneegans.de/windows/unattend-generator/</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span>.
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Timezone 
+</span></span><span style="display:flex;"><span>tzutil /s <span style="color:#e6db74">&#34;China Standard Time&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Powercfg
+</span></span><span style="display:flex;"><span>powercfg.exe /hibernate off
+</span></span><span style="display:flex;"><span>powercfg -change -standby-timeout-dc 10
+</span></span><span style="display:flex;"><span>powercfg -change -standby-timeout-ac 0
+</span></span><span style="display:flex;"><span>powercfg -setdcvalueindex SCHEME_CURRENT 4f971e89-eebd-4455-a8de-9e59040e7347 5ca83367-6e45-459f-a27b-476b1d01c936 0
+</span></span><span style="display:flex;"><span>powercfg -setacvalueindex SCHEME_CURRENT 4f971e89-eebd-4455-a8de-9e59040e7347 5ca83367-6e45-459f-a27b-476b1d01c936 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Win10 Memory Compression
+</span></span><span style="display:flex;"><span>PowerShell.exe -command <span style="color:#e6db74">&#34;&amp; {Disable-MMAgent -mc}&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Bitlocker disabled
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\BitLocker&#34;</span> /f /v PreventDeviceEncryption /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>manage-bde -off C:
+</span></span><span style="display:flex;"><span>manage-bde -off D:
+</span></span><span style="display:flex;"><span>manage-bde -off E:
+</span></span><span style="display:flex;"><span>manage-bde -off F:
+</span></span><span style="display:flex;"><span>manage-bde -off G:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn Off Windows 10 11 privacy settings
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_to_send_required_diagnostic_data
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack&#34;</span> /f /v ShowedToastAtLevel /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection&#34;</span> /f /v AllowTelemetry /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection&#34;</span> /f /v MaxTelemetryAllowed /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_Avertising_ID_for_current_user
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo&#34;</span> /f /v Enabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_improve_inking_and_typing_recognition
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Input\TIPC&#34;</span> /f /v Enabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_Find_My_Device
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MdmCommon\SettingValues&#34;</span> /f /v LocationSyncEnabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_diagnostic_data
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection&#34;</span> /f /v AllowTelemetry /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_Tailored_experiences_with_diagnostic_data
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Privacy&#34;</span> /f /v TailoredExperiencesWithDiagnosticDataEnabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn_Off_Location_service_for_your_account_and_apps
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location&#34;</span> /f /v Value /t REG_SZ /d Deny
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Feedback_frequency_Never
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Siuf\Rules&#34;</span> /f /v NumberOfSIUFInPeriod /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe delete <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Siuf\Rules&#34;</span> /f /v PeriodInNanoSeconds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Ink Workspace
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace&#34;</span> /f /v AllowSuggestedAppsInWindowsInkWorkspace /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System&#34;</span> /f /v AllowWindowsInkWorkspace /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Ink Workspace app suggestions
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\PenWorkspace&#34;</span> /f /v PenWorkspaceAppSuggestionsEnabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\InputPersonalization\TrainedDataStore&#34;</span> /f /v HarvestContacts /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Personalization\Settings&#34;</span> /f /v AcceptedPrivacyPolicy /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Activities Feed
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System&#34;</span> /f /v PublishUserActivities /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System&#34;</span> /f /v EnableActivityFeed /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System&#34;</span> /f /v UploadUserActivities /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Microsoft consumer experiences
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CloudContent&#34;</span> /f /v DisableWindowsConsumerFeatures /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disabled dumpstacklog in Win10 21h1
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CrashControl&#34;</span> /f /v EnableLogFile /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Remove the <span style="color:#e6db74">&#34;3D Objects&#34;</span> entry from Windows 10 Explorer
+</span></span><span style="display:flex;"><span>reg.exe delete <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}&#34;</span> /f
+</span></span><span style="display:flex;"><span>reg.exe delete <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}&#34;</span> /f
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disabled News and Interests on taskbar feature for all users
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds&#34;</span> /f /v EnableFeeds /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Show extensions for known file types
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v HideFileExt /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn off Win11 old RightMenu
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32&#34;</span> /f /ve
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disabled Fastboot
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power&#34;</span> /f /v HiberbootEnabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disabled Win10/11 System Restore
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore&#34;</span> /f /v DisableSR /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable web search in the windows taskbar
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search&#34;</span> /f /v BingSearchEnabled /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search&#34;</span> /f /v AllowSearchToUseLocation /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search&#34;</span> /f /v CortanaConsent /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Hidden taskview buttom and peopleband
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v ShowTaskViewButton /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People&#34;</span> /f /v PeopleBand /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search&#34;</span> /f /v SearchboxTaskbarMode /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Always never combine taskbar (0 is true, 2 is false)
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v TaskbarGlomLevel /t REG_DWORD /d 0x00000002
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Windows Update Delivery Optimization
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization&#34;</span> /f /v DODownloadMode /t REG_DWORD /d 0x00000064
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Open Controal Panel with ClassicView
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&#34;</span> /f /v ForceClassicControlPanel /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable AutoPlay
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers&#34;</span> /f /v DisableAutoplay /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Show File Name Extensions
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v HideFileExt /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Hide Quick Access from File Explorer
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer&#34;</span> /f /v HubMode /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Set This PC as default
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v LaunchTo /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Win10 old alt-tab model
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer&#34;</span> /f /v AltTabSettings /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable News Interests on taskbar
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds&#34;</span> /f /v EnableFeeds /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable AutoTray
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer&#34;</span> /f /v EnableAutoTray /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Show Hidden Files
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v Hidden /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Always Make IE Check for a New Version Webpage
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings&#34;</span> /f /v SyncMode5 /t REG_DWORD /d 0x00000003
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Set IE blank as homepage
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main&#34;</span> /f /v <span style="color:#e6db74">&#34;Start Page&#34;</span> /t REG_SZ /d about:blank
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> IE Allow deleting browsing history on exit and prevent deleting favorites site data
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Privacy&#34;</span> /f /v ClearBrowsingHistoryOnExit /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Privacy&#34;</span> /f /v UseAllowList /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> IE Empty Temporary Internet Files folder when browser is closed
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Cache&#34;</span> /f /v Persistent /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Always never combine taskbar (0 is true, 2 is false)
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v TaskbarGlomLevel /t REG_DWORD /d 0x00000002
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Show status Bar
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v ShowStatusBar /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable cmd QuickEditMode
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Console&#34;</span> /f /v QuickEdit /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable simple sharing
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced&#34;</span> /f /v SharingWizardOn /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Printer auto connecting
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers&#34;</span> /f /v RegisterSpoolerRemoteRpcEndPoint /t REG_DWORD /d 0x00000002
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Logon Backgroudimage
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System&#34;</span> /f /v DisableLogonBackgroundImage /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> NoLockScreen
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Personalization&#34;</span> /f /v NoLockScreen /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn off UAC
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&#34;</span> /f /v PromptOnSecureDesktop /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&#34;</span> /f /v EnableLUA /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System&#34;</span> /f /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0x00000000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Windows ConsumerFeatures
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CloudContent&#34;</span> /f /v DisableWindowsConsumerFeatures /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable spectre and meltdown
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&#34;</span> /f /v FeatureSettingsOverride /t REG_DWORD /d 0x00000003
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&#34;</span> /f /v FeatureSettingsOverrideMask /t REG_DWORD /d 0x00000003
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable paging executive
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management&#34;</span> /f /v DisablePagingExecutive /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Turn off AutoPlay
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers&#34;</span> /f /v DisableAutoplay /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable AutoUpdate
+</span></span><span style="display:flex;"><span>reg.exe delete <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU&#34;</span> /f /va
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU&#34;</span> /f /v NoAutoUpdate /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings&#34;</span> /f /v BranchReadinessLevel /t REG_DWORD /d 0x00000020
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v DeferFeatureUpdates /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v BranchReadinessLevel /t REG_DWORD /d 0x00000020
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v DeferFeatureUpdatesPeriodInDays /t REG_DWORD /d 0x0000016d
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v PauseFeatureUpdatesStartTime
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v DeferQualityUpdates /t REG_DWORD /d 0x00000001
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v DeferQualityUpdatesPeriodInDays /t REG_DWORD /d 0x0000000c
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&#34;</span> /f /v PauseQualityUpdatesStartTime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable Inbound Remote Printing Operations
+</span></span><span style="display:flex;"><span>reg.exe add <span style="color:#e6db74">&#34;HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers&#34;</span> /f /v RegisterSpoolerRemoteRpcEndPoint /t REG_DWORD /d 0x00000002
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> DisableServices...
+</span></span><span style="display:flex;"><span>sc stop <span style="color:#e6db74">&#34;DPS&#34;</span>
+</span></span><span style="display:flex;"><span>sc config <span style="color:#e6db74">&#34;DPS&#34;</span> start=disabled
+</span></span><span style="display:flex;"><span>sc stop <span style="color:#e6db74">&#34;WdiSystemHost&#34;</span>
+</span></span><span style="display:flex;"><span>sc config <span style="color:#e6db74">&#34;WdiSystemHost&#34;</span> start=disabled
+</span></span><span style="display:flex;"><span>sc stop <span style="color:#e6db74">&#34;WdiServiceHost&#34;</span>
+</span></span><span style="display:flex;"><span>sc config <span style="color:#e6db74">&#34;WdiServiceHost&#34;</span> start=disabled
+</span></span><span style="display:flex;"><span>sc stop <span style="color:#e6db74">&#34;NcdAutoSetup&#34;</span>
+</span></span><span style="display:flex;"><span>sc config <span style="color:#e6db74">&#34;NcdAutoSetup&#34;</span> start=disabled
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> DisableSchtasks
+</span></span><span style="display:flex;"><span>schtasks /Change /TN <span style="color:#e6db74">&#34;\Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic&#34;</span> /Disable
+</span></span><span style="display:flex;"><span>schtasks /Change /TN <span style="color:#e6db74">&#34;\Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents&#34;</span> /Disable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> fix languagecomponentsinstall issue when shutting down
+</span></span><span style="display:flex;"><span>schtasks /Change /TN <span style="color:#e6db74">&#34;Microsoft\Windows\LanguageComponentsInstaller\Installation&#34;</span> /Disable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> Disable WFP logging
+</span></span><span style="display:flex;"><span>netsh wfp set options netevents=off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:@echo Disable auto installation of edge via windows update</span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:reg add &#34;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\EdgeUpdate&#34; /f /v DoNotUpdateToEdgeWithChromium /t REG_DWORD /d 0x00000001</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:@echo only for corp</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">REM @echo Disable Windows default shares</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">REM reg.exe add &#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters&#34; /f /v AutoShareServer /t REG_DWORD /d 0x00000000</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">REM reg.exe add &#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters&#34; /f /v AutoShareWks /t REG_DWORD /d 0x00000000</span>
+</span></span></code></pre></div><h2 id="how-to-backup-and-import-windows-1011-drivers">How to backup and import Windows 10/11 drivers</h2>
+<p>backup and import drivers</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>dism /online /Export-Driver /Destination<span style="color:#960050;background-color:#1e0010">:</span>D:\driverbackup
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pnputil /add-driver D:\driverbackup\*.inf /subdirs /install
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: dism /offline /Add-Driver /Driver<span style="color:#960050;background-color:#1e0010">:</span>D:\driverbackup /Recurse
+</span></span></code></pre></div><p>installdrivers.bat</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CD</span> /d %~dp0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pnputil /add-driver .\*.inf /subdirs /install
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h2 id="unlock-tdp-or-power-limit-on-motherboard">Unlock TDP or Power Limit on Motherboard</h2>
+<h3 id="asus">asus</h3>
+<p>Ai Tweaker -&gt; Internal CPU Power Management</p>
+<p><img src="pl.png" alt="pl"></p>
+<p>Ai Tweaker -&gt; Actual VRM Core Voltage</p>
+<p>Ai Tweaker -&gt; Global Core SVID Voltage</p>
+<p>Ai Tweaker -&gt; Cache SVID Voltage</p>
+<p><img src="v.png" alt="v"></p>
+<p>Ai Tweaker -&gt; Tweaker’s Paradise</p>
+<p><img src="mc.png" alt="mc"></p>
+<h2 id="how-to-turn-on-your-computer-automatically-by-setting-bios-asus">How to turn on your computer automatically by setting BIOS (asus)</h2>
+<p><a href="https://www.asus.com/support/faq/1043640/">https://www.asus.com/support/faq/1043640/</a></p>
+<ol>
+<li>After you turn on the power of computer , press the &lsquo;&lsquo;Delete&rsquo;&rsquo; or &lsquo;&lsquo;F2&rsquo;&rsquo; key on the keyboard immediately to enter BIOS EZ Mode, Then press &ldquo;F7&rdquo; to enter Advanced Mode as below :</li>
+</ol>
+<p><img src="adv.png" alt="img"></p>
+<ol start="2">
+<li>Click [Advanced]-[APM Configuration], as below：</li>
+</ol>
+<p><img src="20230818175419080_3.png" alt="img"></p>
+<ol start="3">
+<li>Make sure [Erp ready] is <strong>[Disabled</strong>] as below：(ErP is Products&rsquo; energy efficiency requirements of  Energy-related Products in Europe)</li>
+</ol>
+<p><img src="20230818175733588_4.png" alt="img"></p>
+<ol start="4">
+<li>Change [Power on By RTC] to [Enabled] as below</li>
+</ol>
+<p><img src="20230818175926348_5.png" alt="img"></p>
+<ol start="5">
+<li>Set Day and Time that you want to wake up the device. If you want motherboard to be powered on at 08:30 everyday, please set as below: (<strong>Wake up date: 0</strong> stands for every day, <strong>1</strong> stands for 1st day of the month, <strong>2</strong> stands for 2nd day of the month&hellip;<strong>31</strong> is the 31st of the month)</li>
+</ol>
+<p><img src="20230818180045887_6.png" alt="img"></p>
+<ol start="6">
+<li>Press F10, and it will show the time that you set. Please confirm if it is the same as what you want. If it&rsquo;s correct, please click [OK] to save changes and reset at once.</li>
+</ol>
+<p><img src="20230818180155580_7.png" alt="img"></p>
+<ol start="7">
+<li><strong>Disable</strong> [Turn on fast startup], then click [Save changes]. Finish the above steps, you can make your motherboard power on automatically by BIOS RTC</li>
+</ol>
+<p><img src="20230818180740429_12.png" alt="img"></p>
+
+</article>
+
+
+
+</html>
