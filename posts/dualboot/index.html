@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/dualboot/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Repair Dual-boot (Multi-boot) Configuration (Windows and Linux)</h1>
+    <time datetime="2024-03-05">2024-03-05</time>
+  </header>
+  <p><a href="https://superuser.com/questions/892281/installing-windows-update-3033929">https://superuser.com/questions/892281/installing-windows-update-3033929</a></p>
+<h2 id="both-windows-and-linux-are-installed-on-same-disk">Both Windows and Linux are installed on same disk</h2>
+<p>In this case you must replace the bootloader by that of Windows, let this update install itself, then return GRUB. The steps are as follows :</p>
+<ol>
+<li>
+<p>Boot from the Windows installation media and choose the Command Prompt repair option.</p>
+</li>
+<li>
+<p>Type the following and press Enter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>Bootrec.exe /FixBoot
+</span></span><span style="display:flex;"><span>Bootrec.exe /FixMbr
+</span></span></code></pre></div></li>
+<li>
+<p>Reboot straight into Windows (Grub is no longer there).</p>
+</li>
+<li>
+<p>To get GRUB back, boot computer into a live Linux CD or USB and choose to &ldquo;try&rdquo; the OS.</p>
+</li>
+<li>
+<p>Find out on which partition Linux is installed, perhaps by using the Gparted utility to find the root &ldquo;/&rdquo; partition. Let’s assume this is on sda1.</p>
+</li>
+<li>
+<p>To mount that partition. Open a terminal and type and press Enter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo mount /dev/sda1 /mnt
+</span></span></code></pre></div></li>
+<li>
+<p>Reinstall grub with the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo grub-install /dev/sda –root-directory<span style="color:#f92672">=</span>/mnt
+</span></span></code></pre></div></li>
+<li>
+<p>Remove the installation media and reboot. The Grub bootloader will only show the Linux installation.</p>
+</li>
+<li>
+<p>To fix this, boot to the Linux desktop, open a terminal and run this command for it to pick up all available OS on the machine:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo update-grub
+</span></span></code></pre></div></li>
+<li>
+<p>Reboot and you should now have Grub functioning and your Windows install as a bootable option.</p>
+</li>
+</ol>
+<p><img src="fixwinboot.png" alt="fixwinboot"></p>
+
+</article>
+
+
+
+</html>

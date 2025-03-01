@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/iptables/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>iptables tutorial</h1>
+    <time datetime="2024-02-27">2024-02-27</time>
+  </header>
+  <h2 id="linux-firewall-tutorial-iptables-tables-chains-rules-fundamentals"><a href="https://www.thegeekstuff.com/2011/01/iptables-fundamentals/">Linux Firewall Tutorial: IPTables Tables, Chains, Rules Fundamentals</a></h2>
+<p>iptables firewall is used to manage packet filtering and NAT rules.  IPTables comes with all Linux distributions. Understanding how to setup  and configure iptables will help you manage your Linux firewall  effectively.</p>
+<p>iptables tool is used to manage the Linux firewall rules. At a first  look, iptables might look complex (or even confusing). But, once you  understand the basics of how iptables work and how it is structured,  reading and writing iptables firewall rules will be easy.</p>
+<p>This article is part of an ongoing iptables tutorial series. This is the 1st article in that series.</p>
+<p>This article explains how iptables is structured, and explains the fundamentals about iptables tables, chains and rules.</p>
+<p>On a high-level iptables might contain multiple tables. Tables might  contain multiple chains. Chains can be built-in or user-defined. Chains  might contain multiple rules. Rules are defined for the packets.</p>
+<p>So, the structure is: iptables -&gt; Tables -&gt; Chains -&gt; Rules. This is defined in the following diagram.</p>
+<p>​</p>
+<p><img src="iptables-table-chain-rule-structure.png" alt="IPTables Tables Chains and Rules"><br>
+<strong>Fig</strong>: IPTables Table, Chain, and Rule Structure</p>
+<p>Just to re-iterate, tables are bunch of chains, and chains are bunch of firewall rules.</p>
+<h2 id="i-iptables-tables-and-chains">I. IPTABLES TABLES and CHAINS</h2>
+<p>IPTables has the following 4 built-in tables.</p>
+<h3 id="1-filter-table">1. Filter Table</h3>
+<p>Filter is default table for iptables. So, if you don’t define you own table, you’ll be using filter table. Iptables’s filter table has the  following built-in chains.</p>
+<ul>
+<li>INPUT chain – Incoming to firewall. For packets coming to the local server.</li>
+<li>OUTPUT chain – Outgoing from firewall. For packets generated locally and going out of the local server.</li>
+<li>FORWARD chain – Packet for another NIC on the local server. For packets routed through the local server.</li>
+</ul>
+<h3 id="2-nat-table">2. NAT table</h3>
+<p>Iptable’s NAT table has the following built-in chains.</p>
+<ul>
+<li>PREROUTING chain – Alters packets before routing. i.e Packet  translation happens immediately after the packet comes to the system  (and before routing). This helps to translate the destination ip address of the packets to something that matches the routing on the local  server. This is used for DNAT (destination NAT).</li>
+<li>POSTROUTING chain – Alters packets after routing. i.e Packet  translation happens when the packets are leaving the system. This helps  to translate the source ip address of the packets to something that  might match the routing on the desintation server. This is used for SNAT (source NAT).</li>
+<li>OUTPUT chain – NAT for locally generated packets on the firewall.</li>
+</ul>
+<h3 id="3-mangle-table">3. Mangle table</h3>
+<p>Iptables’s Mangle table is for specialized packet alteration. This  alters QOS bits in the TCP header. Mangle table has the following  built-in chains.</p>
+<ul>
+<li>PREROUTING chain</li>
+<li>OUTPUT chain</li>
+<li>FORWARD chain</li>
+<li>INPUT chain</li>
+<li>POSTROUTING chain</li>
+</ul>
+<h3 id="4-raw-table">4. Raw table</h3>
+<p>Iptable’s Raw table is for configuration excemptions.  Raw table has the following built-in chains.</p>
+<ul>
+<li>PREROUTING chain</li>
+<li>OUTPUT chain</li>
+</ul>
+<p>The following diagram shows the three important tables in iptables.</p>
+<p><img src="iptables-filter-nat-mangle-tables.png" alt="IPTables Filter NAT Mangle Tables"><br>
+<strong>Fig</strong>: IPTables built-in tables</p>
+<h2 id="ii-iptables-rules">II. IPTABLES RULES</h2>
+<p>Following are the key points to remember for the iptables rules.</p>
+<ul>
+<li>Rules contain a criteria and a target.</li>
+<li>If the criteria is matched, it goes to the rules specified in the  target (or) executes the special values mentioned in the target.</li>
+<li>If the criteria is not matached, it moves on to the next rule.</li>
+</ul>
+<h3 id="target-values">Target Values</h3>
+<p>Following are the possible special values that you can specify in the target.</p>
+<ul>
+<li>ACCEPT – Firewall will accept the packet.</li>
+<li>DROP – Firewall will drop the packet.</li>
+<li>QUEUE – Firewall will pass the packet to the userspace.</li>
+<li>RETURN – Firewall will stop executing the next set of rules in the  current chain for this packet. The control will be returned to the  calling chain.</li>
+</ul>
+<p>If you do iptables –list (or) service iptables status, you’ll see all the available firewall rules on your system. The following iptable  example shows that there are no firewall rules defined on this system.  As you see, it displays the default input table, with the default input  chain, forward chain, and output chain.</p>
+<pre tabindex="0"><code># iptables -t filter --list
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+</code></pre><p>Do the following to view the mangle table.</p>
+<pre tabindex="0"><code># iptables -t mangle --list
+</code></pre><p>Do the following to view the nat table.</p>
+<pre tabindex="0"><code># iptables -t nat --list
+</code></pre><p>Do the following to view the raw table.</p>
+<pre tabindex="0"><code># iptables -t raw --list
+</code></pre><p>Note: If you don’t specify the -t option, it will display the default filter table. So, both of the following commands are the same.</p>
+<pre tabindex="0"><code># iptables -t filter --list
+(or)
+# iptables --list
+</code></pre><p>The following iptable example shows that there are some rules defined in the input, forward, and output chain of the filter table.</p>
+<pre tabindex="0"><code># iptables --list
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    RH-Firewall-1-INPUT  all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain FORWARD (policy ACCEPT)
+num  target     prot opt source               destination
+1    RH-Firewall-1-INPUT  all  --  0.0.0.0/0            0.0.0.0/0
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination
+
+Chain RH-Firewall-1-INPUT (2 references)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+2    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0           icmp type 255
+3    ACCEPT     esp  --  0.0.0.0/0            0.0.0.0/0
+4    ACCEPT     ah   --  0.0.0.0/0            0.0.0.0/0
+5    ACCEPT     udp  --  0.0.0.0/0            224.0.0.251         udp dpt:5353
+6    ACCEPT     udp  --  0.0.0.0/0            0.0.0.0/0           udp dpt:631
+7    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:631
+8    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED
+9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           state NEW tcp dpt:22
+10   REJECT     all  --  0.0.0.0/0            0.0.0.0/0           reject-with icmp-host-prohibited
+</code></pre><p>The rules in the iptables –list command output contains the following fields:</p>
+<ul>
+<li>num – Rule number within the particular chain</li>
+<li>target – Special target variable that we discussed above</li>
+<li>prot – Protocols. tcp, udp, icmp, etc.,</li>
+<li>opt – Special options for that specific rule.</li>
+<li>source – Source ip-address of the packet</li>
+<li>destination – Destination ip-address for the packet</li>
+</ul>
+
+</article>
+
+
+
+</html>
