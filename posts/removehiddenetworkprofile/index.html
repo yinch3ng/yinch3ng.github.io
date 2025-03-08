@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/removehiddenetworkprofile/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Remove an unused/hidden network connection history so that an existing name can be reused</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <p><a href="https://superuser.com/questions/1257859/remove-an-unused-hidden-network-connection-so-that-an-existing-name-can-be-reuse">https://superuser.com/questions/1257859/remove-an-unused-hidden-network-connection-so-that-an-existing-name-can-be-reuse</a></p>
+<p><strong>For wired connection:</strong></p>
+<p>Type the command</p>
+<p><strong>netsh lan show profiles</strong>, press Enter to obtain all wired network profiles.</p>
+<p><strong>netsh lan delete profile name</strong>=&quot;<em>WiredProfileName</em>&quot;</p>
+<p><strong>For wireless connection:</strong></p>
+<p>Type the command</p>
+<p><strong>netsh wlan show profiles</strong></p>
+<p><strong>netsh wlan delete profile name</strong>=&quot;<em>WirelessProfileName</em>&quot;</p>
+<p>Besides that, go into the following registry entryL</p>
+<p>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles</p>
+<p>Find those unused network profile by right pane profile name, delete them(GUID).</p>
+
+</article>
+
+
+
+</html>

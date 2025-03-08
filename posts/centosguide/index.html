@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/centosguide/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>CentOS Config Guide</h1>
+    <time datetime="2024-03-05">2024-03-05</time>
+  </header>
+  <h2 id="dual-boot-fixing">dual boot fixing</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo yum install epel-release
+</span></span><span style="display:flex;"><span>sudo yum install ntfs-3g
+</span></span><span style="display:flex;"><span>sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+</span></span></code></pre></div><p>If you need it, make a backup of your grub configuration file: <code>/boot/grub2/grub.cfg</code></p>
+<h2 id="networking">networking</h2>
+<p>using <code>nmtui</code> to config networking, then modify <code>ONBOOT=yes</code> in your configuration file<code>/etc/sysconfig/network-scripts/ifcfg-xxxx</code></p>
+<h2 id="datetime">datetime</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo dnf -y install chrony ntpstat
+</span></span><span style="display:flex;"><span>sudo vi /etc/chrony.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># line 3: change to your own NTP server or others in your timezone</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pool 2.centos.pool.ntp.org iburst</span>
+</span></span><span style="display:flex;"><span>pool 192.168.xxx.xxx iburst
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now chronyd
+</span></span><span style="display:flex;"><span>sudo chronyc sources
+</span></span><span style="display:flex;"><span>sudo ntpstat 
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>
