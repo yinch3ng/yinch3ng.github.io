@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/networkbandwith/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Meansure pps or bandwidth on the network interface</h1>
+    <time datetime="2019-12-01">2019-12-01</time>
+  </header>
+  <h2 id="measure-packets-per-second-on-an-interface">Measure Packets per Second on an Interface</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    echo usage: $0 network-interface
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    echo e.g. $0 eth0
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    echo shows packets-per-second
+</span></span><span style="display:flex;"><span>    exit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IF<span style="color:#f92672">=</span>$1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    R1<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/rx_packets<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    T1<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/tx_packets<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    sleep <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    R2<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/rx_packets<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    T2<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/tx_packets<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    TXPPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $T2 - $T1<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    RXPPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $R2 - $R1<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;tx </span>$1<span style="color:#e6db74">: </span>$TXPPS<span style="color:#e6db74"> pkts/s rx </span>$1<span style="color:#e6db74">: </span>$RXPPS<span style="color:#e6db74"> pkts/s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="measure-network-bandwidth-on-an-interface">Measure Network Bandwidth on an Interface</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>INTERVAL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span>  <span style="color:#75715e"># update interval in seconds</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -z <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    echo usage: $0 <span style="color:#f92672">[</span>network-interface<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    echo e.g. $0 eth0
+</span></span><span style="display:flex;"><span>    echo
+</span></span><span style="display:flex;"><span>    exit
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IF<span style="color:#f92672">=</span>$1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    R1<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/rx_bytes<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    T1<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/tx_bytes<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    sleep $INTERVAL
+</span></span><span style="display:flex;"><span>    R2<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/rx_bytes<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    T2<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /sys/class/net/$1/statistics/tx_bytes<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    TBPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $T2 - $T1<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    RBPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $R2 - $R1<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    TKBPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $TBPS / 1024<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    RKBPS<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $RBPS / 1024<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;TX </span>$1<span style="color:#e6db74">: </span>$TKBPS<span style="color:#e6db74"> kB/s RX </span>$1<span style="color:#e6db74">: </span>$RKBPS<span style="color:#e6db74"> kB/s&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>Thanks to <a href="https://gist.github.com/joemiller/4069513">joemiller</a></p>
+<h2 id="speed-test">Speed Test</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>nc -vzn -w <span style="color:#ae81ff">6</span> 192.168.1.99 <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span>nc -vzn -w <span style="color:#ae81ff">6</span> 100.10.10.24 <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    -z : Port scanning mode i.e. zero I/O mode.
+</span></span><span style="display:flex;"><span>    -v : Be verbose <span style="color:#f92672">[</span>use twice -vv to be more verbose<span style="color:#f92672">]</span>.
+</span></span><span style="display:flex;"><span>    -n : Use numeric-only IP addresses i.e. <span style="color:#66d9ef">do</span> not use DNS to resolve ip addresses.
+</span></span><span style="display:flex;"><span>    -w <span style="color:#ae81ff">6</span> : Set time out value to 6.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>server# iperf -s -B 222.222.1.1
+</span></span><span style="display:flex;"><span>client# iperf -c 222.222.1.1 -d -t <span style="color:#ae81ff">60</span> -i <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    -s : Run in server mode.
+</span></span><span style="display:flex;"><span>    -B IP : Bind to IP, an interface or multicast address.
+</span></span><span style="display:flex;"><span>    -c IP : Run in client mode, connecting to IP.
+</span></span><span style="display:flex;"><span>    -d : Do a bidirectional test simultaneously.
+</span></span><span style="display:flex;"><span>    -t <span style="color:#ae81ff">60</span> : Time in seconds to transmit <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>default 10<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>    -i <span style="color:#ae81ff">10</span> : Pause n seconds between periodic bandwidth reports.
+</span></span></code></pre></div><p><a href="https://www.cyberciti.biz/faq/linux-unix-test-internet-connection-download-upload-speed/">https://www.cyberciti.biz/faq/linux-unix-test-internet-connection-download-upload-speed/</a>
+<a href="https://www.computerhope.com/unix/nc.htm">https://www.computerhope.com/unix/nc.htm</a></p>
+
+</article>
+
+
+
+</html>

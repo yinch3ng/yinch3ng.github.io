@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/winpartscripts/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Create Partitions Scripts on Windows</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <h2 id="createpartitions-biostxt">CreatePartitions-BIOS.txt</h2>
+<h4 id="disk-0-default-partition-layout">disk 0 default partition layout</h4>
+<table>
+<td bgcolor=bfbfbf width=20% align=center><b>System</b></td>
+<td bgcolor=5b9bd5 width=60% align=center><b>Windows</b></td>
+<td bgcolor=bdd7ed width=20% align=center><b>Recovery</b></td>
+</table>
+<p><code>diskpart /s F:\CreatePartitions-MBR.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span><span style="color:#75715e">rem == CreatePartitions-MBR.txt ==</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == These commands are used with DiskPart to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    create three partitions</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    for a BIOS/MBR-based computer.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    Adjust the partition sizes to fill the drive</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    as necessary. ==</span>
+</span></span><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span>clean
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition ======================</span>
+</span></span><span style="display:flex;"><span>create partition primary size=100
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;System&#34;</span>
+</span></span><span style="display:flex;"><span>active
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Windows partition =====================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    a. Create the Windows partition =======</span>
+</span></span><span style="display:flex;"><span>create partition primary
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    b. Create space for the recovery tools  </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem       ** Update this size to match the size of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem          the recovery tools (winre.wim)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem          plus some free space.</span>
+</span></span><span style="display:flex;"><span>shrink minimum=900
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    c. Prepare the Windows partition ====== </span>
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;Windows&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 3. Recovery partition ====================</span>
+</span></span><span style="display:flex;"><span>create partition primary id=27
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;Recovery&#34;</span>
+</span></span><span style="display:flex;"><span>list volume
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h2 id="createpartitions-uefitxt">CreatePartitions-UEFI.txt</h2>
+<h4 id="disk-0-default-partition-layout-1">disk 0 default partition layout</h4>
+<table>
+<td bgcolor=bfbfbf width=10% align=center><b>EFI</b></td>
+<td bgcolor=006491 width=10% align=center><b>MSR</b></td>
+<td bgcolor=5b9bd5 width=70% align=center><b>Windows</b></td>
+<td bgcolor=bdd7ed width=10% align=center><b>Recovery</b></td>
+</table>
+<p><code>diskpart /s F:\CreatePartitions-UEFI.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span><span style="color:#75715e">rem == CreatePartitions-UEFI.txt ==</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == These commands are used with DiskPart to</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    create four partitions</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    for a UEFI/GPT-based PC.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    Adjust the partition sizes to fill the drive</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    as necessary. ==</span>
+</span></span><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span>clean
+</span></span><span style="display:flex;"><span>convert gpt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition =========================</span>
+</span></span><span style="display:flex;"><span>create partition efi size=100
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem    ** NOTE: For Advanced Format 4Kn drives,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem               change this value to size = 260 ** </span>
+</span></span><span style="display:flex;"><span>format quick fs=fat32 label=<span style="color:#e6db74">&#34;EFI&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Microsoft Reserved (MSR) partition =======</span>
+</span></span><span style="display:flex;"><span>create partition msr size=16
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 3. Windows partition ========================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    a. Create the Windows partition ==========</span>
+</span></span><span style="display:flex;"><span>create partition primary 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    b. Create space for the recovery tools ===</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem       ** Update this size to match the size of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem          the recovery tools (winre.wim)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem          plus some free space.</span>
+</span></span><span style="display:flex;"><span>shrink minimum=900
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    c. Prepare the Windows partition ========= </span>
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;Windows&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem === 4. Recovery partition ======================</span>
+</span></span><span style="display:flex;"><span>create partition primary id=<span style="color:#e6db74">&#34;de94bba4-06d1-4d40-a16a-bfd50179d6ac&#34;</span>
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;Recovery&#34;</span>
+</span></span><span style="display:flex;"><span>gpt attributes=0x8000000000000001
+</span></span><span style="display:flex;"><span>list volume
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><p><a href="https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/oem-deployment-of-windows-desktop-editions-sample-scripts?view=windows-10">https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/oem-deployment-of-windows-desktop-editions-sample-scripts?view=windows-10</a></p>
+<h2 id="example">example</h2>
+<p><code>mbr-1disk1part.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span>clean
+</span></span><span style="display:flex;"><span>convert mbr
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition ======================</span>
+</span></span><span style="display:flex;"><span>create partition primary size=100
+</span></span><span style="display:flex;"><span>format quick fs=ntfs label=<span style="color:#e6db74">&#34;System&#34;</span>
+</span></span><span style="display:flex;"><span>active
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Windows partition =====================</span>
+</span></span><span style="display:flex;"><span>create partition primary
+</span></span><span style="display:flex;"><span>format quick fs=ntfs
+</span></span></code></pre></div><p><code>uefi-1disk1part.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span>clean
+</span></span><span style="display:flex;"><span>convert gpt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition =========================</span>
+</span></span><span style="display:flex;"><span>create partition efi size=100
+</span></span><span style="display:flex;"><span>format quick fs=fat32 label=<span style="color:#e6db74">&#34;EFI&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Microsoft Reserved (MSR) partition =======</span>
+</span></span><span style="display:flex;"><span>create partition msr size=16
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 3. Windows partition ========================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    a. Create the Windows partition ==========</span>
+</span></span><span style="display:flex;"><span>create partition primary
+</span></span><span style="display:flex;"><span>format quick fs=ntfs
+</span></span></code></pre></div><p><code>uefi-1disk2part.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span>clean
+</span></span><span style="display:flex;"><span>convert gpt
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition =========================</span>
+</span></span><span style="display:flex;"><span>create partition efi size=100
+</span></span><span style="display:flex;"><span>format quick fs=fat32 label=<span style="color:#e6db74">&#34;EFI&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Microsoft Reserved (MSR) partition =======</span>
+</span></span><span style="display:flex;"><span>create partition msr size=16
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 3. Windows partition ========================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem ==    a. Create the Windows partition 200G ==========</span>
+</span></span><span style="display:flex;"><span>create partition primary size=204806
+</span></span><span style="display:flex;"><span>format quick fs=ntfs
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem === 4. 2nd partition ======================</span>
+</span></span><span style="display:flex;"><span>create partition primary
+</span></span><span style="display:flex;"><span>format quick fs=ntfs
+</span></span><span style="display:flex;"><span>assign
+</span></span></code></pre></div><p><code>uefi-C-reformat.txt</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>select disk 0
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 1. System partition =========================</span>
+</span></span><span style="display:flex;"><span>create partition efi size=100
+</span></span><span style="display:flex;"><span>format quick fs=fat32 label=<span style="color:#e6db74">&#34;EFI&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 2. Microsoft Reserved (MSR) partition =======</span>
+</span></span><span style="display:flex;"><span>create partition msr size=16
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == 3. Windows partition ========================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">rem == a. Create the Windows partition ==========</span>
+</span></span><span style="display:flex;"><span>create partition primary
+</span></span><span style="display:flex;"><span>format quick fs=ntfs
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>
