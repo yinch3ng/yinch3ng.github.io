@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/secpolicy/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Export and Import Local Security Policy in Windows 10</h1>
+    <time datetime="2025-04-14">2025-04-14</time>
+  </header>
+  <p><a href="https://www.top-password.com/blog/export-and-import-local-security-policy-in-windows/">https://www.top-password.com/blog/export-and-import-local-security-policy-in-windows/</a></p>
+<p><strong>Method 1: Export and Import Local Security Policy with GUI</strong></p>
+<p>The Local Security Policy Editor comes with the import / export feature, making it much easier to migrate or replicate the same local security policy settings across multiple computers.</p>
+<p><strong>Export:</strong></p>
+<ol>
+<li>
+<p>Press the Windows key + R together. When the Run dialog box shows up, type <code>secpol.msc</code> into it and hit Enter to open the Local Security Policy Editor.</p>
+<p><img src="secpol.png" alt="img"></p>
+</li>
+<li>
+<p>Right-click on <code>Security Settings</code> in the left-side pane, and you can then select <code>Export policy</code> from the context menu.</p>
+<p><img src="export-security-policy-settings.png" alt="img"></p>
+</li>
+<li>
+<p>Browse to the location where you want to save the security settings file (.INF), give it a name and click on Save.</p>
+<p><img src="export-policy-to-file.png" alt="img"></p>
+</li>
+<li>
+<p>Open the .inf file with your text editor. As you can see, it contains all your local security policy, including your account lockout and password policy.</p>
+<p><img src="local-security-policy-settings.png" alt="img"></p>
+</li>
+</ol>
+<p><strong>Import:</strong></p>
+<ol>
+<li>
+<p>Open the Local Security Policy Editor as before, right-click on <code>Security Settings</code> in the left pane and this time choose <code>Import policy</code>.</p>
+<p><img src="import-security-policy.png" alt="img"></p>
+</li>
+<li>
+<p>Browse to the location where you saved the security settings file, select the INF file and click on Open.</p>
+<p><img src="import-policy-from-file.png" alt="img"></p>
+</li>
+<li>
+<p>Reboot your computer to apply the new local security policy.</p>
+</li>
+</ol>
+<p><strong>Method 2: Export and Import Local Security Policy with Command Prompt</strong></p>
+<ol>
+<li>
+<p>To export the local security policy settings to a file (for example, <em>security-policy.inf</em>), open the Command Prompt as administrator and type the following:
+<code>secedit.exe /export /cfg D:\security-policy.inf</code></p>
+<p><img src="export-local-security-policy-with-cmd.png" alt="img"></p>
+</li>
+<li>
+<p>When you need to import the local security policy settings from the .INF file, simply run this command:
+<code>secedit.exe /configure /db %windir%\security\local.sdb /cfg D:\security-policy.inf</code></p>
+<p><img src="import-local-security-policy-with-cmd.png" alt="img"></p>
+</li>
+</ol>
+<p>This method is very useful especially when you’re using the Home edition of Windows which has no Local Security Policy Editor.</p>
+
+</article>
+
+
+
+</html>

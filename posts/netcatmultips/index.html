@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/netcatmultips/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>How to netcat/nc Multiple IP and Ports</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <h2 id="netcatnc-命令测试多ip多端口">netcat/nc 命令测试多ip多端口</h2>
+<p><a href="https://serverfault.com/questions/410415/examining-multiple-ports-when-running-netcat-nc">https://serverfault.com/questions/410415/examining-multiple-ports-when-running-netcat-nc</a><br>
+<a href="https://www.cyberciti.biz/faq/bash-loop-over-file/">https://www.cyberciti.biz/faq/bash-loop-over-file/</a></p>
+<h2 id="method-1">Method 1:</h2>
+<p><code>vim hostlist</code></p>
+<pre class="mermaid">192.168.1.1
+192.168.1.2
+192.168.1.3
+.....
+</pre>
+<p>then do this script,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> host in <span style="color:#66d9ef">$(</span>cat hostlist<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> nc -vzw <span style="color:#ae81ff">3</span> $host 22; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>or</p>
+<p><code>vim portlist</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">443</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p><code>vim nc_mult_ip_port.sh</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>hostlist<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/root/hostlist&#34;</span>
+</span></span><span style="display:flex;"><span>portlist<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/root/portlist&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> host in <span style="color:#66d9ef">$(</span>cat hostlist<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> port in <span style="color:#66d9ef">$(</span>cat portlist<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> nc -vzw <span style="color:#ae81ff">3</span> $host $port; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="method-2">Method 2:</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>parallel nc -vzw <span style="color:#ae81ff">3</span> ::: 192.168.1.1 192.168.1.2 192.168.1.x ::: <span style="color:#ae81ff">22</span> <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/robocopy/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>robocopy</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <p><a href="https://serverfault.com/questions/227345/locale-unaware-date-and-time-in-batch-files">https://serverfault.com/questions/227345/locale-unaware-date-and-time-in-batch-files</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>robocopy c:\source D:\backup /MIR /DCOPY:DAT /IT /MT /r:2 /w:2 /UNILOG:C:\robocp.log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>or
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>robocopy D:\ \\192.168.1.1\bak /MIR /DCOPY:DAT /IT /MT /r:2 /w:2 /XD <span style="color:#e6db74">&#34;$RECYCLE.BIN&#34;</span> /XD <span style="color:#e6db74">&#34;System Volume Information&#34;</span> /UNILOG:C:\bak.log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>attrib -s -h E:\destdir
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:with current date log</span>
+</span></span><span style="display:flex;"><span>robocopy .\boot .\test111 /MIR /DCOPY:DAT /IT /MT /R:2 /W:2 /UNILOG:C:\cp-%Date:~10,4%-%Date:~4,2%-%Date:~7,2%.log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:with current datetime log</span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:set X=</span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:for /f &#34;skip=1 delims=&#34; %%x in (&#39;wmic os get localdatetime&#39;) do if not defined X set X=%%x</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">set</span> X=
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/f</span> <span style="color:#ae81ff">%%</span>x <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;wmic os get localdatetime ^| findstr /b [0-9]&#39;</span>) <span style="color:#66d9ef">do</span> <span style="color:#66d9ef">set</span> X=<span style="color:#ae81ff">%%</span>x
+</span></span><span style="display:flex;"><span>robocopy .\src .\dest /MIR /DCOPY:DAT /B /IT /MT /R:2 /W:2 /UNILOG:<span style="color:#e6db74">&#34;C:\cp-</span>%X:~0,4%<span style="color:#e6db74">-</span>%X:~4,2%<span style="color:#e6db74">-</span>%X:~6,2%<span style="color:#e6db74"> </span>%X:~8,2%<span style="color:#e6db74">.</span>%X:~10,2%<span style="color:#e6db74">.</span>%X:~12,2%<span style="color:#e6db74">.log&#34;</span>
+</span></span></code></pre></div><p>If you only want to log only errors from robocopy regardless of the error reason, you can use this method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>robocopy [source] [destination] /nfl /ndl /njh /njs /ns /nc /np &gt;&gt; log.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ns (no file sizes)
+</span></span><span style="display:flex;"><span>    nc (no file classes)
+</span></span><span style="display:flex;"><span>    np (no status)
+</span></span><span style="display:flex;"><span>    njh (no job header)
+</span></span><span style="display:flex;"><span>    njs (no job summary)
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>
