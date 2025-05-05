@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/mycfg/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>mycfg</h1>
+    <time datetime="2024-03-05">2024-03-05</time>
+  </header>
+  <h2 id="globally-path-or-environment-variables-on-unixlinux">globally PATH or environment variables on Unix/Linux</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># on Linux</span>
+</span></span><span style="display:flex;"><span>/etc/environment
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># on Unix/BSD</span>
+</span></span><span style="display:flex;"><span>/etc/paths
+</span></span></code></pre></div><h2 id="conkyconf">conky.conf</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>conky.config <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    background <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    update_interval <span style="color:#f92672">=</span> 2,
+</span></span><span style="display:flex;"><span>    cpu_avg_samples <span style="color:#f92672">=</span> 2,
+</span></span><span style="display:flex;"><span>    net_avg_samples <span style="color:#f92672">=</span> 2,
+</span></span><span style="display:flex;"><span>    out_to_console <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    override_utf8_locale <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    double_buffer <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    no_buffers <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    text_buffer_size <span style="color:#f92672">=</span> 32768,
+</span></span><span style="display:flex;"><span>    imlib_cache_size <span style="color:#f92672">=</span> 0,
+</span></span><span style="display:flex;"><span>    own_window <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    own_window_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;dock&#39;</span>,
+</span></span><span style="display:flex;"><span>    own_window_argb_visual <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    own_window_argb_value <span style="color:#f92672">=</span> 50,
+</span></span><span style="display:flex;"><span>    own_window_hints <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;undecorated,below,sticky,skip_taskbar,skip_pager&#39;</span>,
+</span></span><span style="display:flex;"><span>    border_inner_margin <span style="color:#f92672">=</span> 10,
+</span></span><span style="display:flex;"><span>    border_outer_margin <span style="color:#f92672">=</span> 0,
+</span></span><span style="display:flex;"><span>    xinerama_head <span style="color:#f92672">=</span> 1,
+</span></span><span style="display:flex;"><span>    alignment <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;top_right&#39;</span>,
+</span></span><span style="display:flex;"><span>    gap_x <span style="color:#f92672">=</span> 30,
+</span></span><span style="display:flex;"><span>    gap_y <span style="color:#f92672">=</span> 60,
+</span></span><span style="display:flex;"><span>    draw_shades <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    draw_outline <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    draw_borders <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    draw_graph_borders <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    use_xft <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    font <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Ubuntu Mono:size=12&#39;</span>,
+</span></span><span style="display:flex;"><span>    xftalpha <span style="color:#f92672">=</span> 0.8,
+</span></span><span style="display:flex;"><span>    uppercase <span style="color:#f92672">=</span> false,
+</span></span><span style="display:flex;"><span>    default_color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;white&#39;</span>,
+</span></span><span style="display:flex;"><span>    own_window_colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;#000000&#39;</span>,
+</span></span><span style="display:flex;"><span>    minimum_width <span style="color:#f92672">=</span> 300, minimum_height <span style="color:#f92672">=</span> 500,
+</span></span><span style="display:flex;"><span>    alignment <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;top_right&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>conky.text <span style="color:#f92672">=</span> <span style="color:#f92672">[[</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${time %H:%M}$alignr${time %d-%m-%y}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>voffset -16<span style="color:#e6db74">}${</span>font sans-serif:bold:size=18<span style="color:#e6db74">}${</span>alignc<span style="color:#e6db74">}${</span>time %H:%M<span style="color:#e6db74">}${</span>font<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>voffset 4<span style="color:#e6db74">}${</span>alignc<span style="color:#e6db74">}${</span>time %Y.%m.%d<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font<span style="color:#e6db74">}${</span>voffset -4<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>SYSTEM <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span>$sysname $kernel $alignr $machine
+</span></span><span style="display:flex;"><span>Uptime:$alignr$uptime
+</span></span><span style="display:flex;"><span>Host:$alignr$nodename
+</span></span><span style="display:flex;"><span>IP:$alignr<span style="color:#e6db74">${</span>execi 1000 ip a | grep inet | grep -vw lo | grep -v inet6 | cut -d <span style="color:#ae81ff">\/</span> -f1 | sed <span style="color:#e6db74">&#39;s/[^0-9\.]*//g&#39;</span><span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#File System: $alignr ${fs_type}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Processes: $alignr ${execi 1000 ps aux | wc -l}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>CPU <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>execi 1000 grep model /proc/cpuinfo | cut -d : -f2 | tail -1 | sed <span style="color:#e6db74">&#39;s/\s//&#39;</span><span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>cpugraph cpu1<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$alignr <span style="color:#e6db74">${</span>cpu cpu1<span style="color:#e6db74">}</span>% 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>cpubar cpu1<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>MEMORY <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span>RAM $alignc $mem / $memmax $alignr $memperc%
+</span></span><span style="display:flex;"><span>$membar
+</span></span><span style="display:flex;"><span>SWAP $alignc <span style="color:#e6db74">${</span>swap<span style="color:#e6db74">}</span> / <span style="color:#e6db74">${</span>swapmax<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>swapperc<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>swapbar<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>DISK USAGE <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span>Read: <span style="color:#e6db74">${</span>diskio_read<span style="color:#e6db74">}</span>$alignr Write: <span style="color:#e6db74">${</span>diskio_write<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>diskiograph_read 30,100<span style="color:#e6db74">}</span>$alignr<span style="color:#e6db74">${</span>diskiograph_write 30,100<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$alignr<span style="color:#e6db74">${</span>fs_used /<span style="color:#e6db74">}</span> / <span style="color:#e6db74">${</span>fs_size /<span style="color:#e6db74">}</span>  <span style="color:#e6db74">${</span>fs_used_perc /<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>fs_bar /<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#/home  $alignr${fs_used /home} / ${fs_size /home}  ${fs_used_perc /home}%</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${fs_bar /home}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>NETWORK <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span>Upload <span style="color:#e6db74">${</span>upspeedf enp4s0<span style="color:#e6db74">}</span>k/s <span style="color:#f92672">(</span><span style="color:#e6db74">${</span>totalup enp4s0<span style="color:#e6db74">}</span><span style="color:#f92672">)</span>$alignr Download <span style="color:#e6db74">${</span>downspeedf enp4s0<span style="color:#e6db74">}</span>k/s <span style="color:#f92672">(</span><span style="color:#e6db74">${</span>totaldown enp4s0<span style="color:#e6db74">}</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>upspeedgraph enp4s0 30,130<span style="color:#e6db74">}</span>$alignr<span style="color:#e6db74">${</span>downspeedgraph enp4s0 30,130<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Inbound: ${tcp_portmon 1 32767 count}  Outbound: ${tcp_portmon 32768 61000 count}$alignrALL: ${tcp_portmon 1 65535 count}</span>
+</span></span><span style="display:flex;"><span>Inbound $alignr LPorts
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 1 32767 rhost 0<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 1 32767 lport 0<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 1 32767 rhost 1<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 1 32767 lport 1<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 1 32767 rhost 2<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 1 32767 lport 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${tcp_portmon 1 32767 rhost 3} $alignr ${tcp_portmon 1 32767 lport 3}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${tcp_portmon 1 32767 rhost 4} $alignr ${tcp_portmon 1 32767 lport 4}</span>
+</span></span><span style="display:flex;"><span>Outbound $alignr RPorts
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rhost 0<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rport 0<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rhost 1<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rport 1<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rhost 2<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>tcp_portmon 32768 61000 rport 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${tcp_portmon 32768 61000 rhost 3} $alignr ${tcp_portmon 32768 61000 rport 3}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${tcp_portmon 32768 61000 rhost 3} $alignr ${tcp_portmon 32768 61000 rport 4}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#${tcp_portmon 32768 61000 rhost 4} $alignr ${tcp_portmon 32768 61000 rservice 4}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:bold:size=10<span style="color:#e6db74">}</span>TOP PROCESSES <span style="color:#e6db74">${</span>hr 2<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>font sans-serif:normal:size=8<span style="color:#e6db74">}</span> $alignr    PID    CPU%   MEM%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>top name 1<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>top pid 1<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>top cpu 1<span style="color:#e6db74">}</span>% <span style="color:#e6db74">${</span>top mem 1<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>top name 2<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>top pid 2<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>top cpu 2<span style="color:#e6db74">}</span>% <span style="color:#e6db74">${</span>top mem 2<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>top name 3<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>top pid 3<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>top cpu 3<span style="color:#e6db74">}</span>% <span style="color:#e6db74">${</span>top mem 3<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>top name 4<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>top pid 4<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>top cpu 4<span style="color:#e6db74">}</span>% <span style="color:#e6db74">${</span>top mem 4<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">${</span>top name 5<span style="color:#e6db74">}</span> $alignr <span style="color:#e6db74">${</span>top pid 5<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>top cpu 5<span style="color:#e6db74">}</span>% <span style="color:#e6db74">${</span>top mem 5<span style="color:#e6db74">}</span>%
+</span></span><span style="display:flex;"><span><span style="color:#f92672">]]</span>
+</span></span></code></pre></div><h2 id="vimrc">vimrc</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>syntax on
+</span></span><span style="display:flex;"><span>set number
+</span></span><span style="display:flex;"><span>set showcmd 
+</span></span><span style="display:flex;"><span>set laststatus<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>set showmatch
+</span></span><span style="display:flex;"><span>set hlsearch
+</span></span><span style="display:flex;"><span>set incsearch
+</span></span><span style="display:flex;"><span>set ignorecase
+</span></span><span style="display:flex;"><span>set noerrorbells
+</span></span><span style="display:flex;"><span>set autoindent
+</span></span><span style="display:flex;"><span>set smartindent
+</span></span><span style="display:flex;"><span>set shiftround
+</span></span><span style="display:flex;"><span>set shiftwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>set tabstop<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>set softtabstop<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>set encoding<span style="color:#f92672">=</span>utf-8
+</span></span><span style="display:flex;"><span>set termencoding<span style="color:#f92672">=</span>utf-8
+</span></span><span style="display:flex;"><span>colorscheme evening
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#set font for gvim</span>
+</span></span><span style="display:flex;"><span>set guifont<span style="color:#f92672">=</span>JetBrains_Mono:h11
+</span></span></code></pre></div><h2 id="putty">putty</h2>
+<p>create <code>putty.exe</code> <strong>shortcut</strong> with <code>Target:</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#e6db74">&#34;C:\Program Files\PuTTY\putty.exe&#34;</span> root@192.168.111.111 -P <span style="color:#ae81ff">222</span> -pw <span style="color:#ae81ff">123456</span>
+</span></span></code></pre></div><h2 id="typora-baseusercss">Typora base.user.css</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span><span style="color:#f92672">a</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-decoration</span>: <span style="color:#66d9ef">none</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">color</span>: <span style="color:#ae81ff">#058ee9</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">a</span>:<span style="color:#a6e22e">hover</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-decoration</span>: <span style="color:#66d9ef">underline</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* custom img stylish */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">img</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">block</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-left</span>: <span style="color:#66d9ef">auto</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-right</span>: <span style="color:#66d9ef">auto</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-top</span>: <span style="color:#ae81ff">10</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-bottom</span>: <span style="color:#ae81ff">10</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">box-shadow</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">5</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">#555</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-webkit-</span><span style="color:#66d9ef">box-shadow</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">5</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">#555</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">10</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">px</span> <span style="color:#66d9ef">solid</span> <span style="color:#66d9ef">gray</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">img</span>.<span style="color:#a6e22e">displayed</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">block</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* for printing pdf files */</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">body</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">line-height</span>: <span style="color:#ae81ff">1.5</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">font-family</span>: <span style="color:#e6db74">&#34;Microsoft JhengHei&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">media</span> <span style="color:#f92672">print</span> {
+</span></span><span style="display:flex;"><span>    #write{
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">max-width</span>: <span style="color:#ae81ff">100</span><span style="color:#66d9ef">%</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    @<span style="color:#66d9ef">page</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">size</span><span style="color:#f92672">:</span> <span style="color:#f92672">A4</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">margin-top</span><span style="color:#f92672">:</span> <span style="color:#f92672">0</span>.<span style="color:#a6e22e">25</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">margin-bottom</span><span style="color:#f92672">:</span> <span style="color:#f92672">0</span>.<span style="color:#a6e22e">25</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">margin-left</span><span style="color:#f92672">:</span> <span style="color:#f92672">0</span>.<span style="color:#a6e22e">1</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">margin-right</span><span style="color:#f92672">:</span> <span style="color:#f92672">0</span>.<span style="color:#a6e22e">1</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">line-height</span><span style="color:#f92672">:</span> <span style="color:#f92672">1</span>.<span style="color:#a6e22e">5</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/rootreset/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>ubuntu recovery or root password reset</h1>
+    <time datetime="2024-03-06">2024-03-06</time>
+  </header>
+  <p>按 <code>e</code> 键来编辑 GRUB 参数，将会显示如下的界面：<br>
+<img src="1218435-20200831232049183-1721353469.png" alt="1218435-20200831232049183-1721353469"></p>
+<p>往下滚动，找到以 <code>linux /boot/vmlinuz</code> 开始的一行，已在下图中标记出来：<br>
+<img src="1218435-20200831232049821-1687590062.jpg" alt="1218435-20200831232049821-1687590062"></p>
+<p>找到一段内容：<code>ro quiet splash $vt_handoff</code><br>
+<img src="1218435-20200831232050459-1535780366.jpg" alt="1218435-20200831232050459-1535780366"></p>
+<p>将 <code>ro quiet splash $vt_handoff</code> 替换成<code>rw init=/bin/bash</code> ，目的是给root文件系统设置读和写的命令：<br>
+<img src="1218435-20200831232050800-1696505350.jpg" alt="1218435-20200831232050800-1696505350"></p>
+<p>然后，按<code>Ctrl + X</code> 或<code>F10</code> 来重启系统，你的系统会进入 root shell 界面重置密码即可</p>
+<p><code>mount -o remount,rw /</code></p>
+
+</article>
+
+
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/printecho/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>print command instead of echo in linux</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <p><a href="https://unix.stackexchange.com/questions/99535/print-command-instead-of-echo-in-linux">https://unix.stackexchange.com/questions/99535/print-command-instead-of-echo-in-linux</a></p>
+<p>I simply can print a message in terminal using linux <code>echo</code> command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>prayag@prayag$ echo <span style="color:#e6db74">&#34;prayag works on JVM&#34;</span>
+</span></span><span style="display:flex;"><span>prayag works on JVM
+</span></span></code></pre></div><p>Can I have the same output with <code>print</code> command.</p>
+<p>I actually went through their manuals, where <code>$ man print</code> describes it as Run-mailcap-programs which term I never heard before.  And came to know that it is used to find the correct program to open a  file with, based on MIME.</p>
+<p>So is there any way to <strong>print a simple line</strong> using <code>print</code> alone instead of <code>echo</code>?</p>
+<p>Found similar kind of problem at <a href="https://stackoverflow.com/q/14116748/432903">Need to assign the contents of a text file to a variable in a bash script</a>, but people suggesting <code>echo</code> over <code>print</code> there.</p>
+<p>I tried following, but got issues.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ print --<span style="color:#e6db74">&#34;text/plain&#34;</span> <span style="color:#e6db74">&#34;prayag works on JVM&#34;</span>
+</span></span><span style="display:flex;"><span>Warning: unknown mime-type <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;prayag works on JVM&#34;</span> -- using <span style="color:#e6db74">&#34;application/octet-stream&#34;</span>
+</span></span><span style="display:flex;"><span>Error: no such file <span style="color:#e6db74">&#34;prayag works on JVM&#34;</span>
+</span></span></code></pre></div><p>It asks for a file, with file provided.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ print --<span style="color:#e6db74">&#34;text/plain&#34;</span> application.properties 
+</span></span><span style="display:flex;"><span>Warning: unknown mime-type <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;application.properties&#34;</span> -- using <span style="color:#e6db74">&#34;application/octet-stream&#34;</span>
+</span></span><span style="display:flex;"><span>Error: no <span style="color:#e6db74">&#34;print&#34;</span> mailcap rules found <span style="color:#66d9ef">for</span> type <span style="color:#e6db74">&#34;application/octet-stream&#34;</span>
+</span></span></code></pre></div><p>But got working in combination with <code>awk</code> command with a file provided,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ awk <span style="color:#e6db74">&#39;{print}&#39;</span> application.properties 
+</span></span><span style="display:flex;"><span>prayag works on JVM
+</span></span></code></pre></div><ul>
+<li>Similar issue: <a href="https://stackoverflow.com/questions/10576571/how-to-make-echo-interpret-backslash-escapes-and-not-print-a-trailing-newline">https://stackoverflow.com/questions/10576571/how-to-make-echo-interpret-backslash-escapes-and-not-print-a-trailing-newline</a></li>
+</ul>
+<hr>
+<p>You&rsquo;re confusing many things here, let me try and tease this apart for you.</p>
+<ol>
+<li>
+<p><code>awk '{print}' ...</code></p>
+<p>This has nothing to do with the <code>print</code> you&rsquo;re asking about. <code>awk</code> is a dynamic programming language which contains its own commands, of which <code>print</code> is one of them.</p>
+</li>
+<li>
+<p><code>print --&quot;text/plain&quot; &quot;prayag works on JVM&quot;</code> and other forms</p>
+<p>The command <code>print</code> is for displaying files per the  contents of the mailcap file, using the designated &ldquo;handler&rdquo; for each  particular file type, not for printing strings to the screen.</p>
+<p><em>excerpt from the print man page</em></p>
+<blockquote>
+<p>run-mailcap, view, see, edit, compose, print - execute programs via entries in the mailcap file</p>
+<p>run-mailcap (or any of its aliases) will use the given action to process each mime-type/file in turn.  Each file is spec‐     ified as its mime-type, its encoding (e.g. compression), and filename together, separated by colons.  If the mime-type is     omitted, an attempt to determine the type is made by trying to match the file&rsquo;s extension with those  in  the  mime.types     files.  If the encoding is omitted, it will also be determined from the file&rsquo;s extensions.  Currently supported encodings     are gzip (.gz), bzip (.bz), bzip2 (.bz2), and compress (.Z).  A filename of &ldquo;-&rdquo; can be used to mean &ldquo;standard input&rdquo;, but     then a mime-type must be specified.</p></blockquote>
+</li>
+<li>
+<p><code>echo</code></p>
+<p>The command <code>echo</code> is a builtin command to the shell  you&rsquo;re using called Bash (I&rsquo;m assuming you&rsquo;re using Bash). You can  confirm this by using this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ type -a echo
+</span></span><span style="display:flex;"><span>echo is a shell builtin
+</span></span><span style="display:flex;"><span>echo is /bin/echo
+</span></span></code></pre></div><p>You&rsquo;ll notice that <code>echo</code> is also a standalone executable, <code>/bin/echo</code>. This is a different command than the <code>echo</code> you&rsquo;re using, but serves a similar purpose.</p>
+</li>
+<li>
+<p><code>print</code> in shells such as zsh/ksh</p>
+<p>Thanks to @Gilles comment, the <code>print</code> command you&rsquo;re looking for is most likely the one that is built into shells such as <code>zsh</code> and/or <code>ksh</code>. You can see its usage through the man page, <code>man zshbuiltins</code>.</p>
+<h3 id="example">Example</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>zsh % print <span style="color:#e6db74">&#34;hello world&#34;</span>
+</span></span><span style="display:flex;"><span>hello world
+</span></span></code></pre></div><p>You can run one of these shells by typing <code>zsh</code> or <code>ksh</code>.</p>
+</li>
+</ol>
+<h3 id="printf"><code>printf</code></h3>
+<p>Perhaps you&rsquo;re looking for the command <code>printf</code>?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ printf <span style="color:#e6db74">&#34;%s\n&#34;</span> <span style="color:#e6db74">&#34;hello stringy world&#34;</span>
+</span></span><span style="display:flex;"><span>hello stringy world
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ printf <span style="color:#e6db74">&#34;this is some padded digits: %04d\n&#34;</span> <span style="color:#e6db74">&#34;10&#34;</span>
+</span></span><span style="display:flex;"><span>this is some padded digits: <span style="color:#ae81ff">0010</span>
+</span></span></code></pre></div><p>The command <code>printf</code> takes a formatting set of special  characters so that you can instruct it how you want to display things  such as strings or digits etc. See the man page for <code>printf</code>.</p>
+<h3 id="mailcap"><code>mailcap</code></h3>
+<p>So a lot of people are probably oblivious as to the file <code>/etc/mailcap</code>. This file contains mime-types (headers from files which identifies what type of file a file is). You can then create entries in this <code>mailcap</code> file which designate what tool to use to open a particular mime-type for a file.</p>
+<h3 id="example-1">Example</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>text/html; /usr/bin/sensible-browser <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span>HTML Text; nametemplate<span style="color:#f92672">=</span>%s.html
+</span></span><span style="display:flex;"><span>application/x-troff-man; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print<span style="color:#f92672">=</span>/usr/bin/nroff -mandoc -Tutf8 | print text/plain:-
+</span></span><span style="display:flex;"><span>application/x-ogg; /usr/bin/mplayer <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OggVorbis Audio&#34;</span>
+</span></span><span style="display:flex;"><span>application/ogg; /usr/bin/mplayer <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OggVorbis Audio&#34;</span>
+</span></span><span style="display:flex;"><span>audio/mpeg; /usr/bin/mplayer <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;MPEG Audio Format&#34;</span>
+</span></span><span style="display:flex;"><span>audio/x-mpegurl; /usr/bin/mplayer <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Icecast Playlists&#34;</span>
+</span></span><span style="display:flex;"><span>audio/x-ms-wax; /usr/bin/mplayer <span style="color:#e6db74">&#39;%s&#39;</span>; description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Audio Format&#34;</span>
+</span></span></code></pre></div><p>The above lines say that if you get a file with the mime-type <code>audio/mpeg</code>, then use the tool <code>/usr/bin/mplayer</code> to open this file.</p>
+<p>These rules are generally used by the email tool, but other tools can take advantage of these entries within the <code>mailcap</code> file as well.</p>
+<p>If you&rsquo;re interested in learning more about mime-types or mailcap see the following references.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Internet_media_type">Internet media type</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Mailcap">Mailcap</a></li>
+</ul>
+
+</article>
+
+
+
+</html>

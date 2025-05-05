@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/diffdnatredirect/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Difference between DNAT and REDIRECT in IPTABLES</h1>
+    <time datetime="2024-03-09">2024-03-09</time>
+  </header>
+  <p><a href="https://serverfault.com/questions/179200/difference-beetween-dnat-and-redirect-in-iptables">https://serverfault.com/questions/179200/difference-beetween-dnat-and-redirect-in-iptables</a></p>
+<p>Okay, it may be because I am dense or maybe just not finding the right source, but I can&rsquo;t understand why one of these IPTABLES setups would be better than the other.</p>
+<p>Here is my setup:</p>
+<p>I have a box that is serving as a transparent proxy and a router or sorts. It has two interfaces on it, ETH0 and ETH1, and the following address scheme:</p>
+<p>ETH0 = DHCP ETH1 = 192.168.5.1/24 serving up DHCP for the 192.168.5.0/24 network to clients behind it in the LAN</p>
+<p>I have privoxy installed and listening on port 8080 as a transparent proxy. What I am accomplishing with this setup is to be able to drop this box into an existing network with minimal configuration and attached clients to the proxy.</p>
+<p>Here is my original IPTABLES file</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>*nat
+</span></span><span style="display:flex;"><span>-A PREROUTING -i eth1 -p tcp -m tcp --dport <span style="color:#ae81ff">80</span> -j REDIRECT --to-port <span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span>-A POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span style="display:flex;"><span>COMMIT
+</span></span><span style="display:flex;"><span>*filter
+</span></span><span style="display:flex;"><span>COMMIT
+</span></span></code></pre></div><p>This configuration works fine and traffic is flowing back and forth without issue. I get the originating clients IP address in the privoxy logfiles, and life is good.</p>
+<p>My confusion comes in when I start looking at other people&rsquo;s configurations and see that they are using DNAT instead of REDIRECT, and I am trying to understand the real beneift of one over the other. Here is a sample config:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>*nat
+</span></span><span style="display:flex;"><span>-A PREROUTING -i eth1 -p tcp -m tcp --dport <span style="color:#ae81ff">80</span> -j DNAT --to 192.168.5.1:8080
+</span></span><span style="display:flex;"><span>-A POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span style="display:flex;"><span>COMMIT
+</span></span><span style="display:flex;"><span>*filter
+</span></span><span style="display:flex;"><span>COMMIT
+</span></span></code></pre></div><p>Again, this configuration works too, and gives me all I need from a logging perspective&hellip;</p>
+<p>Which is is right, or maybe MORE right, than the other one?</p>
+<p>Thanks for taking time to read this far&hellip;</p>
+<p>Answer:</p>
+<p>DNAT and REDIRECT are exactly the same, if you want to send traffic to the local machine.</p>
+<p>The documentation states it like so: &ldquo;[Redirection] is a specialized case of Destination NAT called redirection: it is a simple convenience which is exactly equivalent to doing DNAT to the address of the incoming interface.&rdquo;</p>
+<p><a href="https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html#ss6.2">https://www.netfilter.org/documentation/HOWTO/NAT-HOWTO-6.html#ss6.2</a></p>
+
+</article>
+
+
+
+</html>

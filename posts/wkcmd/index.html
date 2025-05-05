@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/wkcmd/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>work command</h1>
+    <time datetime="2024-03-05">2024-03-05</time>
+  </header>
+  <p><a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/index.html">http://tldp.org/LDP/Bash-Beginners-Guide/html/index.html</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#filter user whom access 80 port by descend with `tcpdump`</span>
+</span></span><span style="display:flex;"><span>tcpdump -i eth0 -tnn dst port <span style="color:#ae81ff">80</span> -c <span style="color:#ae81ff">1000</span> | awk -F<span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#e6db74">&#39;{print $1&#34;.&#34;$2&#34;.&#34;$3&#34;.&#34;$4}&#39;</span> | sort | uniq -c | sort -nr |head -20 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#list your processes sort by ports</span>
+</span></span><span style="display:flex;"><span>netstat -ntlp | grep <span style="color:#ae81ff">80</span> | awk <span style="color:#e6db74">&#39;{print $7}&#39;</span> | cut -d/ -f1 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#top 20 IPs from incoming access</span>
+</span></span><span style="display:flex;"><span>netstat -anlp|grep 80|grep tcp|awk <span style="color:#e6db74">&#39;{print $5}&#39;</span>|awk -F: <span style="color:#e6db74">&#39;{print $1}&#39;</span>|sort|uniq -c|sort -nr|head -n20  
+</span></span><span style="display:flex;"><span>netstat -ant |awk <span style="color:#e6db74">&#39;/:80/{split($5,ip,&#34;:&#34;);++A[ip[1]]}END{for(i in A) print A[i],i}&#39;</span> |sort -rn|head -n20 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#test connectivity of network</span>
+</span></span><span style="display:flex;"><span>$ echo &gt; /dev/tcp/skinner/22 <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;it&#39;s up&#34;</span> <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;it&#39;s down&#34;</span>
+</span></span><span style="display:flex;"><span>$ it<span style="color:#e6db74">&#39;s up
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">$ timeout 5 bash -c &#39;</span>cat &lt; /dev/null &gt; /dev/tcp/www.bing.com/80<span style="color:#960050;background-color:#1e0010">&#39;</span>; echo $?
+</span></span><span style="display:flex;"><span>$ <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#test ports of destination</span>
+</span></span><span style="display:flex;"><span>nc <span style="color:#f92672">[</span>-p 31337<span style="color:#f92672">]</span> -vzw <span style="color:#ae81ff">6</span> 192.168.100.100<span style="color:#f92672">[</span>www.bing.com<span style="color:#f92672">]</span> <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    -z : Port scanning mode i.e. zero I/O mode.
+</span></span><span style="display:flex;"><span>    -v : Be verbose <span style="color:#f92672">[</span>use twice -vv to be more verbose<span style="color:#f92672">]</span>.
+</span></span><span style="display:flex;"><span>    -n : Use numeric-only IP addresses i.e. <span style="color:#66d9ef">do</span> not use DNS to resolve ip addresses.
+</span></span><span style="display:flex;"><span>    -w <span style="color:#ae81ff">6</span> : Set time out value to 6.
+</span></span><span style="display:flex;"><span>    -u : UDP
+</span></span><span style="display:flex;"><span>    -p : means source port
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#用tcpdump嗅探443端口的访问看看谁最高</span>
+</span></span><span style="display:flex;"><span>tcpdump -i eth0 -tnn dst port <span style="color:#ae81ff">443</span> -c <span style="color:#ae81ff">1000</span> | awk -F<span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#e6db74">&#39;{print $1&#34;.&#34;$2&#34;.&#34;$3&#34;.&#34;$4}&#39;</span> | sort | uniq -c | sort -nr |head -20 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#根据端口列进程</span>
+</span></span><span style="display:flex;"><span>netstat -ntlp | grep <span style="color:#ae81ff">443</span> | awk <span style="color:#e6db74">&#39;{print $7}&#39;</span> | cut -d/ -f1 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#查找请求数前20个IP(常用于查找攻来源)</span>
+</span></span><span style="display:flex;"><span>netstat -anlp|grep 80|grep tcp|awk <span style="color:#e6db74">&#39;{print $5}&#39;</span>|awk -F: <span style="color:#e6db74">&#39;{print $1}&#39;</span>|sort|uniq -c|sort -nr|head -n20
+</span></span><span style="display:flex;"><span>netstat -ant |awk <span style="color:#e6db74">&#39;/:80/{split($5,ip,&#34;:&#34;);++A[ip[1]]}END{for(i in A) print A[i],i}&#39;</span> |sort -rn|head -n20
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#show all empty password accounts:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh</span>
+</span></span><span style="display:flex;"><span>USERS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>cut -d: -f <span style="color:#ae81ff">1</span> /etc/passwd<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> u in $USERS
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>        passwd -S $u | grep -Ew <span style="color:#e6db74">&#34;NP&#34;</span>&gt;/dev/null
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>                echo $u
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>passwd -Sa | grep NP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#verify accounts without password</span>
+</span></span><span style="display:flex;"><span>awk -F: <span style="color:#e6db74">&#39;($2 == &#34;&#34;) {print}&#39;</span> /etc/shadow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#Make Sure No Non-Root Accounts Have UID Set To 0</span>
+</span></span><span style="display:flex;"><span>awk -F: <span style="color:#e6db74">&#39;($3 == &#34;0&#34;) {print}&#39;</span> /etc/passwd
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#reverse_ssh_tunnel.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh</span>
+</span></span><span style="display:flex;"><span>COMMAND<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ssh -N -f -R 89.xxx.xx.4:2210:localhost:22 user1@bserver.outside.com&#34;</span>
+</span></span><span style="display:flex;"><span>pgrep -f -x <span style="color:#e6db74">&#34;</span>$COMMAND<span style="color:#e6db74">&#34;</span> &gt; /dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> $COMMAND
+</span></span></code></pre></div><hr>
+<p>sql query</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">mysql</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;mysql&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">con</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mysql</span>.<span style="color:#a6e22e">createConnection</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">host</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;localhost&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;admin&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">password</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;pwd&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">database</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;localdb&#34;</span>
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">con</span>.<span style="color:#a6e22e">connect</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span>) <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Select all customers and return the result object
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">con</span>.<span style="color:#a6e22e">query</span>(<span style="color:#e6db74">&#34;select STR_IP, from_unixtime(VALIDITY_FROM), from_unixtime(VALIDITY_TO) from ipscan509.ip_master where STR_IP=&#39;192.168.xxx.xxx&#39;&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">fields</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">err</span>) <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">err</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">result</span>);
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">from</span> mydb.ip_allrecords;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">select</span> STR_IP, from_unixtime(VALIDITY_FROM), from_unixtime(VALIDITY_TO) <span style="color:#66d9ef">from</span> mydb.ip_allrecords <span style="color:#66d9ef">where</span> STR_IP<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;192.168.100.80&#34;</span>;
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 通过命令修改相关配置</span>
+</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/NoDisplay=true/NoDisplay=false/&#39;</span> /etc/xdg/autostart/*.desktop
+</span></span><span style="display:flex;"><span>or
+</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#34;s/^NotifyClamd/#NotifyClamd/g&#34;</span> /etc/clamav/freshclam.conf 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 查找双引号开头和结尾的内容</span>
+</span></span><span style="display:flex;"><span>sed -n <span style="color:#e6db74">&#39;/^&#34;.*&#34;$/p&#39;</span> test.conf
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find -name 222.txt | xargs -I % grep -ilnsr <span style="color:#e6db74">&#34;hello&#34;</span> <span style="color:#e6db74">&#34;%&#34;</span> | xargs -I % grep -H <span style="color:#e6db74">&#34;world&#34;</span> %
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find / | egrep -v ^/proc/ -e ^/tmp/ -e ^/dev/ -e ^/home/ &gt; packgetlist.before
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>find / | egrep -v ^/proc/ -e ^/tmp/ -e ^/dev/ -e ^/home/ &gt; packagelist.after
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>diff packagelist.b4 packagelist.after &gt; package.uninstall.list
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>grep <span style="color:#e6db74">&#34;&gt;&#34;</span> package.uninstall.list | awk <span style="color:#e6db74">&#39;{ print $2 }&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    /bin/rm -fi <span style="color:#e6db74">&#34;</span>$i<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in *.tar; <span style="color:#66d9ef">do</span> echo extracting $i; tar xvf $i; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#data backup command</span>
+</span></span><span style="display:flex;"><span>rsync -avhHEP -e <span style="color:#e6db74">`</span>ssh -p 222<span style="color:#e6db74">`</span> home/localbakup root@192.168.1.10:/home/yourdestdir/
+</span></span></code></pre></div><hr>
+<p>iptables</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>/sbin/iptables -I INPUT -p tcp --dport <span style="color:#ae81ff">3306</span> -j DROP
+</span></span><span style="display:flex;"><span>/sbin/iptables -I INPUT -p tcp -s 127.0.0.1 --dport <span style="color:#ae81ff">3306</span> -j ACCEPT
+</span></span><span style="display:flex;"><span>/sbin/iptables -I INPUT -p tcp -s 192.168.100.201 --dport <span style="color:#ae81ff">3306</span> -j ACCEPT
+</span></span><span style="display:flex;"><span>/sbin/iptables -I INPUT -p tcp -s 192.168.0.0/16 --dport <span style="color:#ae81ff">3306</span> -j ACCEPT
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in *.tar; <span style="color:#66d9ef">do</span> tar xvf <span style="color:#e6db74">&#34;</span>$i<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><hr>
+<p>ip config on Win10 by script</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@echo
+</span></span><span style="display:flex;"><span>netsh interface ipv4 set address name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ethernet&#34;</span> static 1.1.1.20 255.255.255.0 1.1.1.8
+</span></span><span style="display:flex;"><span>netsh interface ipv4 set dns name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ethernet&#34;</span> static 1.1.1.8
+</span></span><span style="display:flex;"><span>netsh interface ipv4 set dns name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ethernet&#34;</span> 8.8.8.8 index<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>rem netsh interface ipv4 set address name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ethernet&#34;</span> source<span style="color:#f92672">=</span>dhcp
+</span></span><span style="display:flex;"><span>rem netsh interface ipv4 set dns name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ethernet&#34;</span> source<span style="color:#f92672">=</span>dhcp
+</span></span></code></pre></div><p>windows 检查磁盘状态</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>wmic diskdrive get model,status
+</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get install ranger    <span style="color:#75715e">## 命令行文件管理器</span>
+</span></span><span style="display:flex;"><span>apt-get install ncdu      <span style="color:#75715e">## 统计文件大小</span>
+</span></span></code></pre></div><hr>
+<p>show windows wifi password</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">setlocal</span> enabledelayedexpansion
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/f</span> <span style="color:#e6db74">&#34;tokens=2 delims=:&#34;</span> <span style="color:#ae81ff">%%</span>a <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;netsh wlan show profile&#39;</span>) <span style="color:#66d9ef">do</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">set</span> <span style="color:#e6db74">&#34;ssid=</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">~a&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">call</span> :getpwd <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">ssid:~1</span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pause</span>
+</span></span><span style="display:flex;"><span>:getpwd
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">set</span> <span style="color:#e6db74">&#34;ssid=</span>%*<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/f</span> <span style="color:#e6db74">&#34;tokens=2 delims=:&#34;</span> <span style="color:#ae81ff">%%</span>i <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;netsh wlan show profile name^=&#34;</span>%ssid:&#34;=%<span style="color:#e6db74">&#34; key^=clear ^| findstr /C:&#34;Key Content&#34;&#39;</span>) <span style="color:#66d9ef">do</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">echo</span> Wi-Fi Name: %ssid% Password : <span style="color:#ae81ff">%%</span>i
+</span></span><span style="display:flex;"><span>	)
+</span></span></code></pre></div><hr>
+<p>grep</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>grep -C <span style="color:#ae81ff">4</span> -E <span style="color:#e6db74">&#34;open|filtered&#34;</span> -R --include<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*.txt&#34;</span>	    <span style="color:#75715e">## 匹配关键字(open或filtered)在当前文件夹中所有.txt后缀的文件,筛选出包含关键字前后4行的内容</span>
+</span></span></code></pre></div><h2 id="shell中字符串截取命令cutprintfawksed">Shell中字符串截取命令：cut，printf，awk，sed</h2>
+<h2 id="cut">cut</h2>
+<ul>
+<li>cut 命令不能在分割符是空格的字符串中截取列，只能是 制表符 或 具体的分割符。</li>
+</ul>
+<h4 id="选项">选项</h4>
+<ul>
+<li><code>-b</code> ：仅显示行中指定直接范围的内容；</li>
+<li><code>-c</code> ：仅显示行中指定范围的字符；</li>
+<li><code>-d</code> ：指定字段的分隔符，默认的字段分隔符为&quot;TAB&quot;；</li>
+<li><code>-f</code> ：显示指定字段的内容；</li>
+<li><code>-n</code> ：与&quot;-b&quot;选项连用，不分割多字节字符；</li>
+<li><code>--complement</code> ：补足被选择的字节、字符或字段；</li>
+<li><code>--out-delimiter=&lt;字段分隔符&gt;</code> ：指定输出内容是的字段分割符；</li>
+<li><code>--help</code> ：显示指令的帮助信息；</li>
+<li><code>--version</code> ：显示指令的版本信息。</li>
+</ul>
+<h4 id="使用">使用</h4>
+<ul>
+<li><code>-d</code> :分隔符  （ <code>--delimiter</code> 按照指定分隔符分割列 ）</li>
+<li><code>-b</code> : 表示字节</li>
+<li><code>-c</code> : 表示字符</li>
+<li><code>-f</code> : 表示字段(列号)    （ <code>--field</code> 提取第几列 ）</li>
+<li><strong>N-</strong> : 从第N个字节、字符、字段到结尾</li>
+<li><strong>N-M</strong> : 从第N个字节、字符、字段到第M个</li>
+<li><strong>-M</strong> : 从第一个字节、字符、字段到第M个</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$&gt; cat user.txt
+</span></span><span style="display:flex;"><span>01, zhang, M, <span style="color:#ae81ff">18</span>
+</span></span><span style="display:flex;"><span>02, wang, M, <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>03, li, M, <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以&#34;,&#34;分隔，显示第二列</span>
+</span></span><span style="display:flex;"><span>$&gt; cut -d <span style="color:#e6db74">&#34;,&#34;</span> -f <span style="color:#ae81ff">2</span> user.txt
+</span></span><span style="display:flex;"><span> zhang
+</span></span><span style="display:flex;"><span> wang
+</span></span><span style="display:flex;"><span> li
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以&#34;,&#34;分隔，显示第1列和第3列</span>
+</span></span><span style="display:flex;"><span>$&gt; cut -d <span style="color:#e6db74">&#34;,&#34;</span> -f 1,3 user.txt
+</span></span><span style="display:flex;"><span>01, M,
+</span></span><span style="display:flex;"><span>02, M,
+</span></span><span style="display:flex;"><span>03, M,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以&#34;,&#34;分隔，显示第1-3列</span>
+</span></span><span style="display:flex;"><span>$&gt; cut -d <span style="color:#e6db74">&#34;,&#34;</span> -f 1-3 user.txt
+</span></span><span style="display:flex;"><span>01, zhang, M,
+</span></span><span style="display:flex;"><span>02, wang, M,
+</span></span><span style="display:flex;"><span>03, li, M,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以&#34;,&#34;分隔，显示除第1列以外的其他列</span>
+</span></span><span style="display:flex;"><span>$&gt; cut -d <span style="color:#e6db74">&#34;,&#34;</span> -f <span style="color:#ae81ff">1</span> --complement user.txt
+</span></span><span style="display:flex;"><span> zhang, M, <span style="color:#ae81ff">18</span>
+</span></span><span style="display:flex;"><span> wang, M, <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span> li, M, <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 注意前面是有空格的！</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">###### 字符串</span>
+</span></span><span style="display:flex;"><span>$&gt; cut -c1-5 user.txt
+</span></span><span style="display:flex;"><span>01, zh
+</span></span><span style="display:flex;"><span>02, wa
+</span></span><span style="display:flex;"><span>03, li
+</span></span></code></pre></div><h2 id="printf">printf</h2>
+<ul>
+<li>printf &lsquo;输出类型输出格式&rsquo; 内容</li>
+</ul>
+<h3 id="输出类型">输出类型：</h3>
+<p>- <code>%ns</code>: 输出字符串。n是数字，指输出几个字符</p>
+<ul>
+<li><code>%ni</code>: 输出整数。n是数字，指输出几个数字</li>
+<li><code>%m.nf</code>: 输出浮点数。m和n是数字，分别指输出的整数位数和小数位数。如%8.2f代表共输出8位数，其中2是小数，6是整数。</li>
+</ul>
+<h3 id="输出格式">输出格式：</h3>
+<p>- <code>\a</code> : 输出警告声音</p>
+<ul>
+<li><code>\b</code> : 输出退格键，也就是Backspace键</li>
+<li><code>\f</code> : 清除屏幕</li>
+<li><code>\n</code> : 换行</li>
+<li><code>\r</code> : 回车，也就是Enter键</li>
+<li><code>\t</code> : 水平输出退格键，也就是Tab键</li>
+<li><code>\v</code> : 垂直输出退格键，也就是Tab键</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>printf %s <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 把123456当成一个字符串输出，没有格式</span>
+</span></span><span style="display:flex;"><span>printf %s %s %s <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 把%s%s123456当做字符串输出，没有格式</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s &#39;</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 把1 2 3 4 5 6当做字符串输出，输出格式为空格</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 输出格式为1个一行</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s %s %s&#39;</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 把内容当做字符串三个为一组输出，1 2 34 5 6</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s %s %s\n&#39;</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#75715e"># 输出格式为3个一行</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s&#39;</span> <span style="color:#66d9ef">$(</span>cat user.txt<span style="color:#66d9ef">)</span> <span style="color:#75715e"># 输出文本内容为字符串</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\t %s\t %s\t %s\n&#39;</span> <span style="color:#66d9ef">$(</span>cat user.txt<span style="color:#66d9ef">)</span>　　<span style="color:#75715e"># 把文本内容格式化输出</span>
+</span></span></code></pre></div><ul>
+<li>建议 man printf 查看可用的输出格式，和C的 printf 格式一样。</li>
+</ul>
+<h2 id="awk">awk</h2>
+<h3 id="命令">命令</h3>
+<p>awk &lsquo;条件1{动作1} 条件2{动作2} &hellip;&rsquo; 文件名
+（ 如果条件1，执行动作1；如果条件2，执行动作2 ）</p>
+<h4 id="条件pattern一般使用关系表达式作为条件">条件（pattern）：一般使用关系表达式作为条件</h4>
+<ul>
+<li><code>x &gt; 10</code> : 判断变量x是否大于10</li>
+<li><code>x &gt;= 10</code> : 大于等于</li>
+<li><code>x &lt;= 10</code> : 小于等于</li>
+</ul>
+<h4 id="动作action">动作（Action）</h4>
+<ul>
+<li>格式化输出</li>
+<li>流程控制语句</li>
+</ul>
+<h3 id="例子">例子</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 大括号前面没有条件，直接执行命令，这里的printf 是awk的命令，$2 提取文件第二列，$3 提取文件第三列，$0 提取所有列</span>
+</span></span><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;{printf $2 &#34;\t&#34; $3&#34;\n&#34;}&#39;</span> user.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 打印三列，这里的print是awk的命令，系统并没有print命令，所以只能在awk里使用；与printf的区别是：print会自动在行尾加换行符，而printf不会</span>
+</span></span><span style="display:flex;"><span>df -h | awk <span style="color:#e6db74">&#39;{print $1 &#34;\t&#34; $5 &#34;\t&#34; $6 &#34;\t&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 提取系统已使用硬盘空间，可以把结果赋给一个变量，判断是否大于某个值，进行报警</span>
+</span></span><span style="display:flex;"><span>df -h | grep sda3 | awk <span style="color:#e6db74">&#39;{print $5}&#39;</span> | cut -d <span style="color:#e6db74">&#39;%&#39;</span> -f <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看剩余内存不包含单位M</span>
+</span></span><span style="display:flex;"><span>free -h | grep Mem | awk <span style="color:#e6db74">&#39;{print $4}&#39;</span> | cut -d <span style="color:#e6db74">&#39;M&#39;</span> -f <span style="color:#ae81ff">1</span> 
+</span></span></code></pre></div><h3 id="说明">说明</h3>
+<ul>
+<li>grep 取行，awk 按条件取指定列，cut 按分隔符取指定列。</li>
+<li>BEGIN：先执行一条多余的动作</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;BEGIN{print &#34;this is a text&#34;} {print $2 &#34;\t&#34; $3}&#39;</span> user.txt
+</span></span></code></pre></div><ul>
+<li>END：用于在所有命令处理完之后执行</li>
+<li>FS内置变量：用于定义分割符，如果需要手工定义分割符，一定要在分割符前面加BEGIN；</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;BEGIN{FS=&#34;:&#34;} END{print &#34;this is end text&#34;} {print $1 &#34;\t&#34; $3}&#39;</span> /etc/passwd
+</span></span></code></pre></div><ul>
+<li>BEGIN、END也是条件。</li>
+<li>关系运算符：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># user.txt中不包含ID这行，提取满足条件为第四列值大于18的第二列</span>
+</span></span><span style="display:flex;"><span>cat user.txt | grep -v ID | awk <span style="color:#e6db74">&#39;$4 &gt; 18 {printf $2 &#34;\n&#34;}&#39;</span>
+</span></span></code></pre></div><h2 id="sed">sed</h2>
+<p>sed主要是用来将数据进行选取、替换、删除、新增的命令。可以放在管道符之后处理。</p>
+<h3 id="命令-1">命令</h3>
+<ul>
+<li>sed [选项] &lsquo;[动作]&rsquo; 文件名</li>
+<li>sed命令有两种形式：sed [options] &lsquo;command&rsquo; file(s)；sed [options] -f scriptfile file(s)</li>
+</ul>
+<h4 id="选项-1">选项：</h4>
+<ul>
+<li>
+<pre class="mermaid">-n
+</pre>
+<p>: 一般sed命令会把所有数据都输出到屏幕；如果加入此选项，则只会把经过sed命令处理的行输出到屏幕。</p>
+<ul>
+<li><code>sed -n '2p' user.txt</code>    # 输出第二行</li>
+</ul>
+</li>
+<li>
+<p><code>-e</code> : 允许对输入数据应用多条sed命令编辑</p>
+</li>
+<li>
+<p><code>-f</code> : 添加脚本文件的内容到执行的动作</p>
+</li>
+<li>
+<p><code>-i</code> : 用sed的修改结果直接修改读取数据的文件，而不是由屏幕输出</p>
+</li>
+</ul>
+<h4 id="动作要加双引号">动作：（要加双引号）</h4>
+<ul>
+<li><code>a\</code> : 追加，在当前行后添加一行或多行。添加多行时，除最后一行外，每行末尾需要用&quot;&ldquo;代表数据未完结。</li>
+<li><code>c\</code> : 行替换，用c后面的字符串替换原数据行，替换多行时，除最后一行外，每行末尾需要用&quot;&ldquo;代表数据未完结。</li>
+<li><code>i\</code> : 插入，在当前行前插入一行或多行。插入多行时，除最后一行外，每行末尾需要用&quot;&ldquo;代表数据未完结。</li>
+<li><code>d</code> : 删除，删除指定的行。</li>
+<li><code>p</code> : 打印，输出指定的行。</li>
+<li><code>s</code> : 字串替换，用一个字符串替换另外一个字符串。格式为“行范围s/旧字串/新字串/g”（和vim中的替换格式类似）</li>
+</ul>
+<h3 id="例子-1">例子</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sed -n <span style="color:#e6db74">&#39;2p&#39;</span> user.txt    　　　　<span style="color:#75715e"># 输出第二行, p一般都要和-n使用，不-n会显示出所有的行</span>
+</span></span><span style="display:flex;"><span>df -h | sed -n <span style="color:#e6db74">&#39;2p&#39;</span>    　　  　　<span style="color:#75715e"># 管道符结果作为操作内容</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;2,4d&#39;</span> user.txt    　　　　<span style="color:#75715e"># 删除文件的第2行到第4行，显示剩下的行，没有加 i 选项，不会更改文件内容</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;2a hello&#39;</span> user.txt    　　<span style="color:#75715e"># 在第二行后追加hello，仅仅修改命令输出</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;2i hello \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">　　world&#39;</span> user.txt    　　　　<span style="color:#75715e"># 在第二行前插入两行数据，仅仅修改命令输出</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;2c No person&#39;</span> user.txt    <span style="color:#75715e"># 把第二行替换为No person</span>
+</span></span><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;2s/M/F/g&#39;</span> user.txt    　　<span style="color:#75715e"># 把第二行的M替换为F后输出</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;2s/M/F/g&#39;</span> user.txt　　<span style="color:#75715e"># 把替换后的结果写入文件</span>
+</span></span><span style="display:flex;"><span>sed -e <span style="color:#e6db74">&#39;s/zhang//g ; s/wang//g&#39;</span> user.txt    <span style="color:#75715e"># -e 允许多条命令顺序执行，用分号隔开，s前面不加数字表示所有行</span>
+</span></span></code></pre></div><h2 id="check-if-command-was-successful"><a href="https://stackoverflow.com/questions/14691494/check-if-command-was-successful-in-a-batch-file">check if command was successful</a></h2>
+<p>If the command returns a error level you can check the following ways</p>
+<p><strong>By Specific Error Level</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>commandhere
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> %errorlevel%<span style="color:#f92672">==</span>131 <span style="color:#66d9ef">echo</span> do something
+</span></span></code></pre></div><p><strong>By If Any Error</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>commandhere || <span style="color:#66d9ef">echo</span> what to do if error level ISN&#39;T 0
+</span></span></code></pre></div><p><strong>By If No Error</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>commandhere &amp;&amp; <span style="color:#66d9ef">echo</span> what to do if error level IS 0
+</span></span></code></pre></div><p>If it does not return a error level but does give output, you can catch it in a variable and determine by the output, example (note the tokens and delims are just examples and would likely fail with any special characters)</p>
+<p><strong>By Parsing Full Output</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/f</span> <span style="color:#e6db74">&#34;tokens=* delims=&#34;</span> <span style="color:#ae81ff">%%</span>a <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;somecommand&#39;</span>) <span style="color:#66d9ef">do</span> <span style="color:#66d9ef">set</span> output=<span style="color:#ae81ff">%%</span>a
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> %output%<span style="color:#f92672">==</span>whateveritwouldsayinerror <span style="color:#66d9ef">echo</span> error
+</span></span></code></pre></div><p>Or you could just look for a single phrase in the output like the word Error</p>
+<p><strong>By Checking For String</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>commandhere | find <span style="color:#e6db74">&#34;Error&#34;</span> || <span style="color:#66d9ef">echo</span> There was no error!
+</span></span><span style="display:flex;"><span>commandhere | find <span style="color:#e6db74">&#34;Error&#34;</span> &amp;&amp; <span style="color:#66d9ef">echo</span> There was an error!
+</span></span></code></pre></div><p>And you could even mix together (just remember to escape <code>|</code> with <code>^|</code> if in a <code>for</code> statement).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt-get update 1&gt; result.txt
+</span></span><span style="display:flex;"><span>apt-get update 2&gt; result.txt
+</span></span><span style="display:flex;"><span>apt-get update &gt; result.txt 2&gt;$1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- stdin <span style="color:#f92672">(</span>0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>- stdout <span style="color:#f92672">(</span>1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>- stderr <span style="color:#f92672">(</span>2<span style="color:#f92672">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $EUID -ne <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>   echo <span style="color:#e6db74">&#34;This script must be run as root&#34;</span> 1&gt;&amp;<span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>   exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><h2 id="squid-troubleshooting-command">Squid Troubleshooting Command</h2>
+<ul>
+<li>get the basic status of Squid</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>squid -k check | echo $?
+</span></span></code></pre></div><ul>
+<li>check the squid configuration for errors</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>squid -k parse
+</span></span></code></pre></div><ul>
+<li>test connectivity to the chosen site</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>squidclient -h 192.188.185.75 -p3128 http://www.bing.com
+</span></span></code></pre></div><ul>
+<li>get list of recent attempts to reach forbidden sites</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>grep -nR <span style="color:#e6db74">&#39;/403&#39;</span> /var/log/squid/access.log
+</span></span></code></pre></div><ul>
+<li>get real-time list of sites forbidden by Squid</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tail -f /var/log/squid/access.log | grep <span style="color:#e6db74">&#39;/403&#39;</span>
+</span></span></code></pre></div><ul>
+<li>get useful information about the proxy process and tail logs</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl status squid
+</span></span></code></pre></div><ul>
+<li>if you change the squid config and want to run it on the existing server</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>/etc/init.d/squid reload | systemctl reload squid
+</span></span></code></pre></div><ul>
+<li>get the feed of Squid logs</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>journalctl -u squid
+</span></span></code></pre></div><ul>
+<li>test connectivity of port</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>nc -vzw <span style="color:#ae81ff">6</span> 10.10.10.100 <span style="color:#ae81ff">3128</span>
+</span></span></code></pre></div><ul>
+<li><code>wget</code> with proxy</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget -e <span style="color:#e6db74">&#34;http_proxy=http://192.168.197.99:3128&#34;</span> http://cdimage.ubuntu.com/releases/20.04/release/ubuntu-20.04.6-live-server-arm64.iso
+</span></span></code></pre></div><h2 id="use-tcpdump-to-monitor-http-traffic">Use tcpdump to Monitor HTTP Traffic</h2>
+<p>Credits to <a href="https://sites.google.com/site/jimmyxu101/testing/use-tcpdump-to-monitor-http-traffic">https://sites.google.com/site/jimmyxu101/testing/use-tcpdump-to-monitor-http-traffic</a></p>
+<ol>
+<li>To monitor HTTP traffic including request and response headers and message body:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tcpdump -A -s <span style="color:#ae81ff">0</span> <span style="color:#e6db74">&#39;tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)&#39;</span>
+</span></span></code></pre></div><ol start="2">
+<li>To monitor HTTP traffic including request and response headers and message body from a particular source:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tcpdump -A -s <span style="color:#ae81ff">0</span> <span style="color:#e6db74">&#39;src example.com and tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)&#39;</span>
+</span></span></code></pre></div><ol start="3">
+<li>To monitor HTTP traffic including request and response headers and message body from local host to local host:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tcpdump -A -s <span style="color:#ae81ff">0</span> <span style="color:#e6db74">&#39;tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)&#39;</span> -i lo
+</span></span></code></pre></div><ol start="4">
+<li>
+<p>To only include HTTP requests, modify “tcp port 80” to “tcp dst port 80” in above commands</p>
+</li>
+<li>
+<p>Capture TCP packets from local host to local host</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tcpdump -i lo
+</span></span></code></pre></div><h2 id="解压缩不同目录下tgz">解压缩不同目录下tgz</h2>
+<p>With <code>gnu tar</code>, you could use <code>--xform</code> (or <code>--transform</code>) to prepend <code>/prefix/</code> to each file name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tar -xf myArchive.tar.gz --xform<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;s|^|myArchive/|S&#39;</span>
+</span></span></code></pre></div><p>note there&rsquo;s no leading <code>/</code> in <code>prefix/</code> and the <code>sed</code> expression ends with <code>S</code> to exclude symbolic link targets from file name transformations.
+To test it (dry-run):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tar -tf myArchive.tar.gz --xform<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;s|^|myArchive/|S&#39;</span> --verbose --show-transformed-names
+</span></span></code></pre></div><hr>
+<p>To get you started, here&rsquo;s a very simplistic script that you could invoke as <code>extract &lt;file&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>STRIP<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>1%.*<span style="color:#e6db74">}</span>                                <span style="color:#75715e">#strip last suffix</span>
+</span></span><span style="display:flex;"><span>NAME<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>STRIP%.tar<span style="color:#e6db74">}</span>                           <span style="color:#75715e">#strip .tar suffix, if present</span>
+</span></span><span style="display:flex;"><span>tar -xf <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> --xform<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;s|^|</span>$NAME<span style="color:#e6db74">/|S&#34;</span>          <span style="color:#75715e">#run command</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>STRIP<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>1%.*<span style="color:#e6db74">}</span>                                <span style="color:#75715e">#strip last suffix</span>
+</span></span><span style="display:flex;"><span>NAME<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>STRIP%.tgz<span style="color:#e6db74">}</span>                           <span style="color:#75715e">#strip .tgz suffix, if present</span>
+</span></span><span style="display:flex;"><span>tar -xf <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> --xform<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;s|^|</span>$NAME<span style="color:#e6db74">/|S&#34;</span> 
+</span></span></code></pre></div><p>save as <strong>extgz.sh</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>find ./LB*/LB*/DOC/ -name <span style="color:#e6db74">&#34;*.tgz&#34;</span> | xargs -i extgz.sh <span style="color:#f92672">{}</span>
+</span></span><span style="display:flex;"><span>find ./LH*/LH*/DOC/ -name <span style="color:#e6db74">&#34;*.tgz&#34;</span> | xargs -i extgz.sh <span style="color:#f92672">{}</span>
+</span></span></code></pre></div><h2 id="wkwin-batch">wkwin batch</h2>
+<h3 id="for">for</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> %~dp0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/f</span> <span style="color:#e6db74">&#34;tokens=* delims=&#34;</span> %a <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;dir /b *.exe&#39;</span>) <span style="color:#66d9ef">do</span> (
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> == Installing Apps %a ==
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait <span style="color:#e6db74">&#34;&#34;</span> %a
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>============
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> %f in (*) do @echo %f
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>for /f <span style="color:#e6db74">&#34;tokens=* delims=&#34;</span> %a in (&#39;dir /b .\*&#39;) do @echo %a
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>============
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@echo off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cd %~dp0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>for <span style="color:#ae81ff">%%</span>i in (*) <span style="color:#66d9ef">do</span> @<span style="color:#66d9ef">echo</span> <span style="color:#ae81ff">%%</span>i
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pause</span>
+</span></span></code></pre></div><h3 id="public-pcs-batch">public PCs batch</h3>
+<p><a href="https://stackoverflow.com/questions/19335004/how-to-run-a-powershell-script-from-a-batch-file">https://stackoverflow.com/questions/19335004/how-to-run-a-powershell-script-from-a-batch-file</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>Powershell.exe -executionpolicy remotesigned <span style="color:#f92672">-File</span>  C:\Users\SE\Desktop\ps.ps1
+</span></span></code></pre></div><p>If you want to run from the current directory without a fully qualified path, you can use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>PowerShell -NoProfile -ExecutionPolicy Bypass -Command <span style="color:#e6db74">&#34;&amp; &#39;./ps.ps1&#39;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cls</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pushd</span> <span style="color:#e6db74">&#34;</span>%~dp0<span style="color:#e6db74">%&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing essential Apps, please wait...
+</span></span><span style="display:flex;"><span>PowerShell -NoProfile -ExecutionPolicy Bypass -Command <span style="color:#e6db74">&#34;&amp; &#39;./del.ps1&#39;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> 111.exe D:\
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait AcroRdrDC1902120047_en_US.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait FontPack1900820071_XtdAlf_Lang_DC.msi /q /passive /norestart
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait 7z1900-x64.msi /quiet
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;C:\Program Files\7-Zip\7z.exe&#34;</span> x eclipse.zip -y -r -o<span style="color:#e6db74">&#34;C:\&#34;</span> *.*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>or
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">RD</span> /S /Q <span style="color:#e6db74">&#34;C:\eclipse&#34;</span>
+</span></span><span style="display:flex;"><span>PowerShell Expand-Archive -Path .\eclipse.zip -DestinationPath C:\
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">RD</span> /S /Q <span style="color:#e6db74">&#34;D:\Program Files\android-studio&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;C:\Program Files\7-Zip\7z.exe&#34;</span> x android-studio-ide-windows32.zip -y -r -o<span style="color:#e6db74">&#34;D:\Program Files&#34;</span> *.*
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait jdk.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> wdexpress_full.exe
+</span></span><span style="display:flex;"><span>c:\windows\system32\certutil.exe<span style="color:#75715e"> -addstore -f &#34;TrustedRootCertificationAuthorities&#34; CA.pem</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">popd</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h3 id="public-pcs-clean">public PCs clean</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> C:\
+</span></span><span style="display:flex;"><span>$tc = dir -force C:\ -name -Exclude <span style="color:#e6db74">&#34;Users&#34;</span>,<span style="color:#e6db74">&#34;Windows&#34;</span>,<span style="color:#e6db74">&#34;MSOCache&#34;</span>,<span style="color:#e6db74">&#34;mytemp&#34;</span>,<span style="color:#e6db74">&#34;PerfLogs&#34;</span>,<span style="color:#e6db74">&#34;Program Files&#34;</span>,<span style="color:#e6db74">&#34;ProgramData&#34;</span>,<span style="color:#e6db74">&#34;Python27&#34;</span>,*.sys,*.bat,*.log
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $tc -force -Recurse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> D:\
+</span></span><span style="display:flex;"><span>$td = dir -force D:\ -name -Exclude <span style="color:#e6db74">&#34;Program Files&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $td -force -Recurse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> C:\Users\Administrator\Desktop
+</span></span><span style="display:flex;"><span>$tdesk1 = dir -force C:\Users\Administrator\Desktop -name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $tdesk1 -force -Recurse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> C:\Users\Administrator\Downloads
+</span></span><span style="display:flex;"><span>$tdw1 = dir -force C:\Users\Administrator\Downloads -name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $tdw1 -force -Recurse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> C:\Users\user1\Desktop
+</span></span><span style="display:flex;"><span>$tdesk2 = dir -force C:\Users\user1\Desktop -name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $tdesk2 -force -Recurse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> C:\Users\user1\Downloads
+</span></span><span style="display:flex;"><span>$tdw2 = dir -force C:\Users\user1\Downloads -name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> $tdw2 -force -Recurse
+</span></span></code></pre></div><h3 id="clean-pc">Clean PC</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>$objShell = New-Object -ComObject Shell.Application
+</span></span><span style="display:flex;"><span>$objFolder = $objShell.Namespace(0xA)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>#1. Empty Recycle Bin
+</span></span><span style="display:flex;"><span>    Write-Host <span style="color:#e6db74">&#34;Emptying Recycle Bin&#34;</span> -ForegroundColor Yellow
+</span></span><span style="display:flex;"><span>    $objFolder.items() | %{ Remove-Item $_.path -Recurse -Confirm:$false}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>#2. Remove Temp
+</span></span><span style="display:flex;"><span>    Write-Host <span style="color:#e6db74">&#34;Removing Temp&#34;</span> -ForegroundColor Yellow
+</span></span><span style="display:flex;"><span>    Set-Location <span style="color:#e6db74">&#34;C:\Windows\Temp&#34;</span>
+</span></span><span style="display:flex;"><span>    Remove-Item * -Recurse -Force -ErrorAction SilentlyContinue
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Set-Location <span style="color:#e6db74">&#34;C:\Windows\Prefetch&#34;</span>
+</span></span><span style="display:flex;"><span>    Remove-Item * -Recurse -Force -ErrorAction SilentlyContinue
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Set-Location <span style="color:#e6db74">&#34;C:\Documents and Settings&#34;</span>
+</span></span><span style="display:flex;"><span>    Remove-Item <span style="color:#e6db74">&#34;.\*\Local Settings\temp\*&#34;</span> -Recurse -Force -ErrorAction SilentlyContinue
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Set-Location <span style="color:#e6db74">&#34;C:\Users&#34;</span>
+</span></span><span style="display:flex;"><span>    Remove-Item <span style="color:#e6db74">&#34;.\*\Appdata\Local\Temp\*&#34;</span> -Recurse -Force -ErrorAction SilentlyContinue
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>#3. Running Cleanmgr
+</span></span><span style="display:flex;"><span>    Write-Host <span style="color:#e6db74">&#34;Running Cleanmgr...&#34;</span> -ForegroundColor Yellow
+</span></span><span style="display:flex;"><span>    cleanmgr /sagerun:1 | out-Null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    $([char]7)
+</span></span><span style="display:flex;"><span>    sleep 2
+</span></span><span style="display:flex;"><span>    Write-Host <span style="color:#e6db74">&#34;It&#39;s done.&#34;</span> -ForegroundColor Yellow
+</span></span><span style="display:flex;"><span>    sleep 2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>##  End of the Script  ##
+</span></span></code></pre></div><h3 id="sccm-client-batch">SCCM client batch</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cls</span>
+</span></span><span style="display:flex;"><span>tasklist /fi <span style="color:#e6db74">&#34;imagename eq CcmExec.exe&#34;</span> |find <span style="color:#e6db74">&#34;CcmExec&#34;</span> &gt; nul
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">errorlevel</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">goto</span> Process_NotFound
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:Process_Found
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:Process_NotFound
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pushd</span> <span style="color:#e6db74">&#34;</span>%~dp0<span style="color:#e6db74">%&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait ccmsetup.exe /source:<span style="color:#e6db74">&#34;\\fs\NETLOGON\client&#34;</span> /logon /downloadtimeout:7200 /BITSPriority:LOW DISABLESITEOPT=TRUE DNSSUFFIX=corp.abc.net SMSCACHEFLAGS=PERCENTFREEDISKSPACE SMSCACHESIZE=20 SMSSITECODE=CIN FSP=srv01.corp.abc.net &amp;&amp; <span style="color:#66d9ef">popd</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h3 id="app-installbat">app-install.bat</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cls</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pushd</span> <span style="color:#e6db74">&#34;</span>%~dp0<span style="color:#e6db74">%&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> appdir
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cls</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Importing CA, please wait...
+</span></span><span style="display:flex;"><span>c:\windows\system32\certutil.exe<span style="color:#75715e"> -addstore -f &#34;TrustedRootCertificationAuthorities&#34; CA.pem</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> .\abc.exe %UserProfile%\Desktop
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing PDF, please wait...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait AcroRdrDC2300620320_en_US.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing PDF FontPack, please wait...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait msiexec /i AcroRdrALSDx64_2200120085_all_DC.msi /quiet /norestart
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing 7zip, please wait...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait msiexec /i 7z2301-x64.msi /quiet /norestart
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing Chrome, please wait...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait msiexec /i googlechromestandaloneenterprise64.msi /quiet /norestart
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">popd</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h2 id="devidebat">DevIDE.bat</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\software$\pypy3.7-v7.3.4-win64.zip D:\
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\software$\eclipse-java-2018-09-win32.zip D:\
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\software$\pycharm-community-2020.3.5.exe D:\
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\software$\zulu8.66.0.15-ca-jdk8.0.352-win_i686.msi D:\
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\public$\Office_2016_English.lnk <span style="color:#e6db74">&#34;</span>%userprofile%<span style="color:#e6db74">\Desktop&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> /Y \\fs\public$\VS2017.lnk <span style="color:#e6db74">&#34;</span>%userprofile%<span style="color:#e6db74">\Desktop&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>powershell -command <span style="color:#e6db74">&#34;&amp; {Expand-Archive D:\eclipse-java-2018-09-win32.zip D:\}&#34;</span>
+</span></span><span style="display:flex;"><span>powershell -command <span style="color:#e6db74">&#34;&amp; {Expand-Archive D:\pypy3.7-v7.3.4-win64.zip D:\}&#34;</span>
+</span></span><span style="display:flex;"><span>:<span style="color:#75715e">:powershell -NoProfile -ExecutionPolicy Bypass -Command &#34;&amp; &#39;./del.ps1&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait D:\zulu8.66.0.15-ca-jdk8.0.352-win_i686.msi
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait D:\pycharm-community-2020.3.5.exe
+</span></span></code></pre></div><h2 id="secu-abcbat">secu-abc.bat</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">copy</span> \\fs\public$\abc\*.exe C:\
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#66d9ef">exist</span> <span style="color:#e6db74">&#34;C:\abc.exe&#34;</span> (
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">goto</span> Update<span style="color:#75715e">   </span>
+</span></span><span style="display:flex;"><span>)  <span style="color:#66d9ef">else</span> (
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">goto</span> Install
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:Install
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait C:\installabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> /q C:\installabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> /q C:\updateabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:Update
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">start</span> /wait C:\updateabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> /q C:\installabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> /q C:\updateabc.exe
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><h2 id="win10_11_fw_policybat">win10_11_fw_policy.bat</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@echo off
+</span></span><span style="display:flex;"><span>cls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TITLE Win10-11-FW-Policy-Tweaks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:topmenu
+</span></span><span style="display:flex;"><span>echo.
+</span></span><span style="display:flex;"><span>echo Input number to choose, hit Enter to quit: 
+</span></span><span style="display:flex;"><span>echo <span style="color:#f92672">==========================================</span>
+</span></span><span style="display:flex;"><span>echo 1. Turn on Ping <span style="color:#f92672">(</span>ICMP<span style="color:#f92672">)</span> Policy
+</span></span><span style="display:flex;"><span>echo 2. Turn off Ping <span style="color:#f92672">(</span>ICMP<span style="color:#f92672">)</span> Policy
+</span></span><span style="display:flex;"><span>echo 3. Turn on SMB and Ping Policy
+</span></span><span style="display:flex;"><span>echo 4. Turn off SMB and Ping Policy 
+</span></span><span style="display:flex;"><span>echo <span style="color:#f92672">==========================================</span>
+</span></span><span style="display:flex;"><span>echo. 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set /p _input<span style="color:#f92672">=</span>Please enter Department: <span style="color:#f92672">||</span> Set _input<span style="color:#f92672">=</span>NothingChosen
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>If <span style="color:#e6db74">&#34;%_input%&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;NothingChosen&#34;</span> goto exit
+</span></span><span style="display:flex;"><span>If /i <span style="color:#e6db74">&#34;%_input%&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;1&#34;</span> goto sub_1
+</span></span><span style="display:flex;"><span>If /i <span style="color:#e6db74">&#34;%_input%&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;2&#34;</span> goto sub_2
+</span></span><span style="display:flex;"><span>If /i <span style="color:#e6db74">&#34;%_input%&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;3&#34;</span> goto sub_3
+</span></span><span style="display:flex;"><span>If /i <span style="color:#e6db74">&#34;%_input%&#34;</span><span style="color:#f92672">==</span><span style="color:#e6db74">&#34;4&#34;</span> goto sub_4
+</span></span><span style="display:flex;"><span>echo Please type a valid number <span style="color:#f92672">(</span>1-4<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>goto:topmenu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:sub_1
+</span></span><span style="display:flex;"><span>cls
+</span></span><span style="display:flex;"><span>PowerShell.exe -command <span style="color:#e6db74">&#34;&amp; {Set-NetFirewallRule -DisplayGroup &#39;Core Networking Diagnostics&#39; -Enabled True -RemoteAddress Any}&#34;</span> <span style="color:#f92672">&amp;&amp;</span> ECHO Turn on Ping succeeded!
+</span></span><span style="display:flex;"><span>goto:topmenu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:sub_2
+</span></span><span style="display:flex;"><span>cls
+</span></span><span style="display:flex;"><span>PowerShell.exe -command <span style="color:#e6db74">&#34;&amp; {Set-NetFirewallRule -DisplayGroup &#39;Core Networking Diagnostics&#39; -Enabled False}&#34;</span> <span style="color:#f92672">&amp;&amp;</span> ECHO Turn off Ping succeeded!
+</span></span><span style="display:flex;"><span>goto:topmenu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:sub_3
+</span></span><span style="display:flex;"><span>cls
+</span></span><span style="display:flex;"><span>PowerShell.exe -command <span style="color:#e6db74">&#34;&amp; {Set-NetFirewallRule -DisplayGroup &#39;File and Printer Sharing&#39; -Enabled True -RemoteAddress Any}&#34;</span> <span style="color:#f92672">&amp;&amp;</span> ECHO Turn on SMB succeeded!
+</span></span><span style="display:flex;"><span>goto:topmenu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:sub_4
+</span></span><span style="display:flex;"><span>cls
+</span></span><span style="display:flex;"><span>PowerShell.exe -command <span style="color:#e6db74">&#34;&amp; {Set-NetFirewallRule -DisplayGroup &#39;File and Printer Sharing&#39; -Enabled False}&#34;</span> <span style="color:#f92672">&amp;&amp;</span> ECHO Turn off SMB succeeded!
+</span></span><span style="display:flex;"><span>goto:topmenu
+</span></span></code></pre></div><h2 id="pccheckbat">PCCheck.bat</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@echo off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> exist <span style="color:#e6db74">&#34;C:\PCCheck.exe&#34;</span> goto Check
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>copy /Y <span style="color:#ae81ff">\\</span>fs<span style="color:#ae81ff">\P</span>CCheck$<span style="color:#ae81ff">\P</span>CCheck<span style="color:#ae81ff">\*</span> C:<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>
+</span></span><span style="display:flex;"><span>:Check
+</span></span><span style="display:flex;"><span>net share print$ /delete
+</span></span><span style="display:flex;"><span>start /wait C:<span style="color:#ae81ff">\P</span>CCheck.exe
+</span></span><span style="display:flex;"><span>copy /Y C:<span style="color:#ae81ff">\T</span>emp<span style="color:#ae81ff">\*</span>.txt <span style="color:#ae81ff">\\</span>fs<span style="color:#ae81ff">\P</span>CCheck$<span style="color:#ae81ff">\R</span>esult<span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>
+</span></span><span style="display:flex;"><span>exit
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

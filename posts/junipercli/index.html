@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/junipercli/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Junipercli</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <h2 id="juniper-cli">juniper cli</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cli
+</span></span><span style="display:flex;"><span>configure 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>set schedulers scheduler 20180104-0531 start-date 2018-01-04.00:00 stop-date 2018-05-31.00:00 
+</span></span><span style="display:flex;"><span>set security zones security-zone L2-Untrust address-book address 192.168.103.252 192.168.103.252/32 
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 description user1 
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 match source-address 192.168.103.252 
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 match destination-address Proxy1
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 match destination-address Proxy2  
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 match application TCP9999               
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 <span style="color:#66d9ef">then</span> permit                           
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 <span style="color:#66d9ef">then</span> log session-init        
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 <span style="color:#66d9ef">then</span> count               
+</span></span><span style="display:flex;"><span>set security policies from-zone L2-Untrust to-zone L2-Trust policy p1 scheduler-name 20170119-0917
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>insert security policies from-zone L2-Untrust to-zone L2-Trust policy p1 before policy User01 
+</span></span><span style="display:flex;"><span>commit 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>run show configuration |display set
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

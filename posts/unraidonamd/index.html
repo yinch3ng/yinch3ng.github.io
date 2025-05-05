@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/unraidonamd/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Unraid on AMD HPE Gen10 Marvell 88SE9230</h1>
+    <time datetime="2025-04-19">2025-04-19</time>
+  </header>
+  <p>Modify <code>syslinux.cfg</code></p>
+<p>Update:  A potential workaround - some users are reporting success with the following workaround, add <code>iommu=pt</code> to the append line of your <code>syslinux.conf</code> file on your boot flash.</p>
+<p>Example - change this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>append  initrd<span style="color:#f92672">=</span>/bzroot
+</span></span></code></pre></div><p>To this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>append  iommu<span style="color:#f92672">=</span>pt  initrd<span style="color:#f92672">=</span>/bzroot
+</span></span></code></pre></div><p>Also, try updating to the latest firmware for the card, no guarantees but it may help.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>append amd_iommu<span style="color:#f92672">=</span>on iommu<span style="color:#f92672">=</span>pt initrd<span style="color:#f92672">=</span>/bzroot
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/linuxguide/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Linux Config Guide</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <h2 id="ubuntu">ubuntu:</h2>
+<h2 id="access-control">access control</h2>
+<ul>
+<li>
+<p>设置IP访问限制，一般修改 <code>/etc/hosts.allow</code> 添加允许的IP访问主机即可</p>
+</li>
+<li>
+<p>(optional) 设置 <code>ssh</code> <code>sudo</code> 等相关访问限制，自行搜索配置方法</p>
+</li>
+</ul>
+<h2 id="samba">samba</h2>
+<ul>
+<li>配置 samba 共享权限示例</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 若已安装samba可跳过此步骤</span>
+</span></span><span style="display:flex;"><span>apt-get install samba libpam-winbind
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 编辑修改samba配置文件前备份</span>
+</span></span><span style="display:flex;"><span>cp /etc/samba/smb.conf /etc/samba/smb.conf.backup
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改samba配置</span>
+</span></span><span style="display:flex;"><span>vi /etc/samba/smb.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改 map to guest = never (默认是bad user)</span>
+</span></span><span style="display:flex;"><span>	map to guest <span style="color:#f92672">=</span> never
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改 usershare allow guests = no (默认是yes)</span>
+</span></span><span style="display:flex;"><span>	usershare allow guests <span style="color:#f92672">=</span> no
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 新增 security = user</span>
+</span></span><span style="display:flex;"><span>	security <span style="color:#f92672">=</span> user
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 新增自己的共享目录</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>data1<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        comment <span style="color:#f92672">=</span> file share testing
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> /testsharedir
+</span></span><span style="display:flex;"><span>        browsable <span style="color:#f92672">=</span> yes
+</span></span><span style="display:flex;"><span>        guest ok <span style="color:#f92672">=</span> no
+</span></span><span style="display:flex;"><span>        read only <span style="color:#f92672">=</span> no
+</span></span><span style="display:flex;"><span>        create mask <span style="color:#f92672">=</span> <span style="color:#ae81ff">0755</span>
+</span></span><span style="display:flex;"><span>        directory mask <span style="color:#f92672">=</span> <span style="color:#ae81ff">0755</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注释掉以下字段 (默认开启)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>printers<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        comment <span style="color:#f92672">=</span> All Printers
+</span></span><span style="display:flex;"><span>        browseable <span style="color:#f92672">=</span> no
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> /var/spool/samba
+</span></span><span style="display:flex;"><span>        printable <span style="color:#f92672">=</span> yes
+</span></span><span style="display:flex;"><span>        guest ok <span style="color:#f92672">=</span> no
+</span></span><span style="display:flex;"><span>        read only <span style="color:#f92672">=</span> yes
+</span></span><span style="display:flex;"><span>        create mask <span style="color:#f92672">=</span> <span style="color:#ae81ff">0700</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span>print$<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        comment <span style="color:#f92672">=</span> Printer Drivers
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> /var/lib/samba/printers
+</span></span><span style="display:flex;"><span>        browseable <span style="color:#f92672">=</span> yes
+</span></span><span style="display:flex;"><span>        read only <span style="color:#f92672">=</span> yes
+</span></span><span style="display:flex;"><span>        guest ok <span style="color:#f92672">=</span> no
+</span></span></code></pre></div><p>修改完保存退出，执行命令 <code>testparm</code> 检查配置语法是否正确</p>
+<p>执行 <code>smbpasswd -a testuser1</code> 设置共享访问密码（<code>testuser1</code> 用户必须在 Linux 系统中存在）</p>
+<p>执行 <code>/etc/init.d/smbd restart</code> 重启 samba 服务之后即可访问</p>
+<h2 id="password-complexity-configuration">password complexity configuration</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 安装密码验证模块</span>
+</span></span><span style="display:flex;"><span>apt-get install libpam-pwquality
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置密码最小长度为6位, 最小复杂度为3</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;$a\minlen = 6\nminclass = 3\n&#39;</span> /etc/security/pwquality.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置密码修改周期为180天</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/\(^PASS_MAX_DAYS\).*/\1  180/&#39;</span> /etc/login.defs
+</span></span></code></pre></div><h2 id="disable-automatic-adding-printerscups-browsed">disable automatic adding printers(cups-browsed)</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># modify `BrowseRemoteProtocols` parameter to `None`</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;/^BrowseRemoteProtocols/c\BrowseRemoteProtocols None&#39;</span> /etc/cups/cups-browsed.conf
+</span></span></code></pre></div><p>then reboot</p>
+<h2 id="networking">networking</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># for ubuntu 20.04 or newer</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># modify /etc/netplan/01_netcfg.yaml</span>
+</span></span><span style="display:flex;"><span>network:
+</span></span><span style="display:flex;"><span>  version: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>  renderer: networkd
+</span></span><span style="display:flex;"><span>  ethernets:
+</span></span><span style="display:flex;"><span>    enp4s0:
+</span></span><span style="display:flex;"><span>      addresses: <span style="color:#f92672">[</span> 192.168.11.100/24 <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>      gateway4: 192.168.11.1
+</span></span><span style="display:flex;"><span>      nameservers:
+</span></span><span style="display:flex;"><span>          addresses:
+</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;192.168.1.22&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ sudo netplan apply
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># for ubuntu 18.04 or older</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># modify /etc/network/interfaces</span>
+</span></span><span style="display:flex;"><span>auto lo
+</span></span><span style="display:flex;"><span>iface lo inet loopback
+</span></span><span style="display:flex;"><span>auto eth0
+</span></span><span style="display:flex;"><span>iface eth0 inet static
+</span></span><span style="display:flex;"><span>address 192.168.xx.xx
+</span></span><span style="display:flex;"><span>netmask 255.255.255.0
+</span></span><span style="display:flex;"><span>gateway 192.168.xx.xx
+</span></span><span style="display:flex;"><span>dns-nameservers 192.168.1.22
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/etc/init.d/networking restart
+</span></span></code></pre></div><h2 id="datetime">datetime</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo timedatectl set-local-rtc <span style="color:#ae81ff">1</span> --adjust-system-clock
+</span></span><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#39;printf &#34;NTP=192.168.1.22\nFallbackNTP=192.168.1.24\nRootDistanceMaxSec=50&#34; &gt;&gt; /etc/systemd/timesyncd.conf&#39;</span>
+</span></span><span style="display:flex;"><span>$ sudo timedatectl set-timezone Asia/Shanghai
+</span></span><span style="display:flex;"><span>$ sudo timedatectl set-ntp on
+</span></span><span style="display:flex;"><span>$ sudo systemctl restart systemd-timesyncd
+</span></span></code></pre></div><h2 id="remove-snapd">remove snapd</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#39;for i in $(snap list | grep latest | egrep -v &#34;snapd|base&#34; | cut -d &#39;</span> <span style="color:#e6db74">&#39; -f1); do snap remove &#34;$i&#34;; snap remove $(snap list | grep base | cut -d &#39;</span> <span style="color:#e6db74">&#39; -f1); done&#39;</span>
+</span></span><span style="display:flex;"><span>$ sudo systemctl stop snapd
+</span></span><span style="display:flex;"><span>$ sudo apt-get --autoremove purge snapd
+</span></span><span style="display:flex;"><span>$ sudo rm -rf ~/snap
+</span></span></code></pre></div><h2 id="some-packages-your-can-remove">some packages your can remove</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo apt-get purge apport apport-gtk telnet apparmor byobu nano tmux screen
+</span></span></code></pre></div><h2 id="remove-ppas-or-repositories-manually">remove PPAs or repositories manually</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo rm /etc/apt/sources.list.d/****.list
+</span></span><span style="display:flex;"><span>$ sudo apt-key list
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	/etc/apt/trusted.gpg
+</span></span><span style="display:flex;"><span>	--------------------
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	pub   1024R/3DD9F856 2011-04-15
+</span></span><span style="display:flex;"><span>	uid   Launchpad PPA <span style="color:#66d9ef">for</span> Nate Carlson
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ sudo apt-key del 3DD9F856
+</span></span><span style="display:flex;"><span>$ sudo apt-get update
+</span></span></code></pre></div><h2 id="install-ubuntu-security-updates-only-via-command-line">install ubuntu security updates only via command line</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo apt-get update
+</span></span><span style="display:flex;"><span>$ sudo apt-get -s dist-upgrade | grep -i security | cut -d <span style="color:#e6db74">&#39; &#39;</span> -f2 | xargs apt-get install -y
+</span></span></code></pre></div><h2 id="-set-swap-file">* set swap file</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># swap on</span>
+</span></span><span style="display:flex;"><span>$ swapon -s <span style="color:#f92672">[</span> free -h <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>$ sudo fallocate -l 2G /swapfile
+</span></span><span style="display:flex;"><span>$ sudo chmod <span style="color:#ae81ff">600</span> /swapfile
+</span></span><span style="display:flex;"><span>$ sudo mkswap /swapfile
+</span></span><span style="display:flex;"><span>$ sudo swapon /swapfile
+</span></span><span style="display:flex;"><span>$ sudo sh -c echo <span style="color:#e6db74">&#39;/swapfile  none swap sw 0 0&#39;</span> | sudo tee -a /etc/fstab
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set swap off while using SSD</span>
+</span></span><span style="display:flex;"><span>$ sudo swapoff /swapfile
+</span></span><span style="display:flex;"><span>$ sudo /etc/fstab
+</span></span></code></pre></div><h2 id="-differences-between-apt-get-upgrade-and-dist-upgrade">* differences between <code>apt-get upgrade</code> and <code>dist-upgrade</code></h2>
+<p><a href="https://askubuntu.com/questions/194651/why-use-apt-get-upgrade-instead-of-apt-get-dist-upgrade">1</a></p>
+<blockquote>
+<ul>
+<li><code>apt-get upgrade</code> will not change what is installed (only versions),</li>
+<li><code>apt-get dist-upgrade</code> will install or remove packages as necessary to complete the upgrade,</li>
+<li><code>apt upgrade</code> will automatically install but not remove packages.</li>
+<li><code>apt full-upgrade</code> performs the same function as <code>apt-get dist-upgrade</code>.</li>
+</ul></blockquote>
+<p><a href="https://askubuntu.com/questions/601/the-following-packages-have-been-kept-back-why-and-how-do-i-solve-it">2</a></p>
+<blockquote>
+<p>But <code>dist-upgrade</code> <strong>can be quite dangerous</strong>. <a href="https://askubuntu.com/questions/194651/why-use-apt-get-upgrade-instead-of-apt-get-dist-upgrade">Unlike upgrade</a> it may <em><strong>remove</strong></em> packages to resolve complex dependency situations. Unlike you, APT  isn&rsquo;t always smart enough to know whether these additions and removals  could wreak havoc.</p></blockquote>
+<h2 id="centos">CentOS:</h2>
+<h2 id="networking-1">networking</h2>
+<p>using <code>nmtui</code> to config networking, then modify <code>ONBOOT=yes</code> in your configuration file``/etc/sysconfig/network-scripts/ifcfg-xxxx`</p>
+<h2 id="datetime-1">datetime</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo dnf -y install chrony ntpstat
+</span></span><span style="display:flex;"><span>sudo vi /etc/chrony.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># line 3: change to your own NTP server or others in your timezone</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pool 2.centos.pool.ntp.org iburst</span>
+</span></span><span style="display:flex;"><span>pool 192.168.xxx.xxx iburst
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now chronyd
+</span></span><span style="display:flex;"><span>sudo chronyc sources
+</span></span><span style="display:flex;"><span>sudo ntpstat 
+</span></span></code></pre></div><h2 id="dual-boot-fixing">dual boot fixing</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo yum install epel-release
+</span></span><span style="display:flex;"><span>sudo yum install ntfs-3g
+</span></span><span style="display:flex;"><span>sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+</span></span></code></pre></div><p>If you need it, make a backup of your grub configuration file: <code>/boot/grub2/grub.cfg</code></p>
+
+</article>
+
+
+
+</html>

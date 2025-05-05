@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/locateportonsw/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>locate physical port on Cisco Switch</h1>
+    <time datetime="2024-03-05">2024-03-05</time>
+  </header>
+  <p>登录核心交换4506，清空arp记录和mac表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>clear arp
+</span></span><span style="display:flex;"><span>clear mac address-table dynamic all
+</span></span></code></pre></div><p>过一两分钟后，通过arp记录，查目标ip的48bit地址</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>show arp | inc 192.168.105.59
+</span></span><span style="display:flex;"><span>Internet  192.168.105.59    <span style="color:#ae81ff">0</span>   7cc2.e51a.0573  ARPA Vlan11
+</span></span></code></pre></div><p>根据查到的硬件地址，通过mac对应表，查到目标ip对应的交换机端口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>show mac address-table address 7cc2.e51a.0573
+</span></span></code></pre></div><p>得到输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Unicast Entries
+</span></span><span style="display:flex;"><span> vlan   mac address     type        protocols               port
+</span></span><span style="display:flex;"><span>-------+---------------+--------+---------------------+-------------------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">10</span>    7cc2.e51a.0573   dynamic ip,ipx,assigned,other GigabitEthernet3/20
+</span></span></code></pre></div><p>由于这是核心交换的端口，可以得知此端口为目标IP所在交换机的上连端口，根据端口查所连交换机信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>show cdp neighbors
+</span></span><span style="display:flex;"><span>Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+</span></span><span style="display:flex;"><span>                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone,
+</span></span><span style="display:flex;"><span>                  D - Remote, C - CVTA, M - Two-port Mac Relay
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+</span></span><span style="display:flex;"><span>2F10      Gig 3/20          <span style="color:#ae81ff">175</span>              S I   WS-C2950G Fas 0/48
+</span></span></code></pre></div><p>从端口信息得知为<code>2F10</code>交换机。查找此下连交换机的详细信息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>show cdp ne g3/20 detail
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Device ID: 2F10
+</span></span><span style="display:flex;"><span>  Entry address<span style="color:#f92672">(</span>es<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>  IP address: 192.168.116.13
+</span></span><span style="display:flex;"><span>  Platform: cisco WS-C2950G-48-EI,  Capabilities: Switch IGMP
+</span></span><span style="display:flex;"><span>  Interface: GigabitEthernet3/20,  Port ID <span style="color:#f92672">(</span>outgoing port<span style="color:#f92672">)</span>: FastEthernet0/48
+</span></span><span style="display:flex;"><span>  Holdtime : <span style="color:#ae81ff">159</span> sec
+</span></span><span style="display:flex;"><span>  …
+</span></span><span style="display:flex;"><span>  Management address<span style="color:#f92672">(</span>es<span style="color:#f92672">)</span>:
+</span></span><span style="display:flex;"><span>  IP address: 192.168.116.13
+</span></span></code></pre></div><p>在交换机配置文档中查到此交换机ip为192.168.116.13</p>
+<p>根据查到的交换机信息，登录桌面汇接层交换机。（由于知道此ip位于6楼，所以得知桌面汇接层交换机是直连核心4506的，可判断目标ip的端口就在所找到的这台交换机上。如果是其他层，则需从其他层上连交换机上再下查到实际端口交换机上）</p>
+<p>清空arp记录，清空mac表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>clear arp
+</span></span><span style="display:flex;"><span>clear mac address-table dynamic
+</span></span></code></pre></div><p>过一两分钟，根据前面查到的硬件地址，通过mac对应表，查到目标ip对应的实际交换机端口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>show mac address-table address  7cc2.e51a.0573
+</span></span></code></pre></div><p>得到输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>			Mac Address Table
+</span></span><span style="display:flex;"><span>-------------------------------------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Vlan    Mac Address       Type        Ports
+</span></span><span style="display:flex;"><span>----    -----------       --------    -----
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span>      7cc2.e51a.0573    DYNAMIC     Fa0/35
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Total Mac Addresses <span style="color:#66d9ef">for</span> this criterion: <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p><code>Fa0/35</code>就是我们要找的最终直连目标ip的交换机物理端口。</p>
+<p>进入端口配置模式，可以直接shut这个端口，阻止其上网。</p>
+
+</article>
+
+
+
+</html>

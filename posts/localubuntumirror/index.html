@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/localubuntumirror/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Set up a local ubuntu mirror</h1>
+    <time datetime="2019-12-01">2019-12-01</time>
+  </header>
+  <h2 id="configuring-apt-mirror">Configuring apt-mirror</h2>
+<p>First of all, you need to execute <code>apt-get install apt-mirror</code> command
+to install <code>apt-mirror</code>. The default config is just fit your server OS
+version, but still you can modify it to <code>deb-amd64 | deb [arch=amd64]</code>
+or <code>deb-i386 | deb [arch=i386]</code> in <code>/etc/apt/mirror.list</code>.</p>
+<p>If you want to be able to downgrade the packages or I don&rsquo;t want to
+clean up automatically. You can comment the last <code>clean</code> part as below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>clean http://archive.ubuntu.com/ubuntu
+</span></span></code></pre></div><p>Execute the <code>apt-mirror</code> command to start downloading. The packages will
+be stored in subdirectories of the <code>/var/spool/apt-mirror/mirror</code>
+directory. It needs lots of space so be prepared at least 200 Gigabytes.</p>
+<p>If the repo becomes too big, you can use
+<code>/var/spool/apt-mirror/var/clean.sh</code> to clean up some space. This will
+delete older packages.</p>
+<h2 id="configuring-web-server-nginx">Configuring Web Server (Nginx)</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>apt-get install nginx
+</span></span></code></pre></div><p>The packages are in <code>/var/spool/apt-mirror/mirror</code>. We are going to
+create a symlink to make them available.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ln -s /var/spool/apt-mirror/mirror/archive.ubuntu.com/ubuntu/ /var/www/ubuntu
+</span></span></code></pre></div><p>Then add <code>autoindex on;</code> into <code>yoursite.conf</code> and you can visit from
+<code>http://127.0.0.1/ubuntu</code>.</p>
+<h2 id="configuring-crontab">Configuring crontab</h2>
+<p>If you want to update the mirror automatically, just add command as
+below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">2</span>  *  *  *  /usr/bin/apt-mirror &gt;&gt; /opt/apt-mirror/mirror/archive.ubuntu.com/ubuntu/apt-mirror.log
+</span></span></code></pre></div><h2 id="setting-up-the-clients">Setting up the clients</h2>
+<p>Modify <code>/etc/apt/sources.list</code> as below or whatever you want.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>deb http://yourserverip/ubuntu xenial main restricted universe multiverse
+</span></span><span style="display:flex;"><span>deb http://yourserverip/ubuntu xenial-updates main restricted universe multiverse
+</span></span><span style="display:flex;"><span>deb http://yourserverip/ubuntu xenial-security main restricted universe multiverse
+</span></span></code></pre></div><p>Then reload your <code>apt-get update</code>, it works !</p>
+
+</article>
+
+
+
+</html>

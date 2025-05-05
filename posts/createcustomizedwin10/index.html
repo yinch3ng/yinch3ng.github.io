@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/createcustomizedwin10/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Creating Customized Windows 10</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <p><a href="https://finalthought.org/2018/01/11/creating-customized-windows-10-version-1709-media-iso-wim-flash-drive/">https://finalthought.org/2018/01/11/creating-customized-windows-10-version-1709-media-iso-wim-flash-drive/</a></p>
+<h2 id="acquiring-the-necessary-tools">Acquiring the necessary Tools</h2>
+<ul>
+<li>Download the <strong>Windows ISO</strong> for which you are creating custom media.</li>
+<li>Download the <strong>Windows ADK (Assessment and Deployment Kit) for Windows 10</strong> from <a href="https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install">here</a>.</li>
+</ul>
+<h2 id="preparing-your-environment">Preparing your environment</h2>
+<ul>
+<li>
+<p>Open the Windows ADK for Windows 10 installer.</p>
+<ul>
+<li>
+<ul>
+<li>Select and install <code>**Deployment Tools**</code> and <code>**Windows Preinstallation Environment (Windows PE).**</code><br>
+<img src="1-ADK.png" alt="img"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>Enable the Hyper-V Platform and reboot the host.
+<code>To do this, at your desktop type **Win+X** and click **Apps and Features** at the top. </code><br>
+<img src="2-AppsFeatures.png" alt="img"></li>
+</ul>
+</li>
+<li>
+<p>Select <strong>Programs and Features</strong> within the settings window
+<img src="3-ProgFeatures-1024x458.png" alt="img"></p>
+</li>
+<li>
+<p>Select <strong>Turn Windows features on or off</strong><br>
+<img src="4-TurnFeatures.png" alt="img"></p>
+</li>
+<li>
+<p>Select <strong>Hyper-V</strong> and Click <strong>OK.</strong> When prompted, click <strong>Restart now.</strong><br>
+<img src="5-HyVinstall.png" alt="img"></p>
+</li>
+<li>
+<p>Once rebooted, open the Start Menu and type “Hyper” &gt; Open **Hyper-V Manager **<br>
+<img src="6-HyVmanager.png" alt="img"></p>
+</li>
+<li>
+<p>Select your host (computer name) on the left and then click <strong>Virtual Switch Manager…</strong> (on the right)<br>
+<img src="7-VirtSwitchMgr.png" alt="img"></p>
+</li>
+<li>
+<p>Select <strong>New virtual network switch</strong> on the left and <strong>External</strong> under the type to create. Click <strong>Create Virtual Switch.</strong><br>
+<img src="8-CreateVswitch.png" alt="img"></p>
+</li>
+<li>
+<p>Name the switch something appropriate (I’m using “Main”).</p>
+</li>
+<li>
+<p>Select <strong>External Network</strong> &gt; Select your main NIC (wireless or wired).</p>
+</li>
+<li>
+<p>Check <strong>Allow management operating system to share this network adapter</strong> and click <strong>OK</strong>.<br>
+<img src="9-ConfigVswitch.png" alt="img"></p>
+</li>
+<li>
+<p>Click <strong>Yes</strong> on the notice prompt.<br>
+<img src="10-PendNetwork.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="create-the-staging-vm">Create the Staging VM</h2>
+<ul>
+<li>
+<p>Now that you’re prepped, within Hyper-V Manager select <strong>New &gt; Virtual Machine</strong> and then click <strong>Next</strong>.<br>
+<img src="11-NewVM.png" alt="img"></p>
+</li>
+<li>
+<p>Type a name for your staging VM (I’m picking stage01) then click <strong>Next</strong>.<br>
+<img src="12-stage01.png" alt="img"></p>
+</li>
+<li>
+<p>Select <strong>Generation 2</strong> and then click <strong>Next</strong>.<br>
+<img src="13-Gen2.png" alt="img"></p>
+</li>
+<li>
+<p>Enter an appropriate amount of memory (I’m entering 8192 MB), UNselect <strong>Dynamic Memory</strong> and then click <strong>Next</strong>.<br>
+<img src="14-RAM.png" alt="img"></p>
+</li>
+<li>
+<p>Choose <strong>Not Connected</strong> for the Connection page (this will prevent Windows 10 from downloading / installing “consumer apps” during initial staging)<br>
+<img src="15-NoNIC.png" alt="img"></p>
+</li>
+<li>
+<p>Designate an adequate amount of storage for your VM (not less than  the total GB of all applications you will be installing) and then click <strong>Next</strong>.<br>
+<img src="16-CreateVDisk.png" alt="img"></p>
+</li>
+<li>
+<p>Select <strong>Install an operating system from a bootable image file</strong> &gt; Select <strong>Image File (.iso)</strong> &gt; Find and select the Windows ISO you downloaded earlier &gt; Click <strong>Next</strong> &gt; Click <strong>Finish</strong>.<br>
+<img src="17-ISO.png" alt="img"><img src="18-Summary.png" alt="img"></p>
+</li>
+<li>
+<p>Back at the <strong>Hyper-V Manager</strong>, right click <strong>stage01</strong> and select <strong>Connect…</strong>
+(This will open the console of the VM.)<br>
+<img src="19-Connect.png" alt="img"></p>
+</li>
+<li>
+<p>Click <strong>Start</strong> within the VM window<br>
+<img src="20-Start.png" alt="img"></p>
+</li>
+<li>
+<p>Press <strong>any key</strong> to initiate the Windows Setup<br>
+<img src="21-PressAny.png" alt="img"></p>
+</li>
+<li>
+<p>I’m installing Windows 10 Enterprise (your experience may differ if you’re using something else!)<br>
+<img src="22-Win10Ent.png" alt="img"></p>
+</li>
+<li>
+<p>Install Windows 10 by accepting the EULA and choosing <strong>Custom</strong> &gt; selecting the entire virtual disk and clicking <strong>Next</strong>.<br>
+<img src="23-Drive0.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="enter-audit-mode-and-install-applications">Enter Audit Mode and Install Applications</h2>
+<ul>
+<li>
+<p>Once you’re presented with the <strong>Region</strong> screen (where you select the country) – <strong>STOP</strong>.<br>
+<img src="24-StopHere-1024x769.png" alt="img"></p>
+</li>
+<li>
+<p>Enter <strong><code>CTRL+SHIFT+F3</code></strong>.</p>
+</li>
+<li>
+<p>Windows will reboot and log you in with the Administrator account.</p>
+</li>
+<li>
+<p>When presented with the <strong>System Preparation Tool</strong> window, click <strong>Cancel</strong>.<br>
+<img src="25-CancelSysprep-1024x771.png" alt="img"></p>
+</li>
+</ul>
+<blockquote>
+<p>As established in my previous articles, Audit Mode is my  favorite choice of creating customized Windows install media. If you are unaware, Audit Mode bypasses OOBE and negates the need of creating a  new user account, thus assigning a “Registered Owner” name.</p></blockquote>
+<p>Now that we’re in Audit Mode, the first step I do (and recommend!) is <strong>disabling the “Consumer Experience”</strong> via GPO.</p>
+<blockquote>
+<p>The “Consumer Experience” is the default mode Windows 10  (including Enterprise) is shipped with. This mode, upon initial login of a new user, commences the automatic download of a plethora of  (unrequested) UWP apps, thus filling the start menu with games like  Candy Crush. I deplore this feature beyond anything Microsoft has done  in the past. It cheapens the Windows experience and frankly, I think  they should be embarrassed that this is included in their flagship  product. Fortunately, this feature can be disabled – but only on  Enterprise edition.</p></blockquote>
+<p>To disable this “feature”, open up the <strong>Local Group Policy Editor</strong> (gpedit.msc) and navigate to <strong>Computer Configuration &gt; Administrative Templates &gt; Windows Components &gt; Cloud Content</strong> and double click <strong>Turn off Microsoft consumer experiences</strong>. We will want to <strong>Enable</strong> this GPO and click <strong>OK.</strong><br>
+<img src="26-ConsExper-1024x771.png" alt="img"></p>
+<p>At this point, we can now (safely) enable the Network Interface on this VM.</p>
+<ul>
+<li>Navigate to <strong>File</strong> &gt; <strong>Settings..</strong> and select <strong>Network Adapter</strong> on the left.</li>
+<li>Change the “Virtual Switch” from <strong>Not Connected</strong> to (in my case) <strong>Main</strong>. Click <strong>OK</strong> to save your changes.<br>
+<img src="27-EnableNIC.png" alt="img"></li>
+</ul>
+<h2 id="running-windows-update">Running Windows Update</h2>
+<p>So, just as you would do normally, lets jump into the <strong>Settings</strong> app &gt; Navigate to <strong>Update &amp; Security</strong> and run <strong>Check for updates.</strong><br>
+<img src="29-5-WU-1024x732.png" alt="img"></p>
+<p>While updates are downloading / installing – I personally like to  take this opportunity to tweak a few Windows Update settings. These  include:</p>
+<ul>
+<li>
+<p>Navigating to <strong>advanced options</strong> and enabling <strong>“Give me updates for other Microsoft products when I update Windows”</strong>.<br>
+<img src="28-WUadvanced-1024x772.png" alt="img"><br>
+<img src="29-WUmsUpdate.png" alt="img"></p>
+</li>
+<li>
+<p>Scroll down and select <strong>Delivery Optimization</strong><br>
+<img src="30-DeliveryOpt.png" alt="img"></p>
+</li>
+<li>
+<p>Turning <strong>ON</strong> the feature <strong>Allow downloads from other PCs</strong> and setting it to <strong>PCs on my local network</strong><br>
+<img src="31-DeliveryOpt.png" alt="img"></p>
+</li>
+<li>
+<p>Back at the main Windows Update page, I select <strong>Restart Options</strong> under <strong>Update Settings</strong><br>
+<img src="32-RestartOpt.png" alt="img"></p>
+</li>
+<li>
+<p>And within <strong>Restart Options</strong> I always select <strong>On</strong> under <strong>Show more notifications</strong><br>
+<img src="33-RestartOptNotif.png" alt="img"></p>
+</li>
+</ul>
+<p>At this point of the how-to, I’ve had the opportunity to tweak my  Windows Update settings to my liking and Windows was ready to restart.<br>
+<img src="34-RestartNow-1024x771.png" alt="img"></p>
+<p>Upon restart (and installation of the latest Cumulative Update), Windows will automatically log you back into Audit Mode (<strong>make sure to click cancel on the sysprep popup again!</strong>).</p>
+<p>After logging in, double check to confirm that all updates have been installed.<br>
+<img src="35-NoUpdates-1024x771.png" alt="img"></p>
+<p>After confirming the OS is fully up to date, now is the time to make  any tweaks and install all applications that you want embedded into your custom Windows build.</p>
+<ul>
+<li><strong><code>Examples: Remove UWP Apps, Enable RDP, Install drivers, etc.</code></strong></li>
+</ul>
+<h2 id="cleanup-and-sysprep">Cleanup and Sysprep</h2>
+<p>At this stage you have everything customized just the way you like,  all your applications are installed and you’re fully updated. Now’s a  good time to run Disk Cleanup.</p>
+<ul>
+<li>
+<p>Right Click the C: drive and navigate to Properties</p>
+<ul>
+<li>
+<p>Click <strong>Disk Cleanup</strong><br>
+<img src="36-DiskCleanup.png" alt="img"></p>
+</li>
+<li>
+<p>Select all items and click <strong>OK</strong><br>
+<img src="37-DiskCleanup.png" alt="img"></p>
+</li>
+<li>
+<p>Once you’ve ran Disk Cleanup, proceed with <strong>shutting down</strong> your Staging VM.</p>
+</li>
+<li>
+<p>Create a Checkpoint
+<strong><code>Click Action &gt; Checkpoint.. &gt; Enter &quot;Ready for sysprep&quot; &gt; Click Yes</code></strong><br>
+<img src="38-ReadyForSys.png" alt="img"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Power your Staging VM back on.</p>
+</li>
+<li>
+<p>When logged in, do not close the System Preparation Tool window.</p>
+<ul>
+<li>Select <strong>Enable System Out-of-Box Experience (OOBE)</strong></li>
+<li>Checkbox <strong>Generalize</strong></li>
+<li>Select <strong>Shutdown</strong></li>
+<li>Click <strong>OK</strong><br>
+<img src="39-Sysprep.png" alt="img"></li>
+</ul>
+</li>
+<li>
+<p>Once your VM is shut down, create another Checkpoint named <strong>Complete</strong>.
+<strong>Do NOT power your VM back on.</strong><br>
+<img src="40-SysprepComplete.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="creating-a-wim-file">Creating a WIM file</h2>
+<p>The hard part is done, next comes the fun part: capturing your  customizations into an image file. Given you’ve made it this far, I’m  going to presume you already know that an OS WIM file is the compressed  OS image in a single file. The original Windows install media includes  the vanilla <strong>install.wim</strong> file (located in the <strong>sources</strong> folder) – but we’re going to be replacing that file with our own. To do this, we need to “capture” the last Checkpoint.</p>
+<p>On your host (physical machine), open up Disk Management.
+<code>**WIN+X** &gt; Disk Management</code><br>
+<img src="41-DiskMGMT.png" alt="img"></p>
+<ul>
+<li>
+<p>Navigate to <strong>Action</strong> &gt; <strong>Attach VHD</strong><br>
+<img src="42-AttachVHD.png" alt="img"></p>
+</li>
+<li>
+<p>Click <strong>Read-only</strong> and then click <em><strong>Browse</strong></em><br>
+<img src="43-AttachVHD.png" alt="img"></p>
+</li>
+<li>
+<p>Navigate to the directory where the virtual disks are stored for <strong>stage01</strong>.
+By default this directory is:  <strong><code>C:\ProgramData\Microsoft\Windows\Hyper-V\</code></strong></p>
+</li>
+<li>
+<p>In the bottom right, change <strong>Virtual Disk files (* .vhd, * .vhdx)</strong> to <strong>All files (* . *)</strong><br>
+<img src="44-AllFiles.png" alt="img"></p>
+</li>
+<li>
+<p>Select the file with the <strong>most recent Date Modified</strong> – this is your <strong>Complete</strong> Checkpoint! <strong>This file is approximately 4 MB.</strong><br>
+<img src="45-RightVHD.png" alt="img"></p>
+</li>
+<li>
+<p>Click <strong>Open</strong></p>
+</li>
+<li>
+<p>Ensure <strong>Read Only</strong> is selected and then click <strong>OK</strong>.<br>
+<img src="AttachVHDReadOnly.png" alt="img"></p>
+</li>
+</ul>
+<p>At this point you will see <strong>one new</strong> <strong>read only disk</strong> with <strong>three partitions</strong>. Make note of the third partition drive letter (in my case, the D: Drive).<br>
+<img src="46-VHDdriveLetter.png" alt="img"></p>
+<ul>
+<li>
+<p>Open the Command Prompt with Administrator Rights.</p>
+</li>
+<li>
+<p><strong>Start</strong> &gt; Type <strong>cmd</strong> &gt; Right Click <strong>Command Prompt</strong> &gt; <strong>Run as administrator</strong>
+<img src="47-CMDasAdmin.png" alt="img"></p>
+</li>
+<li>
+<p>Type</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>dism /capture-image /imagefile:c:\customInstall.wim  /capturedir:D:\ /name:<span style="color:#e6db74">&#34;Windows 10 Enterprise&#34;</span> /Description:<span style="color:#e6db74">&#34;Windows 10 Enterprise&#34;</span> /compress:maximum /checkintegrity /verify /bootable 
+</span></span></code></pre></div><p>replacing <strong>D:</strong> with the third partition drive letter you made note of earlier.<br>
+<img src="48-Dism.png" alt="img"></p>
+</li>
+</ul>
+<p>Once you’ve confirmed both <strong>“The operation completed successfully”</strong> results, head back into <strong>Disk Management</strong> and <strong>right-click</strong> the Read-Only VHD disk and click <strong>Detach VHD</strong>. Click <strong>OK</strong> when prompted to confirm.<br>
+<img src="49-DetachVHD.png" alt="img"></p>
+<h2 id="build-the-customized-media">Build the Customized Media</h2>
+<ul>
+<li>Double click the stock ISO you used to install Windows in <strong>stage01</strong> to mount it within File Explorer.</li>
+<li>Open <strong>This PC</strong> and double click the newly mounted drive. (In my case, <strong>Drive D:</strong> <code>CPBA_X64FRE_EN-US_DV5)</code></li>
+<li><code>**CTRL+A**</code> (to select all) and <code>**CTRL+C**</code> (to copy)
+<ul>
+<li>Create a new folder named WinExtract off your C:\ drive</li>
+<li>(Another location is fine too, but these instructions will be assuming C:)</li>
+<li>Navigate to <code>**C:\WinExtract\**</code> and <code>**CTRL+V**</code> (to paste)<br>
+<img src="50-CopyFiles-1024x356.png" alt="img"></li>
+<li>After the copy completes, navigate to <code>**C:\WinExtract\sources\**</code> and <strong>delete</strong> the <strong>install.wim</strong> file and copy the new <strong>install.wim</strong>.<br>
+<img src="51-DeleteWIM.png" alt="img"></li>
+</ul>
+</li>
+</ul>
+<p>At this point, you are ready to create your ISO.</p>
+<h2 id="create-uefi-bootable-iso">Create UEFI Bootable ISO</h2>
+<ul>
+<li>
+<p>Open Command Prompt (Admin)</p>
+</li>
+<li>
+<p>Change Directory to: <code>C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg\</code></p>
+</li>
+<li>
+<p>Run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>oscdimg -m -o -u2 -lWin10LTSC -udfver102 -bootdata:2#p0,e,bC:\22\boot\etfsboot.com#pEF,e,bC:\22\efi\microsoft\boot\efisys.bin C:\win10\ C:\win10ltsc.iso
+</span></span></code></pre></div></li>
+<li>
+<p>It is done.</p>
+</li>
+</ul>
+
+</article>
+
+
+
+</html>

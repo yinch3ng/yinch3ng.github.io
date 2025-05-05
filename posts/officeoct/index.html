@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/officeoct/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Office 2016 customization tool silent install and integrating updates</h1>
+    <time datetime="2024-03-09">2024-03-09</time>
+  </header>
+  <ol>
+<li><code>setup /admin</code></li>
+<li>change -&gt; <code>Licensing and user interface</code> (check <code>I accept the terms in the License Agreement</code>, choose <code>Display level</code> -&gt; <code>Basic</code>, check <code>Completion notice</code>)
+-&gt; Modify <code>Setup properties</code> (Add -&gt; <code>SETUP_REBOOT</code> - <code>Never</code>)
+-&gt; Set <code>feature installation states</code> (uncheck you dont want to install)
+-&gt; <code>Configure shortcuts</code> (Remove you dont want to install)</li>
+<li>choose <code>File</code> -&gt; <code>Save as</code> run.MSP file</li>
+<li>create a install bath with</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">cd</span> /d %~dp0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span>.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> Installing Office, please wait...
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>setup.exe /adminfile run.MSP
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><p>Download the Update for Microsoft Office 2016 32-Bit Edition from here.</p>
+<p><a href="https://learn.microsoft.com/en-us/officeupdates/office-updates-msi#office-2016-updates">https://learn.microsoft.com/en-us/officeupdates/office-updates-msi#office-2016-updates</a></p>
+<p>To extract the .msp patches from the Microsoft Self-Extractor file (msodll40ui2016-kb5002469-fullfile-x86-glb.exe in this example), run the .exe file and use the <code>/extract</code> switch. For example, type the following at the command prompt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>msodll40ui2016-kb5002469-fullfile-x86-glb.exe /extract:C:\ExtractUpdates
+</span></span></code></pre></div><p>Then copy all the Windows Installer patch (.msp) files in that folder to the Office Updates folder.</p>
+
+</article>
+
+
+
+</html>

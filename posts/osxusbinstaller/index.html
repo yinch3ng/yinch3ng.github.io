@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/osxusbinstaller/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Create a bootable installer for macOS X</h1>
+    <time datetime="2024-02-28">2024-02-28</time>
+  </header>
+  <h2 id="how-to-download-and-install-macos"><a href="https://support.apple.com/en-us/HT211683">How to download and install macOS</a></h2>
+<p>Download and install current or previous versions of the Mac operating system on compatible Mac computers.</p>
+<h2 id="use-macos-recovery">Use macOS Recovery</h2>
+<p>If you need to reinstall macOS on your Mac, you can use its built-in Recovery system to do it.</p>
+<p><a href="https://support.apple.com/kb/HT204904">How to reinstall macOS</a></p>
+<h2 id="use-the-app-store">Use the App Store</h2>
+<p>To download macOS from the App Store, use a Mac that is compatible with that macOS. If your Mac isn&rsquo;t compatible, the App Store dims the Get button, says that the macOS is not compatible with this device, or says that the requested version of macOS is not available.</p>
+<p>If these links don&rsquo;t work as expected, try again using Safari, which is in your Applications folder.</p>
+<p><a href="macappstores://apps.apple.com/app/macos-sonoma/id6450717509?mt=12">Sonoma 14</a></p>
+<p><a href="macappstores://apps.apple.com/app/macos-monterey/id1576738294?mt=12">Monterey 12</a></p>
+<p><a href="macappstores://apps.apple.com/app/macos-catalina/id1466841314?mt=12">Catalina 10.15</a></p>
+<ol>
+<li>Use these links to find macOS in the App Store.</li>
+<li>Cick the Get button in the App Store to begin downloading. Software Update might open and ask you to download from there.</li>
+<li>After downloading to your Applications folder, the installer opens automatically. Follow the onscreen installation instructions. Or quit without installing to leave the installer in your Applications folder for later use.</li>
+</ol>
+<h2 id="use-a-web-browser">Use a web browser</h2>
+<p>These older macOS versions are available as disk images that you can download using your web browser. To get the installer from the disk image, use a Mac that is compatible with that macOS.</p>
+<p>If these links don&rsquo;t work as expected, try again using Safari, which is in your Applications folder.</p>
+<p><a href="http://updates-http.cdn-apple.com/2019/cert/061-39476-20191023-48f365f4-0015-4c41-9f44-39d3d2aca067/InstallOS.dmg">Sierra 10.12</a></p>
+<p><a href="http://updates-http.cdn-apple.com/2019/cert/061-41424-20191024-218af9ec-cf50-4516-9011-228c78eda3d2/InstallMacOSX.dmg">El Capitan 10.11</a></p>
+<p><a href="http://updates-http.cdn-apple.com/2019/cert/061-41343-20191023-02465f92-3ab5-4c92-bfe2-b725447a070d/InstallMacOSX.dmg">Yosemite 10.10</a></p>
+<p><a href="https://updates.cdn-apple.com/2021/macos/031-0627-20210614-90D11F33-1A65-42DD-BBEA-E1D9F43A6B3F/InstallMacOSX.dmg">Mountain Lion 10.8</a></p>
+<p><a href="https://updates.cdn-apple.com/2021/macos/041-7683-20210614-E610947E-C7CE-46EB-8860-D26D71F0D3EA/InstallMacOSX.dmg">Lion 10.7</a></p>
+<ol>
+<li>Use these links to download a macOS disk image (.dmg) file.</li>
+<li>Double-click the .dmg file to open it and see the package (.pkg) file within.</li>
+<li>Double-click the .pkg file, then follow the onscreen instructions to install the macOS installer into your Applications folder.</li>
+<li>Open your Applications folder and double-click the macOS installer, named Install [Version Name]. Follow the onscreen installation instructions.</li>
+</ol>
+<h2 id="use-a-bootable-installer">Use a bootable installer</h2>
+<p>A bootable installer can be useful if you want to install macOS on multiple computers without downloading the installer each time, or when you can&rsquo;t install using the other methods. To download an installer suitable for creating a bootable installer, <a href="https://support.apple.com/en-us/HT211683#appstore">use the App Store</a> or <a href="https://support.apple.com/en-us/HT211683#browser">use a web browser</a> to download from a compatible Mac. The Mac must also be using macOS High Sierra or later, the latest version of macOS Sierra, or the latest version of OS X El Capitan.</p>
+<p><a href="https://support.apple.com/kb/HT201372">How to create a bootable installer for macOS</a></p>
+<h2 id="how-to-create-a-bootable-installer-for-macos"><a href="https://support.apple.com/en-us/HT201372">How to create a bootable installer for macOS</a></h2>
+<ul>
+<li>USB flash drive or other secondary volume with at least 14GB of available storage, formatted as Mac OS Extended</li>
+<li>Installer for OS X El Capitan or later</li>
+</ul>
+<p><a href="https://support.apple.com/kb/HT211683">Download a macOS installer using the App Store or your browser</a>
+To get the full installer, your Mac must be using the latest version of OS X El Capitan, the latest version of macOS Sierra, or any later version of macOS. Download from a Mac that is compatible with the macOS you&rsquo;re downloading. Enterprise administrators: download from Apple, not a locally hosted update server.</p>
+<h2 id="use-terminal-to-create-the-bootable-installer">Use Terminal to create the bootable installer</h2>
+<p><img src="macos-ventura-terminal-command-createinstallmedia.png" alt="Terminal window showing the completed process"></p>
+<ol>
+<li>Plug in the USB flash drive or other volume that you&rsquo;re using for the bootable installer.</li>
+<li>Open Terminal, which is in the Utilities folder of your Applications folder.</li>
+<li>Type or paste one of the <a href="https://support.apple.com/en-us/HT201372#commands">commands below</a> into Terminal, then press Return to enter the command. Each command assumes that the installer is in your Applications folder, and MyVolume is the name of the USB flash drive or other volume you&rsquo;re using. If the volume has a different name, replace <code>MyVolume</code> in the command with the name of your volume.</li>
+<li>When prompted, type your administrator password. Terminal doesn&rsquo;t show any characters as you type. Then press Return.</li>
+<li>When prompted, type Y to confirm that you want to erase the volume, then press Return. Terminal shows the progress as the volume is erased.</li>
+<li>After the volume is erased, you may see an alert that Terminal would like to access files on a removable volume. Click OK to allow the copy to proceed.</li>
+<li>When Terminal says that it&rsquo;s done, the volume will have the same name as the installer you downloaded, such as Install macOS Ventura. You can now quit Terminal and eject the volume.</li>
+</ol>
+<h2 id="commands">Commands</h2>
+<p>Depending on which macOS you downloaded, enter one of the following commands in Terminal as instructed above.</p>
+<p>If your Mac is using macOS Sierra or earlier, the command should conclude with <code>--applicationpath</code> followed by the appropriate installer path, as shown in the command below for El Capitan.</p>
+<h3 id="sonoma">Sonoma</h3>
+<pre class="mermaid">sudo /Applications/Install\ macOS\ Sonoma.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+</pre>
+<h3 id="monterey">Monterey</h3>
+<pre class="mermaid">sudo /Applications/Install\ macOS\ Monterey.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+</pre>
+<h3 id="catalina">Catalina</h3>
+<pre class="mermaid">sudo /Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+</pre>
+<hr>
+<h2 id="use-the-bootable-installer">Use the bootable installer</h2>
+<p><a href="https://support.apple.com/kb/HT211814">Determine whether you&rsquo;re using a Mac with Apple silicon</a>, then follow the appropriate steps:</p>
+<h3 id="apple-silicon">Apple silicon</h3>
+<ol>
+<li>Plug the bootable installer into a Mac that is connected to the internet and compatible with the version of macOS you&rsquo;re installing. A bootable installer doesn&rsquo;t download macOS from the internet, but it does require an internet connection to get firmware and other information specific to the Mac model.</li>
+<li>Turn on the Mac and continue to hold the power button until you see the startup options window, which shows your bootable volumes.</li>
+<li>Select the volume containing the bootable installer, then click Continue.</li>
+<li>When the macOS installer opens, follow the onscreen installation instructions.</li>
+</ol>
+<h3 id="intel-processor">Intel processor</h3>
+<ol>
+<li>Plug the bootable installer into a Mac that is connected to the internet and compatible with the version of macOS you&rsquo;re installing. A bootable installer doesn&rsquo;t download macOS from the internet, but it does require an internet connection to get firmware and other information specific to the Mac model.</li>
+<li>Turn on your Mac, then immediately press and hold the Option (Alt) key.</li>
+<li>Release the Option key when you see a dark screen showing your bootable volumes.</li>
+<li>Select the volume containing the bootable installer. Then click the onscreen arrow or press Return.
+If you can&rsquo;t start up from the bootable installer, make sure that <a href="https://support.apple.com/kb/HT208198">Startup Security Utility</a> is set to allow booting from external or removable media.</li>
+<li>Choose your language, if prompted.</li>
+<li>Select Install macOS (or Install OS X) from the Utilities window, then click Continue and follow the onscreen instructions.</li>
+</ol>
+<h2 id="learn-more">Learn more</h2>
+<p>For information about the <code>createinstallmedia</code> command and the arguments you can use with it, make sure that the macOS installer is in your Applications folder, then enter the appropriate path in Terminal:</p>
+<pre class="mermaid">/Applications/Install\ macOS\ Sonoma.app/Contents/Resources/createinstallmedia
+/Applications/Install\ macOS\ Monterey.app/Contents/Resources/createinstallmedia
+/Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia
+</pre>
+<p>Published Date: April 20, 2023</p>
+
+</article>
+
+
+
+</html>

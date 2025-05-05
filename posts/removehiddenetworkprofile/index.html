@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/removehiddenetworkprofile/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Remove an unused/hidden WiFi network connection history so that an existing name can be reused</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <p><a href="https://superuser.com/questions/1257859/remove-an-unused-hidden-network-connection-so-that-an-existing-name-can-be-reuse">https://superuser.com/questions/1257859/remove-an-unused-hidden-network-connection-so-that-an-existing-name-can-be-reuse</a></p>
+<p><strong>For wired connection:</strong></p>
+<p>Type the command</p>
+<p><strong>netsh lan show profiles</strong>, press Enter to obtain all wired network profiles.</p>
+<p><strong>netsh lan delete profile name</strong>=&quot;<em>WiredProfileName</em>&quot;</p>
+<p><strong>For wireless connection:</strong></p>
+<p>Type the command</p>
+<p><strong>netsh wlan show profiles</strong></p>
+<p><strong>netsh wlan delete profile name</strong>=&quot;<em>WirelessProfileName</em>&quot;</p>
+<p>Besides that, go into the following registry entryL</p>
+<p><code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles</code></p>
+<p>Find those unused network profile by right pane profile name, delete them(GUID).</p>
+<br>
+<p>show wifi.bat</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>@<span style="color:#66d9ef">echo</span> off
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">setlocal</span> enabledelayedexpansion
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/F</span> <span style="color:#e6db74">&#34;tokens=2 delims=:&#34;</span> <span style="color:#ae81ff">%%</span>a <span style="color:#66d9ef">in</span> (<span style="color:#e6db74">&#39;netsh wlan show profile&#39;</span>) <span style="color:#66d9ef">do</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">set</span> wifi_pwd=
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">/F</span> <span style="color:#e6db74">&#34;tokens=2 delims=: usebackq&#34;</span> <span style="color:#ae81ff">%%</span>F <span style="color:#66d9ef">IN</span> (<span style="color:#e6db74">`netsh wlan show profile </span><span style="color:#ae81ff">%%</span><span style="color:#e6db74">a key^=clear ^| find &#34;Key Content&#34;`</span>) <span style="color:#66d9ef">do</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">set</span> wifi_pwd=<span style="color:#ae81ff">%%</span>F
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#ae81ff">%%</span>a : !wifi_pwd!
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div>
+</article>
+
+
+
+</html>

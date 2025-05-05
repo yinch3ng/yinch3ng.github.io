@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/fixuefi/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>How to fix Windows 10/11 UEFI boot issues</h1>
+    <time datetime="2024-10-04">2024-10-04</time>
+  </header>
+  <p>Boot into Windows PE from win-usb installer, then assign a letter to EFI partition and format it, then recreate bcdboot-entry.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>diskpart
+</span></span><span style="display:flex;"><span>list disk 
+</span></span><span style="display:flex;"><span>sel disk 0
+</span></span><span style="display:flex;"><span>list vol
+</span></span><span style="display:flex;"><span>sel vol 2
+</span></span><span style="display:flex;"><span>detail part
+</span></span><span style="display:flex;"><span>assign letter=U
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">exit</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>format U: /Q /fs:fat32 /V:EFI
+</span></span><span style="display:flex;"><span>bcdboot C:\Windows /s U: /f UEFI
+</span></span></code></pre></div><p>Then reboot and it works.</p>
+<p>If you want to reuse recovery function, use this command</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bat" data-lang="bat"><span style="display:flex;"><span>reagentc /enable
+</span></span></code></pre></div><p>use <code>bcdedit</code> to show current bcdentry</p>
+
+</article>
+
+
+
+</html>

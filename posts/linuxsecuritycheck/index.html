@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Ind3x</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://yinch3ng.github.io/css/minimal.css">
+<link rel="canonical" href="https://yinch3ng.github.io/posts/linuxsecuritycheck/">
+<link rel="alternate" type="application/rss+xml" href="" title="Ind3x">
+
+<header>
+  
+    <a href="https://yinch3ng.github.io/" class="title">Ind3x</a>
+  
+  
+    <nav>
+    
+      <a href="/tags/">tags</a>
+    
+      <a href="/about/">about</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>Linux Security Check</h1>
+    <time datetime="2024-03-10">2024-03-10</time>
+  </header>
+  <h2 id="linux-security-check">Linux Security Check</h2>
+<ol>
+<li>
+<p>安装clamav杀毒软件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>sudo apt-get install clamav clamtk
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#下载最新的病毒定义库</span>
+</span></span><span style="display:flex;"><span>sudo freshclam
+</span></span></code></pre></div></li>
+<li>
+<p>扫描全盘(切换成root执行)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo clamscan -ior --bytecode-timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span> / -l /result.log
+</span></span></code></pre></div></li>
+<li>
+<p>临时添加检查账户</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># for debian or ubuntu</span>
+</span></span><span style="display:flex;"><span>sudo useradd -p <span style="color:#66d9ef">$(</span>openssl passwd -1 123456<span style="color:#66d9ef">)</span> -g sudo -s /bin/bash linuxadmin
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># for centos or redhat</span>
+</span></span><span style="display:flex;"><span>sudo useradd -p <span style="color:#66d9ef">$(</span>openssl passwd -1 123456<span style="color:#66d9ef">)</span> -g wheel -s /bin/bash linuxadmin
+</span></span></code></pre></div></li>
+<li>
+<p>删除账户</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo userdel -r -f linuxadmin
+</span></span></code></pre></div></li>
+</ol>
+<ul>
+<li>
+<p>keywords searching</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find / <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/var/lib/apt/lists/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/var/cache/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/sys/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/proc/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/run/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o <span style="color:#ae81ff">\(</span> -wholename <span style="color:#e6db74">&#39;/dev/*&#39;</span> -prune <span style="color:#ae81ff">\)</span> -o -type f -print0 | xargs -0 egrep -ilnsr <span style="color:#e6db74">&#34;shadowsocks&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>ls -1 /yourcheckingdir<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> find $i -type f -print0 | xargs -0 grep -E <span style="color:#e6db74">&#34;tinyproxy.conf|polipo|squid.conf|ngrok|frps|mitmproxy|philtron|ziproxy|tcptunnel|haproxy.cfg|proxychains.conf|records.config|shadowsocks|v2ray|clash|redsocks.conf|socat|sockd.conf|socks.conf|connect-proxy|trojan-panel|client.ovpn|openvpn|strongswan.conf|delegated&#34;</span> &gt; $i+check.log; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Antivirus Live CD</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 显示磁盘分区信息</span>
+</span></span><span style="display:flex;"><span>df -h
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 从U盘分区里拷贝覆盖最新的病毒定义</span>
+</span></span><span style="display:flex;"><span>cp /media/sdxxx/daily.cvd /var/clamav/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 扫描并保存扫描结果log至U盘2G分区</span>
+</span></span><span style="display:flex;"><span>clamscan -ir -l /media/youwant2save/scanresult.log /mnt/youwant2scan
+</span></span></code></pre></div></li>
+</ul>
+
+</article>
+
+
+
+</html>
